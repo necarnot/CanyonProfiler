@@ -3,16 +3,18 @@ header('Content-Type: image/svg+xml');
 
 // TODO
 // Scinder la coupe en n parties, retour à la ligne - Proposition Rémi Villalongue
+// Décider de garder ou non la distinction Pi / To
+// Coder un vrai parser
 
 
 // 20130916
 // Ajout du header
 // Ajout du separateur dynamique
-// Casse insensitive des symboles - Bug levé par Maxime Cassan
-// Placement texte des plans inclinés -  Bug levé par Maxime Cassan
-// Placement texte des toboggans -  Bug levé par Maxime Cassan
+// Casse insensitive des symboles - Bug levé par Maxime Cassan - Max38
+// Placement texte des plans inclinés -  Bug levé par Maxime Cassan - Max38
+// Placement texte des toboggans -  Bug levé par Maxime Cassan - Max38
 // Correction de la maxWidth si une marche longue termine la topo - Bug levé par Fr3d0
-// Correction de l'espacement entre les doubles points dans les topos courtes - Bug levé par Fabien Mullet
+// Correction de l'espacement entre les doubles points dans les topos courtes - Bug levé par Fabien Mullet - Fabien
 
 // 20130912
 // Protection contre les valeurs négatives - Bug levé par Fabien Mullet
@@ -21,16 +23,17 @@ header('Content-Type: image/svg+xml');
 // Ajout des marches longues - Proposition Rémi Villalongue, assistance Fabien Mullet
 
 
+// Tentative de compression de la chaîne
 //function _encode_string_array ($stringArray) {
 //	$s = strtr(base64_encode(addslashes(gzcompress(serialize($stringArray),9))), '+/=', '-_,');
 //	return $s;
 //}
-//
+
 //function _decode_string_array ($stringArray) {
 //	$s = unserialize(gzuncompress(stripslashes(base64_decode(strtr($stringArray, '-_,', '+/=')))));
 //	return $s;
 //}
-//
+
 //$secret = 'je suis une chaine tres longue que je dois compresser';
 //$compacted = _encode_string_array($secret);
 //$decompacted = _decode_string_array($compacted);
