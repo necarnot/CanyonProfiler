@@ -1,9 +1,10 @@
-CanyonProfiler
-==============
+Canyon Profiler
+===============
 
-Canyoneering - Turning a bunch of text into a beautiful profile
+# Canyoneering profiles
+"Turning a bunch of text into a beautiful draw"
 
-This project aims to generate a graphical view of a canyon, based on a formal textual description.
+This project aims to generate a graphical view of a canyon section, based on a simple formal textual description.
 
-Project started by Nicolas Ecarnot in september 2013.
-Thierry Saunier started the idea of a textual description, and Nicolas Ecarnot tried to transform it into a graphical representation.
+# History
+This project was started by Nicolas Ecarnot in september 2013.  Thierry Saunier started the idea of a textual description, and Nicolas Ecarnot tried to transform it into a graphical representation.
