@@ -262,6 +262,10 @@ if (!$strVersion) {
 	$strVersion = $defaultVersion;
 }
 $canyonStr = $strs[1];
+// If there is no description at all, we provide a default one
+if (!$canyonStr) {
+	$canyonStr = '/ma5/ca5/va5/ma5';
+}
 
 // Le tout premier caractère est le séparateur dynamique
 $separator = substr($canyonStr, 0, 1);
