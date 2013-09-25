@@ -1,0 +1,44 @@
+2013-09-25
+==========
+Added the display of submitted and parsed string
+Added the ability to have 3 versions of syntaxes
+Added a variable length for each syntax
+
+Added languages for v0 : french, spanish, italian, english :
+- French : 'fr0.1'
+	'c'	// Cascade
+	'r'	// Ressaut
+	'm'	// Marche
+	'v'	// Vasque
+	'a'	// Amarrage
+	's'	// Sapin
+	't'	// Toboggan
+
+- Spanish : 'es0.1'
+// Thanks to Antilolo
+	'c'	// Cascada
+	'r'	// Resalte
+	's'	// Sendero
+	'b'	// Badina
+	'a'	// Anclaje
+	'p'	// Pino
+	't'	// Tobagan
+
+- Italian : 'it0.1'
+// Thanks to Marie
+	'c'	// Cascata
+	'r'	// Risalto
+	'm'	// Marcia
+	'v'	// Vasque / Pozze
+	'a'	// Armo
+	's'	// Sapin / Abete
+	't'	// Toboga
+
+- English : 'en0.1'
+	'w'	// Waterfall
+	//'r'	// Ressaut ???
+	't'	// Track ???
+	'p'	// Pool
+	'a'	// Anchor
+	//'p'	// Pine tree
+	's'	// Slide
