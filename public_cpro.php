@@ -1,6 +1,8 @@
 <?php
 header('Content-Type: image/svg+xml');
 
+include 'parser.php';
+
 // TODO
 // Scinder la coupe en n parties, retour à la ligne - Proposition Rémi Villalongue
 // Décider de garder ou non la distinction Pi / To
@@ -63,7 +65,6 @@ function displayText($text, $xText, $yText, $xOffset, $yOffset, $align = 'start'
 	</g>';
 }
 
-$defaultVersion = 'fr0.1';
 $fontHeight = 12;
 $pageWidth = 297;
 $pageHeight = 210;
@@ -225,53 +226,41 @@ $canyonStr = '/to3/va2/ma5/to5/va10/ma5/to4/va5/ma15/asrd/ca8/va10/ca5/va10/ma2/
 $canyonStr = $laireB;
 $canyonStr = '/ma5/cv3/ma5/re3/ma5/re3/va5/ml800/va5/ma5/re2/ma5';
 $canyonStr = '::ma5/cv3/ma5/re3/ma5/re3/va5/ml800/va5/ma5/re2/ma5';
-$canyonStr = 'fr0.1:/ma5/cv3/ma5/re3/ma5/re3/va5/ml800/va5/ma5/re2/ma5';
-$canyonStr = 'fr0.1:,ma5,cv3,ma5,re3,ma5,re3,va5,ml800,va5,ma5,re2,ma5';
-$canyonStr = 'fr0.1:/ma5/adrd/ca5/va5/ma10/to3/cv2/va5/ma5/adrg/ca27';
+$canyonStr = 'fr1.1:/ma5/cv3/ma5/re3/ma5/re3/va5/ml800/va5/ma5/re2/ma5';
+$canyonStr = 'fr1.1:,ma5,cv3,ma5,re3,ma5,re3,va5,ml800,va5,ma5,re2,ma5';
+$canyonStr = 'fr1.1:/ma5/adrd/ca5/va5/ma10/to3/cv2/va5/ma5/adrg/ca27';
 $canyonStr = $furonExpress;
 $canyonStr = $trefond;
 $canyonStr = $laire;
 $canyonStr = '/ma2/cv2/ma2/RE20/ma20/va2/ma5/pi2/ma20/to6/ma5';
-$canyonStr = 'fr0.1:/ma5/adrd/ca5/va5/ma10/to3/va5/ma5/adrg/ca27';
+$canyonStr = 'fr1.1:/ma5/adrd/ca5/va5/ma10/to3/va5/ma5/adrg/ca27';
 $canyonStr = 'fr1:/ma5/ca5/va5/ml800/cv10/va5/re4/ma10/to3/va5/ma5/va4/ml500';
-$canyonStr = 'fr0.1:/ma5/ca5/va5/ml800/ma5/adrg/ca10/va5/ma5/sa/re4/ma10/sa/to3/va5/ma5/va4/ml500';
-$canyonStr = 'fr0.1:/ma10/re4/ma5/re2/ma15';
-$canyonStr = 'fr0.1:/ma10/re4/ma5/re2/va3/ma15/re2/va5/cv5/va3/cv3/va10/re1/va2/va2/ma15/to3/va1/ma30/ca5/va10/ma30/re3/va5/to4/va5/to3/va5/ca12/va10/ma5/pi5/ml100/re3/va5/ml200/va50';
+$canyonStr = 'fr1.1:/ma10/re4/ma5/re2/va3/ma15/re2/va5/cv5/va3/cv3/va10/re1/va2/va2/ma15/to3/va1/ma30/ca5/va10/ma30/re3/va5/to4/va5/to3/va5/ca12/va10/ma5/pi5/ml100/re3/va5/ml200/va50';
+$canyonStr = 'fr1.1:/ma10/re4/mi5/re2/ma15';
+$canyonStr = 'en1.1:/wa10/re4/wa5/we2/sl15/po5';
+$canyonStr = 'fr1.1:/ma10/re4/mi5/ca2/to15/va6';
+$canyonStr = 'fr1.1:/ma5/ca5/va5/ml800/cv10/va5/re4/ti20/ma10/to3/va5/ma5';
 
-// Protection basique contre les tentatives de piratage
+$canyonStr = 'fr1.1:/ma5/ca5/va5/ml800/ma5/adrg/ca10/va5/ma5/sa/re4/ma10/sa/to3/va4/ml500';
+// Syntaxe simplifiée version 0 - Français
+$canyonStr = 'fr0.1:/m5/c5/v5/m8/m5/arg/c10/v5/m5/s/r4/m10/s/t3/v4/m5';
+$canyonStr = 'fr0.1:/m5/c5/v5/m8/m5/arg/c10/v5/m5/s/r4/m10/s/t3/v4/m5';
+$canyonStr = 'fr0.1:/m5/c5/v5/m8/m5/arg/c10/v5/m5/s/r4/m10/s/t3/v4/m5';
+$canyonStr = 'es0.1:/s5/c5/b5/s8/s5/arg/c10/b5/s5/p/r4/s10/p/t3/b4/s5';
+
 $canyonName = '';
 $canyonStr = $_POST['canyonStr'];
 $canyonStr = htmlspecialchars($canyonStr);
-// On supprime les espaces de début et fin
-$canyonStr = trim($canyonStr);
-//$canyonStr = strtolower($canyonStr);
-
-// Détermination de la version de la chaîne
-// Si la chaîne ne contient pas de marqueur d'en-tête, on lui force une valeur par défaut
-if (strpos($canyonStr, ':') === false) {
-	error_log("Missing colon");
-	// Si la chaîne est fournie sans version, on lui fournit la version par défaut
-	$canyonStr = $defaultVersion.':'.$canyonStr;
-	error_log ('canyonStr='.$canyonStr);
+$origCanyonStr = $canyonStr;
+$canyonStr = parsed($canyonStr);
+if (! is_string($canyonStr)) {
+	exit -1;
 }
-// On limite le découpage à deux éléments (header | reste)
-$strs = explode(':', $canyonStr, 2);
-$strVersion = $strs[0];
-// Si la chaîne est fournie sans version, on lui fournit la version par défaut
-if (!$strVersion) {
-	$strVersion = $defaultVersion;
-}
-$canyonStr = $strs[1];
-// If there is no description at all, we provide a default one
-if (!$canyonStr) {
-	$canyonStr = '/ma5/ca5/va5/ma5';
-}
-
 // Le tout premier caractère est le séparateur dynamique
 $separator = substr($canyonStr, 0, 1);
 $canyonStr = substr($canyonStr, 1);
 
-error_log ('Version='.$strVersion.' Separator='.$separator.' CanyonStr='.$canyonStr);
+error_log ('CanyonStr='.$canyonStr);
 
 // On cherche à déterminer la largeur max et la hauteur max cumulées
 // afin de pouvoir ajuster la coupe aux dimensions de la page
@@ -357,7 +346,8 @@ if (true) {
 echo '
 <switch>
 <foreignObject x="10" y="0" width="'. $pageWidthPx .'" height="200">
-<p xmlns="http://www.w3.org/1999/xhtml">'.$canyonName .' : '. $canyonStr.'</p>
+<p xmlns="http://www.w3.org/1999/xhtml">Submitted : '.$canyonName .' : '. $origCanyonStr.'</p>
+<p xmlns="http://www.w3.org/1999/xhtml">Parsed as : '.$canyonName .' : '. $canyonStr.'</p>
 </foreignObject>
 
 <text x="20" y="20">Your SVG viewer cannot display html.</text>
