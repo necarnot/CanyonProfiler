@@ -1,3 +1,7 @@
+2013-09-27
+==========
+Corrected the position of the text fields. Were correct under Firefox, Inkscape and A.I., but wrong with I.E, Safari and Chrome.
+
 2013-09-25
 ==========
 Added the display of submitted and parsed string

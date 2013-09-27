@@ -60,8 +60,8 @@ function displayText($text, $xText, $yText, $xOffset, $yOffset, $align = 'start'
 	$xText += $xOffset;
 	$yText += $yOffset;
 	echo '
-	<g font-size="16" font-family="sans-serif" fill="black" stroke="none" text-anchor="'. $align .'" text-align="'. $align .'">
-		<text x="' . $xText . '" y="' . $yText . '" dx="30">' . $text . '</text>
+	<g font-size="16" font-family="sans-serif" fill="black" stroke="none" text-anchor="'. $align .'">
+		<text x="' . $xText . '" y="' . $yText . '">' . $text . '</text>
 	</g>';
 }
 
@@ -501,7 +501,7 @@ foreach($strs as $str) {
 			$radius = $symbols[$item]['radius'];
 			echo '
 			<circle cx = "'. ($curX + $xAsOffset) .'" cy = "'. ($curY - $yAsOffset) .'" r = "'. $radius .'" fill = "#ffffff" fill-opacity = "1" stroke = "black" stroke-width = "'. $strokeWidth .'px"/>';
-			displayText(strtoupper($displayedText), ($curX + $xAsOffset), ($curY - $yAsOffset), -15, -7, 'middle');
+			displayText(strtoupper($displayedText), ($curX + $xAsOffset), ($curY - $yAsOffset), 0, -7, 'middle');
 			break;
 		// Amarrage double
 		case 'ad':
@@ -511,13 +511,13 @@ foreach($strs as $str) {
 			echo '
 			<circle cx = "'. ($curX + $xAsOffset) .'" cy = "'. ($curY - $yAsOffset) .'" r = "'. $radius .'" fill = "none" stroke = "black" stroke-width = "'. $strokeWidth .'px"/>
 			<circle cx = "'. ($curX + $xAsOffset + (4 * $radius)) .'" cy = "'. ($curY - $yAsOffset) .'" r = "'. $radius .'" fill = "none" stroke = "black" stroke-width = "'. $strokeWidth .'px"/>';
-			displayText(strtoupper($displayedText), ($curX + $xAsOffset+ (2 * $radius)), ($curY - $yAsOffset), -15, -7, 'middle');
+			displayText(strtoupper($displayedText), ($curX + $xAsOffset+ (2 * $radius)), ($curY - $yAsOffset), 0, -7, 'middle');
 			break;
 		// Amarrage naturel
 		case 'an':
 			$xAsOffset = 2 * $xScale;
 			$yAsOffset = 2 * $yScale;
-			displayText(strtoupper($displayedText), ($curX + $xAsOffset), ($curY - $yAsOffset), -30, 5, 'start');
+			displayText(strtoupper($displayedText), ($curX + $xAsOffset), ($curY - $yAsOffset), -10, 5, 'start');
 			break;
 		// Sapin
 		case 'sa':

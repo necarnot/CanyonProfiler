@@ -60,8 +60,8 @@ function displayText($text, $xText, $yText, $xOffset, $yOffset, $align = 'start'
 	$xText += $xOffset;
 	$yText += $yOffset;
 	echo '
-	<g font-size="16" font-family="sans-serif" fill="black" stroke="none" text-anchor="'. $align .'" text-align="'. $align .'">
-		<text x="' . $xText . '" y="' . $yText . '" dx="30">' . $text . '</text>
+	<g font-size="16" font-family="sans-serif" fill="black" stroke="none" text-anchor="'. $align .'">
+		<text x="' . $xText . '" y="' . $yText . '">' . $text . '</text>
 	</g>';
 }
 
@@ -223,7 +223,6 @@ $canyonName = 'Saut du Laïre';
 $canyonName = 'Baranc del Norte';
 $canyonStr = 'ma1';
 $canyonStr = '/to3/va2/ma5/to5/va10/ma5/to4/va5/ma15/asrd/ca8/va10/ca5/va10/ma2/re1.2/ma2/re1/ma10/re1/va10/ma3.5';
-$canyonStr = $laireB;
 $canyonStr = '/ma5/cv3/ma5/re3/ma5/re3/va5/ml800/va5/ma5/re2/ma5';
 $canyonStr = '::ma5/cv3/ma5/re3/ma5/re3/va5/ml800/va5/ma5/re2/ma5';
 $canyonStr = 'fr1.1:/ma5/cv3/ma5/re3/ma5/re3/va5/ml800/va5/ma5/re2/ma5';
@@ -247,6 +246,7 @@ $canyonStr = 'fr0.1:/m5/c5/v5/m8/m5/arg/c10/v5/m5/s/r4/m10/s/t3/v4/m5';
 $canyonStr = 'fr0.1:/m5/c5/v5/m8/m5/arg/c10/v5/m5/s/r4/m10/s/t3/v4/m5';
 $canyonStr = 'fr0.1:/m5/c5/v5/m8/m5/arg/c10/v5/m5/s/r4/m10/s/t3/v4/m5';
 $canyonStr = 'es0.1:/s5/c5/b5/s8/s5/arg/c10/b5/s5/p/r4/s10/p/t3/b4/s5';
+$canyonStr = $laire;
 
 $origCanyonStr = $canyonStr;
 $canyonStr = parsed($canyonStr);
@@ -343,7 +343,7 @@ if (true) {
 echo '
 <switch>
 <foreignObject x="10" y="0" width="'. $pageWidthPx .'" height="200">
-<p xmlns="http://www.w3.org/1999/xhtml">Sumbitted : '.$canyonName .' : '. $origCanyonStr.'</p>
+<p xmlns="http://www.w3.org/1999/xhtml">Submitted : '.$canyonName .' : '. $origCanyonStr.'</p>
 <p xmlns="http://www.w3.org/1999/xhtml">Parsed as : '.$canyonName .' : '. $canyonStr.'</p>
 </foreignObject>
 
@@ -498,7 +498,7 @@ foreach($strs as $str) {
 			$radius = $symbols[$item]['radius'];
 			echo '
 			<circle cx = "'. ($curX + $xAsOffset) .'" cy = "'. ($curY - $yAsOffset) .'" r = "'. $radius .'" fill = "#ffffff" fill-opacity = "1" stroke = "black" stroke-width = "'. $strokeWidth .'px"/>';
-			displayText(strtoupper($displayedText), ($curX + $xAsOffset), ($curY - $yAsOffset), -15, -7, 'middle');
+			displayText(strtoupper($displayedText), ($curX + $xAsOffset), ($curY - $yAsOffset), 0, -7, 'middle');
 			break;
 		// Amarrage double
 		case 'ad':
@@ -508,13 +508,13 @@ foreach($strs as $str) {
 			echo '
 			<circle cx = "'. ($curX + $xAsOffset) .'" cy = "'. ($curY - $yAsOffset) .'" r = "'. $radius .'" fill = "none" stroke = "black" stroke-width = "'. $strokeWidth .'px"/>
 			<circle cx = "'. ($curX + $xAsOffset + (4 * $radius)) .'" cy = "'. ($curY - $yAsOffset) .'" r = "'. $radius .'" fill = "none" stroke = "black" stroke-width = "'. $strokeWidth .'px"/>';
-			displayText(strtoupper($displayedText), ($curX + $xAsOffset+ (2 * $radius)), ($curY - $yAsOffset), -15, -7, 'middle');
+			displayText(strtoupper($displayedText), ($curX + $xAsOffset+ (2 * $radius)), ($curY - $yAsOffset), 0, -7, 'middle');
 			break;
 		// Amarrage naturel
 		case 'an':
 			$xAsOffset = 2 * $xScale;
 			$yAsOffset = 2 * $yScale;
-			displayText(strtoupper($displayedText), ($curX + $xAsOffset), ($curY - $yAsOffset), -30, 5, 'start');
+			displayText(strtoupper($displayedText), ($curX + $xAsOffset), ($curY - $yAsOffset), -10, 5, 'start');
 			break;
 		// Sapin
 		case 'sa':
