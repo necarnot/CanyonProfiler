@@ -1,3 +1,8 @@
+2013-09-29
+==========
+Added a way to draw a carriage return into the profile, allowing the draw of very long profiles
+Proposition : Rémi Villalongue
+
 2013-09-27
 ==========
 Corrected the position of the text fields. Were correct under Firefox, Inkscape and A.I., but wrong with I.E, Safari and Chrome.

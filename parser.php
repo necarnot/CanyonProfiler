@@ -31,6 +31,7 @@ function parsed($canyonStr) {
 			'va' => array ('v'),		// Vasque
 			'as' => array ('a'),		// Amarrage
 			'sa' => array ('s'),		// Sapin
+			'cr' => array ('l'),		// retour à la _L_igne
 			'to' => array ('t')		// Toboggan
 		),
 		// Thanks to Antilolo
@@ -41,6 +42,7 @@ function parsed($canyonStr) {
 			'va' => array ('b'),		// Badina
 			'as' => array ('a'),		// Anclaje
 			'sa' => array ('p'),		// Pino
+			'cr' => array ('l'),		// retour à la _l_igne
 			'to' => array ('t')		// Tobagan
 		),
 		// Thanks to Marie
@@ -51,6 +53,7 @@ function parsed($canyonStr) {
 			'va' => array ('v'),		// Vasque / Pozze
 			'as' => array ('a'),		// Armo
 			'sa' => array ('s'),		// Sapin / Abete
+			'cr' => array ('l'),		// retour à la _l_igne
 			'to' => array ('t')		// Toboga
 		),
 		'en0.1' => array (
@@ -60,6 +63,7 @@ function parsed($canyonStr) {
 			'va' => array ('p'),		// Pool
 			'as' => array ('a'),		// Anchor
 //			'sa' => array ('p'),		// Pine tree
+			'cr' => array ('l'),		// retour à la _l_igne
 			'to' => array ('s')		// Slide
 		),
 		'fr1.1' => array (
@@ -76,6 +80,7 @@ function parsed($canyonStr) {
 			'ad' => array ('ad','am'),	// Amarrage double
 			'an' => array ('an'),		// Amarrage naturel
 			'sa' => array ('sa'),		// Sapin
+			'cr' => array ('cr', 'rl'),	// Carriage return, retour à la ligne
 			'to' => array ('to')		// Toboggan
 		),
 		'en0.1' => array (
@@ -92,6 +97,7 @@ function parsed($canyonStr) {
 			'ad' => array ('db'),
 			'an' => array ('an'),
 			'sa' => array ('sa'),
+			'cr' => array ('cr'),		// Carriage return, retour à la ligne
 			'to' => array ('sl')
 		)
 	);
