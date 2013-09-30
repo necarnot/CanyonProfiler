@@ -1,3 +1,8 @@
+2013-09-30
+==========
+Decreased the size of the parsed text in the rendered page
+"AN" anchors get offseted in order to avoid the touch of the draw
+
 2013-09-29
 ==========
 Added a way to draw a carriage return into the profile, allowing the draw of very long profiles

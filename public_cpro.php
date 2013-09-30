@@ -301,7 +301,7 @@ if (true) {
 echo '
 <switch>
 <foreignObject x="10" y="0" width="'. $pageWidthPx .'" height="200">
-<p xmlns="http://www.w3.org/1999/xhtml">Submitted : '.$canyonName .' : '. $origCanyonStr.'<br/>Parsed as : '.$canyonName .' : '. $canyonStr.'</p>
+<p xmlns="http://www.w3.org/1999/xhtml" style="font-size:8px">Submitted : '.$canyonName .' : '. $origCanyonStr.'<br/>Parsed as : '.$canyonName .' : '. $canyonStr.'</p>
 </foreignObject>
 
 <text x="20" y="20">Your SVG viewer cannot display html.</text>
@@ -469,7 +469,7 @@ foreach($strs as $str) {
 			break;
 		// Amarrage naturel
 		case 'an':
-			$xAsOffset = 2 * $xScale;
+			$xAsOffset = 3.2 * $xScale;
 			$yAsOffset = 2 * $yScale;
 			displayText(strtoupper($displayedText), ($curX + $xAsOffset), ($curY - $yAsOffset), -10, 5, 'start');
 			break;
