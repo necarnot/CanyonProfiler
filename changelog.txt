@@ -56,3 +56,20 @@ Added languages for v0 : french, spanish, italian, english :
 	'a'	// Anchor
 	//'p'	// Pine tree
 	's'	// Slide
+
+2013-09-16
+==========
+Ajout du header
+Ajout du separateur dynamique
+Casse insensitive des symboles - Bug levé par Max38
+Placement texte des plans inclinés -  Bug levé par Max38
+Placement texte des toboggans -  Bug levé par Max38
+Correction de la maxWidth si une marche longue termine la topo - Bug levé par Fr3d0
+Correction de l'espacement entre les doubles points dans les topos courtes - Bug levé par Fabien Mullet
+
+2013-09-12
+==========
+Protection contre les valeurs négatives - Bug levé par Fabien Mullet
+Repositionnement des textes des ressauts et cascades arrondies
+Repositionnement des textes des amarrages
+Ajout des marches longues - Proposition Rémi Villalongue, assistance Fabien Mullet
