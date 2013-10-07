@@ -107,7 +107,6 @@ function parsed($canyonStr) {
 	$canyonStr = htmlspecialchars($canyonStr);
 	// On supprime les espaces de début et fin
 	$canyonStr = trim($canyonStr);
-	//$canyonStr = strtolower($canyonStr);
 
 	// Détermination de la version de la chaîne
 	// Si la chaîne ne contient pas de marqueur d'en-tête, on lui force une valeur par défaut
@@ -117,7 +116,7 @@ function parsed($canyonStr) {
 		$canyonStr = $defaultVersion.':'.$canyonStr;
 		error_log ('canyonStr='.$canyonStr);
 	}
-	// On limite le découpage à deux éléments (header | reste)
+	// On limite le découpage à deux éléments (header | tout ce qui reste)
 	$strs = explode(':', $canyonStr, 2);
 	$strVersion = $strs[0];
 	// Si la chaîne est fournie sans version, on lui fournit la version par défaut
@@ -125,21 +124,23 @@ function parsed($canyonStr) {
 		$strVersion = $defaultVersion;
 	}
 	$canyonStr = $strs[1];
-	// If there is no description at all, we provide a default one
+
+	// If there is no description at all, we return an error
 	if (!$canyonStr) {
 		error_log('Empty description');
 		return -1;
 	}
 
-	// If this version is not supported, return -1
+	// If this version is not supported, we return an error
 	if (!array_key_exists($strVersion, $syntax)) {
 		error_log('Syntax '.$strVersion. ' is not supported');
 		return -1;
 	}
+
 	// Shift by two-caracters to keep the version number
 	$syntaxVersionNumber = substr($strVersion, 2);
 	$syntaxLength = $syntaxProperties[$syntaxVersionNumber]['length'];
-	// Once we're sure it's a supported syntax, we store all these aliases intoa temp array
+	// Once we're sure it's a supported syntax, we store all these aliases into a temp array
 	$syntaxSymbols = $syntax[$strVersion];
 	// Le tout premier caractère est le séparateur dynamique
 	$separator = substr($canyonStr, 0, 1);
@@ -152,6 +153,8 @@ function parsed($canyonStr) {
 	foreach($inStrs as $inStr) {
 		$item = strtolower(substr($inStr, 0, $syntaxLength));
 		$value = substr($inStr, $syntaxLength);
+		// Removing comments between parenthesis
+		$value = preg_replace('/\(.*\)*/', '', $value);
 		// On cherche dans chaque liste de symboles si on trouve la proposition
 		$found = false;
 		foreach($syntaxSymbols as $key => $aliases) {

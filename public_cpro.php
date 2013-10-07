@@ -8,40 +8,6 @@ include 'samples.php';
 // Décider de garder ou non la distinction Pi / To
 // Intégrer la longueur variable de la syntaxe dans le calcul des maxWidth et maxHeight
 
-// 20130916
-// Ajout du header
-// Ajout du separateur dynamique
-// Casse insensitive des symboles - Bug levé par Maxime Cassan - Max38
-// Placement texte des plans inclinés -  Bug levé par Maxime Cassan - Max38
-// Placement texte des toboggans -  Bug levé par Maxime Cassan - Max38
-// Correction de la maxWidth si une marche longue termine la topo - Bug levé par Fr3d0
-// Correction de l'espacement entre les doubles points dans les topos courtes - Bug levé par Fabien Mullet - Fabien
-
-// 20130912
-// Protection contre les valeurs négatives - Bug levé par Fabien Mullet
-// Repositionnement des textes des ressauts et cascades arrondies
-// Repositionnement des textes des amarrages
-// Ajout des marches longues - Proposition Rémi Villalongue, assistance Fabien Mullet
-
-
-// Tentative de compression de la chaîne
-//function _encode_string_array ($stringArray) {
-//	$s = strtr(base64_encode(addslashes(gzcompress(serialize($stringArray),9))), '+/=', '-_,');
-//	return $s;
-//}
-
-//function _decode_string_array ($stringArray) {
-//	$s = unserialize(gzuncompress(stripslashes(base64_decode(strtr($stringArray, '-_,', '+/=')))));
-//	return $s;
-//}
-
-//$secret = 'je suis une chaine tres longue que je dois compresser';
-//$compacted = _encode_string_array($secret);
-//$decompacted = _decode_string_array($compacted);
-//error_log('origin='.$secret);
-//error_log('compacted='.$compacted);
-//error_log('decompacted='.$decompacted);
-
 function randomColor() {
 	mt_srand((double)microtime()*1000000);
 	$c = '';

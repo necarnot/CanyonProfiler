@@ -57,4 +57,10 @@ $canyonStr = $long;
 $canyonStr = 'fr1.1:/ma10/re4/ma5/re2/va3/ma15/re2/va5/cv5/va3/cv3/va10/re1/va2/va2/ma15/to3/va1/ma30/ca5/va10/ma30/re3/va5/to4/va5/to3/va5/ca12/va10/ma5/pi5/ml100/re3/va5/ml200/va50';
 $canyonStr = $laire;
 
+$glenlivet = 'fr1.1:/ML200(!! Progression difficile: végétation)/MI150(!&)(descente dans chaos de blocs)/AFDE(vallonRD)/CI22/CO10/MA20/CV4(!!#)/MA30/CV10/MA20/CI19/CX15 :SI11-SV4/MA25/CV10/CO5/MA35/CX30 :SV18-SH4-SV8/CX12:SV7-SH2-SV3/MA20/RI10(!!&)/ML150/CV3/></CX20:SV8-SH4-SV8/MA5/CX14:SI7-ST2-SO7(!^)/<>/MA20/AFDE(Vallon des Absentes RG)';
+
+$glenlivet = 'fr1.1: /ML200(!! Progression difficile: végétation)/ML150(!)(descente dans chaos de blocs)/AFDE(vallonRD)/CI22/CO10/MA20/CV4(!!#)/MA30/CV10/MA20/CI19/CX15 :SI11-SV4/MA25/CV10/CO5/MA35/CX30 :SV18-SH4-SV8/CX12:SV7-SH2-SV3/MA20/RI10(!!)/ML150/CV3/CX20:SV8-SH4-SV8/MA5/CX14:SI7-ST2-SO7(!^)/MA20/AFDE(Vallon des Absentes RG)';
+
+$canyonStr = 'fr1.1:/ma5/cv6/va7(danger)/cv8((salut)/ma9';
+$canyonStr = $glenlivet;
 ?>
