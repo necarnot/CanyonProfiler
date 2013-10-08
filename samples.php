@@ -64,4 +64,5 @@ $glenlivet = 'fr1.1: /ML200(!! Progression difficile: végétation)/ML150(!)(des
 $canyonStr = $glenlivet;
 $canyonStr = '/ma5/cv6/va7(danger)/cv8((salut)/ma9';
 $canyonStr = 'fr1.1:/ma5/anfémur/cv6/va7(danger)/adcouplé/cv8((salut)/ma9';
+$canyonStr = 'fr0.1:/M1/AAN/S/C5/V4/M10/R2/M5/ARG/C8/M10/T5/V4/M5/S/M1';
 ?>
