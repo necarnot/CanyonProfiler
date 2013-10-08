@@ -108,7 +108,9 @@ function parsed($canyonStr) {
 	// On supprime les espaces de début et fin
 	$canyonStr = trim($canyonStr);
 
+	//
 	// Détermination de la version de la chaîne
+	//
 	// Si la chaîne ne contient pas de marqueur d'en-tête, on lui force une valeur par défaut
 	if (strpos($canyonStr, ':') === false) {
 		error_log("Missing colon");
@@ -118,41 +120,41 @@ function parsed($canyonStr) {
 	}
 	// On limite le découpage à deux éléments (header | tout ce qui reste)
 	$strs = explode(':', $canyonStr, 2);
-	$strVersion = $strs[0];
+	$strVersion = trim($strs[0]);
 	// Si la chaîne est fournie sans version, on lui fournit la version par défaut
-	if (!$strVersion) {
+	if (isNullOrEmptyString($strVersion)) {
 		$strVersion = $defaultVersion;
 	}
-	$canyonStr = $strs[1];
-
-	// If there is no description at all, we return an error
-	if (!$canyonStr) {
-		error_log('Empty description');
-		return -1;
-	}
-
 	// If this version is not supported, we return an error
 	if (!array_key_exists($strVersion, $syntax)) {
 		error_log('Syntax '.$strVersion. ' is not supported');
 		return -1;
 	}
-
 	// Shift by two-caracters to keep the version number
 	$syntaxVersionNumber = substr($strVersion, 2);
 	$syntaxLength = $syntaxProperties[$syntaxVersionNumber]['length'];
 	// Once we're sure it's a supported syntax, we store all these aliases into a temp array
 	$syntaxSymbols = $syntax[$strVersion];
+
+	// The leftover is the description of the canyon
+	$canyonStr = trim($strs[1]);
+	// If there is no description at all, we return an error
+	if (!$canyonStr) {
+		error_log('200: Error: Empty description');
+		return -1;
+	}
+
 	// Le tout premier caractère est le séparateur dynamique
 	$separator = substr($canyonStr, 0, 1);
 	$canyonStr = substr($canyonStr, 1);
-	// Chaîne fournie par l'utilisateur
+	// Tableau des éléments fournis par l'utilisateur
 	$inStrs = explode($separator, $canyonStr);
 	// On initialise la chaîne interne, telle qu'on la traitera dans le script
 	$outStr = '';
 	// Pour chaque chaîne fournie par l'utilisateur
 	foreach($inStrs as $inStr) {
-		$item = strtolower(substr($inStr, 0, $syntaxLength));
-		$value = substr($inStr, $syntaxLength);
+		$item = strtolower(substr(trim($inStr), 0, $syntaxLength));
+		$value = substr(trim($inStr), $syntaxLength);
 		// Removing comments between parenthesis
 		$value = preg_replace('/\(.*\)*/', '', $value);
 		// On cherche dans chaque liste de symboles si on trouve la proposition

@@ -8,6 +8,11 @@ include 'samples.php';
 // Décider de garder ou non la distinction Pi / To
 // Intégrer la longueur variable de la syntaxe dans le calcul des maxWidth et maxHeight
 
+// Function for basic field validation (present and neither empty nor only white space
+function isNullOrEmptyString($question){
+	return (!isset($question) || trim($question)==='');
+}
+
 function randomColor() {
 	mt_srand((double)microtime()*1000000);
 	$c = '';
@@ -159,7 +164,6 @@ xmlns:xlink="http://www.w3.org/1999/xlink">
 	</g>
 </defs>
 
-
 ';
 
 $canyonName = '';
@@ -167,14 +171,16 @@ $canyonStr = $_POST['canyonStr'];
 $canyonStr = htmlspecialchars($canyonStr);
 $origCanyonStr = $canyonStr;
 $canyonStr = parsed($canyonStr);
-if (! is_string($canyonStr)) {
+if (isNullOrEmptyString($canyonStr)) {
+	error_log ('Error: Empty string. CanyonStr='.$canyonStr);
 	exit -1;
 }
+
 // Le tout premier caractère est le séparateur dynamique
 $separator = substr($canyonStr, 0, 1);
 $canyonStr = substr($canyonStr, 1);
 
-error_log ('CanyonStr='.$canyonStr);
+error_log ('110:CanyonStr='.$canyonStr);
 
 // On cherche à déterminer la largeur max et la hauteur max cumulées
 // afin de pouvoir ajuster la coupe aux dimensions de la page
@@ -261,13 +267,13 @@ echo '
 
 echo '
 <g inkscape:label="Layer 1" inkscape:groupmode="layer" id="layer1">';
-
+$displayOrigCanyonStr = preg_replace('/&/', '&amp;', $origCanyonStr);
 //if (false) {
 if (true) {
 echo '
 <switch>
 <foreignObject x="10" y="0" width="'. $pageWidthPx .'" height="200">
-<p xmlns="http://www.w3.org/1999/xhtml" style="font-size:8px">Submitted : '.$canyonName .' : '. $origCanyonStr.'<br/>Parsed as : '.$canyonName .' : '. $canyonStr.'</p>
+<p xmlns="http://www.w3.org/1999/xhtml" style="font-size:8px">Submitted : '.$canyonName .' : '. $displayOrigCanyonStr.'<br/>Parsed as : '.$canyonName .' : '. $canyonStr.'</p>
 </foreignObject>
 
 <text x="20" y="20">Your SVG viewer cannot display html.</text>
