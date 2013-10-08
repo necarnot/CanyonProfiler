@@ -24,9 +24,6 @@ function randomColor() {
 }
 
 function displayText($text, $xText, $yText, $xOffset, $yOffset, $align = 'start') {
-	//return;
-	//$text = strtoupper($text);
-	//$text = strtolower($text);
 	$xText += $xOffset;
 	$yText += $yOffset;
 	echo '
@@ -424,7 +421,7 @@ foreach($strs as $str) {
 			$radius = $symbols[$item]['radius'];
 			echo '
 			<circle cx = "'. ($curX + $xAsOffset) .'" cy = "'. ($curY - $yAsOffset) .'" r = "'. $radius .'" fill = "#ffffff" fill-opacity = "1" stroke = "black" stroke-width = "'. $strokeWidth .'px"/>';
-			displayText(strtoupper($displayedText), ($curX + $xAsOffset), ($curY - $yAsOffset), 0, -7, 'middle');
+			displayText($displayedText, ($curX + $xAsOffset), ($curY - $yAsOffset), 0, -7, 'middle');
 			break;
 		// Amarrage double
 		case 'ad':
@@ -434,13 +431,13 @@ foreach($strs as $str) {
 			echo '
 			<circle cx = "'. ($curX + $xAsOffset) .'" cy = "'. ($curY - $yAsOffset) .'" r = "'. $radius .'" fill = "none" stroke = "black" stroke-width = "'. $strokeWidth .'px"/>
 			<circle cx = "'. ($curX + $xAsOffset + (4 * $radius)) .'" cy = "'. ($curY - $yAsOffset) .'" r = "'. $radius .'" fill = "none" stroke = "black" stroke-width = "'. $strokeWidth .'px"/>';
-			displayText(strtoupper($displayedText), ($curX + $xAsOffset+ (2 * $radius)), ($curY - $yAsOffset), 0, -7, 'middle');
+			displayText($displayedText, ($curX + $xAsOffset+ (2 * $radius)), ($curY - $yAsOffset), 0, -7, 'middle');
 			break;
 		// Amarrage naturel
 		case 'an':
 			$xAsOffset = 3.2 * $xScale;
 			$yAsOffset = 2 * $yScale;
-			displayText(strtoupper($displayedText), ($curX + $xAsOffset), ($curY - $yAsOffset), -10, 5, 'start');
+			displayText($displayedText, ($curX + $xAsOffset), ($curY - $yAsOffset), -10, 5, 'start');
 			break;
 		// Sapin
 		case 'sa':

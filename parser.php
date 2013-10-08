@@ -113,10 +113,9 @@ function parsed($canyonStr) {
 	//
 	// Si la chaîne ne contient pas de marqueur d'en-tête, on lui force une valeur par défaut
 	if (strpos($canyonStr, ':') === false) {
-		error_log("Missing colon");
 		// Si la chaîne est fournie sans version, on lui fournit la version par défaut
 		$canyonStr = $defaultVersion.':'.$canyonStr;
-		error_log ('canyonStr='.$canyonStr);
+		error_log ('Missing colon. Adding default version. Now, canyonStr='.$canyonStr);
 	}
 	// On limite le découpage à deux éléments (header | tout ce qui reste)
 	$strs = explode(':', $canyonStr, 2);
@@ -146,6 +145,7 @@ function parsed($canyonStr) {
 
 	// Le tout premier caractère est le séparateur dynamique
 	$separator = substr($canyonStr, 0, 1);
+	error_log('210: separator='.$separator);
 	$canyonStr = substr($canyonStr, 1);
 	// Tableau des éléments fournis par l'utilisateur
 	$inStrs = explode($separator, $canyonStr);
