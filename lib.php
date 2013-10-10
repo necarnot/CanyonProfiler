@@ -15,9 +15,21 @@ class Profile {
 	public $xScale = 0;
 	public $yScale = 0;
 	public $origCanyonStr = '';
-	// déclaration des méthodes
-	public function displayVar() {
-		echo $this->var;
+	public $canyonStr = '';
+	public $defaultVersion = 'fr1.1';
+
+	public $syntaxVersion = '';
+	public $items = array ();
+
+	public function parse($str) {
+		$this->origCanyonStr = $str;
+		$this->canyonStr = parsed($this, $str);
+		if (isNullOrEmptyString($this->canyonStr)) {
+			error_log ('Error: Empty string. CanyonStr='.$this->canyonStr);
+			exit(-1);
+		}
+	}
+	public function draw() {
 	}
 }
 

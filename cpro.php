@@ -1,6 +1,7 @@
 <?php
 header('Content-Type: image/svg+xml');
 
+include 'syntaxes.php';
 include 'parser.php';
 include 'samples.php';
 include 'lib.php';
@@ -158,27 +159,17 @@ xmlns:xlink="http://www.w3.org/1999/xlink">
 
 ';
 
-$p->origCanyonStr = $canyonStr;
-$canyonStr = parsed($canyonStr);
-if (isNullOrEmptyString($canyonStr)) {
-	error_log ('Error: Empty string. CanyonStr='.$canyonStr);
-	exit -1;
-}
+$p->parse($canyonStr);
 
-// Le tout premier caractère est le séparateur dynamique
-$separator = substr($canyonStr, 0, 1);
-$canyonStr = substr($canyonStr, 1);
-
-error_log ('110:CanyonStr='.$canyonStr);
-
+//var_dump($p->items);
 // On cherche à déterminer la largeur max et la hauteur max cumulées
 // afin de pouvoir ajuster la coupe aux dimensions de la page
 
 $curX = 0;
 $curY = 0;
-
 // On détermine maxHeight et maxWidth
-$strs = explode($separator, $canyonStr);
+error_log ('310:CanyonStr=_'.$p->canyonStr.'_');
+$strs = explode($p->separator, $p->canyonStr);
 foreach($strs as $str) {
 	$item = strtolower(substr($str, 0, 2));
 	$value = substr($str, 2);
@@ -258,7 +249,7 @@ if (true) {
 echo '
 <switch>
 <foreignObject x="10" y="0" width="'. $p->pageWidthPx .'" height="200">
-<p xmlns="http://www.w3.org/1999/xhtml" style="font-size:8px">Submitted : '.$canyonName .' : '. $displayOrigCanyonStr.'<br/>Parsed as : '.$canyonName .' : '. $canyonStr.'</p>
+<p xmlns="http://www.w3.org/1999/xhtml" style="font-size:8px">Submitted : '.$canyonName .' : '. $displayOrigCanyonStr.'<br/>Parsed as : '.$canyonName .' : '. $p->canyonStr.'</p>
 </foreignObject>
 
 <text x="20" y="20">Your SVG viewer cannot display html.</text>
