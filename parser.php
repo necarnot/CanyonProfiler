@@ -145,7 +145,7 @@ function parsed($canyonStr) {
 
 	// Le tout premier caractère est le séparateur dynamique
 	$separator = substr($canyonStr, 0, 1);
-	error_log('210: separator='.$separator);
+	error_log('210:separator='.$separator);
 	$canyonStr = substr($canyonStr, 1);
 	// Tableau des éléments fournis par l'utilisateur
 	$inStrs = explode($separator, $canyonStr);
