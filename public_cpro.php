@@ -1,8 +1,10 @@
 <?php
 header('Content-Type: image/svg+xml');
 
+include 'syntaxes.php';
 include 'parser.php';
 include 'samples.php';
+include 'lib.php';
 
 // TODO
 // Décider de garder ou non la distinction Pi / To
@@ -32,15 +34,9 @@ function displayText($text, $xText, $yText, $xOffset, $yOffset, $align = 'start'
 	</g>';
 }
 
-$fontHeight = 12;
-$pageWidth = 297;
-$pageHeight = 210;
-$pageWidthPx = 1052.36;
-$pageHeightPx = 744.09;
-$xEndOffset = 40;
-$yEndOffset = 40;
-$pageWidthPx -= $xEndOffset;
-$pageHeightPx -= $yEndOffset;
+$p = new Profile();
+$p->pageWidthPx -= $p->xEndOffset;
+$p->pageHeightPx -= $p->yEndOffset;
 
 $symbols = array (
 	'ca' => array (
@@ -149,7 +145,7 @@ echo '<?xml version="1.0" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
 "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 
-<svg width="' . $pageWidth . 'mm" height="' . $pageHeight . 'mm" version="1.1"
+<svg width="' . $p->pageWidth . 'mm" height="' . $p->pageHeight . 'mm" version="1.1"
 xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
 xmlns="http://www.w3.org/2000/svg"
 xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -165,30 +161,17 @@ xmlns:xlink="http://www.w3.org/1999/xlink">
 
 $canyonName = '';
 $canyonStr = $_POST['canyonStr'];
-$canyonStr = htmlspecialchars($canyonStr);
-$origCanyonStr = $canyonStr;
-$canyonStr = parsed($canyonStr);
-if (isNullOrEmptyString($canyonStr)) {
-	error_log ('Error: Empty string. CanyonStr='.$canyonStr);
-	exit -1;
-}
+$p->parse($canyonStr);
 
-// Le tout premier caractère est le séparateur dynamique
-$separator = substr($canyonStr, 0, 1);
-$canyonStr = substr($canyonStr, 1);
-
-error_log ('110:CanyonStr='.$canyonStr);
-
+//var_dump($p->items);
 // On cherche à déterminer la largeur max et la hauteur max cumulées
 // afin de pouvoir ajuster la coupe aux dimensions de la page
 
 $curX = 0;
 $curY = 0;
-
 // On détermine maxHeight et maxWidth
-$strs = explode($separator, $canyonStr);
-$maxWidth = 0;
-$maxHeight = 0;
+error_log ('310:CanyonStr=_'.$p->canyonStr.'_');
+$strs = explode($p->separator, $p->canyonStr);
 foreach($strs as $str) {
 	$item = strtolower(substr($str, 0, 2));
 	$value = substr($str, 2);
@@ -206,71 +189,69 @@ foreach($strs as $str) {
 		$curX = 0;
 		$curY = 0;
 	}
-	if ($curX > $maxWidth) { $maxWidth = $curX; }
-	if ($curY > $maxHeight) { $maxHeight = $curY; }
+	if ($curX > $p->maxWidth) { $p->maxWidth = $curX; }
+	if ($curY > $p->maxHeight) { $p->maxHeight = $curY; }
 }
 $curX = 0;
 $curY = 0;
 echo '
 
-// maxWidth='.$maxWidth.'
+// maxWidth='.$p->maxWidth.'
 '.'
-// maxHeight='.$maxHeight.'
+// maxHeight='.$p->maxHeight.'
 ';
-$xOffset = 20;
-$yOffset = 90;
-$pageWidthPx -= $xOffset;
-$pageHeightPx -= $yOffset;
-$xScale = $pageWidthPx / $maxWidth;
-$yScale = $pageHeightPx / $maxHeight;
-$curX = $xOffset;
-$curY = $yOffset;
+$p->pageWidthPx -= $p->xOffset;
+$p->pageHeightPx -= $p->yOffset;
+$p->xScale = $p->pageWidthPx / $p->maxWidth;
+$p->yScale = $p->pageHeightPx / $p->maxHeight;
+$curX = $p->xOffset;
+$curY = $p->yOffset;
 
-$ratio = $xScale / $yScale;
+$p->ratio = $p->xScale / $p->yScale;
 echo '
 
-// xScale='.$xScale.'
+// xScale='.$p->xScale.'
 
-// yScale='.$yScale.'
+// yScale='.$p->yScale.'
 
-// ratio='.$ratio.'
+// ratio='.$p->ratio.'
 ';
 
 $minRatio = 0.5;
 $maxRatio = 2;
 // Dans les cas de dépassement de ratio, on force la correction
-if ($ratio < $minRatio) {
+if ($p->ratio < $minRatio) {
 	echo '
 	<!-- !!!!!!!!!! RATIO WARNING : < '. $minRatio .' !!!!!!!!!!! -->
 	';
-	$yScale = $xScale * 1.5;
+	$p->yScale = $p->xScale * 1.5;
 }
-if ($ratio > $maxRatio) {
+if ($p->ratio > $maxRatio) {
 	echo '
 	<!-- !!!!!!!!!! RATIO WARNING : > '. $maxRatio .' !!!!!!!!!!! -->
 	';
-	$xScale = $yScale;
+	$p->xScale = $p->yScale;
 }
 
-$ratio = $xScale / $yScale;
+$ratio = $p->xScale / $p->yScale;
 echo '
 
-// xScale='.$xScale.'
+// xScale='.$p->xScale.'
 
-// yScale='.$yScale.'
+// yScale='.$p->yScale.'
 
 // ratio='.$ratio.'
 ';
 
 echo '
 <g inkscape:label="Layer 1" inkscape:groupmode="layer" id="layer1">';
-$displayOrigCanyonStr = preg_replace('/&/', '&amp;', $origCanyonStr);
+$displayOrigCanyonStr = preg_replace('/&/', '&amp;', $p->origCanyonStr);
 //if (false) {
 if (true) {
 echo '
 <switch>
-<foreignObject x="10" y="0" width="'. $pageWidthPx .'" height="200">
-<p xmlns="http://www.w3.org/1999/xhtml" style="font-size:8px">Submitted : '.$canyonName .' : '. $displayOrigCanyonStr.'<br/>Parsed as : '.$canyonName .' : '. $canyonStr.'</p>
+<foreignObject x="10" y="0" width="'. $p->pageWidthPx .'" height="200">
+<p xmlns="http://www.w3.org/1999/xhtml" style="font-size:8px">Submitted : '.$canyonName .' : '. $displayOrigCanyonStr.'<br/>Parsed as : '.$canyonName .' : '. $p->canyonStr.'</p>
 </foreignObject>
 
 <text x="20" y="20">Your SVG viewer cannot display html.</text>
@@ -297,10 +278,10 @@ foreach($strs as $str) {
 		// Cascade ou Ressaut : sans seuil, juste purement vertical
 		case 'cv':
 		case 're':
-			$bottom = $value * $yScale;
+			$bottom = $value * $p->yScale;
 			$yDisplayText = $curY + ($bottom / 2);
-			if (($yDisplayText - $fontHeight) < $curY) {
-				$yDisplayText += $fontHeight;
+			if (($yDisplayText - $p->fontHeight) < $curY) {
+				$yDisplayText += $p->fontHeight;
 			}
 			echo '
 			<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
@@ -312,11 +293,11 @@ foreach($strs as $str) {
 		// Cascade arrondie, avec seuil plongeant
 		case 'ca':
 		case 'ra':
-			$width = $symbols[$item]['width'] * $xScale * 5;
-			$bottom = $value * $yScale;
+			$width = $symbols[$item]['width'] * $p->xScale * 5;
+			$bottom = $value * $p->yScale;
 			$yDisplayText = $curY + ($bottom / 2);
-			if (($yDisplayText - $fontHeight) < $curY) {
-				$yDisplayText += $fontHeight;
+			if (($yDisplayText - $p->fontHeight) < $curY) {
+				$yDisplayText += $p->fontHeight;
 			}
 			echo '
 			<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
@@ -332,7 +313,7 @@ foreach($strs as $str) {
 			break;
 		// Marche courte
 		case 'ma':
-			$width = $symbols[$item]['width'] * $value * $xScale;
+			$width = $symbols[$item]['width'] * $value * $p->xScale;
 			echo '
 			<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
 			d="m '. $curX .','. $curY .' '. $width .',0"
@@ -342,7 +323,7 @@ foreach($strs as $str) {
 			break;
 		// Marche longue
 		case 'ml':
-			$width = $symbols[$item]['width'] * $value * $xScale;
+			$width = $symbols[$item]['width'] * $value * $p->xScale;
 			$longWalkHeight = 150;
 			$longWalkAngle = 20;
 			$longWalkWidth = 10;
@@ -372,8 +353,8 @@ foreach($strs as $str) {
 			break;
 		// Vasque
 		case 'va':
-			$width = $symbols[$item]['width'] * $value * $xScale;
-			$depth = 2 * $yScale;
+			$width = $symbols[$item]['width'] * $value * $p->xScale;
+			$depth = 2 * $p->yScale;
 			echo '
 			<path style="fill:#0077FF;fill-opacity:1;stroke:none"
 			d="m '. $curX .','. $curY .' c 0,'. $depth .' '. $width / 2 .',0 '. $width .',0"
@@ -387,11 +368,11 @@ foreach($strs as $str) {
 			break;
 		// Plan incliné
 		case 'pi':
-			$width = $symbols[$item]['width'] * $xScale;
-			$bottom = $symbols[$item]['height'] * $value * $yScale;
+			$width = $symbols[$item]['width'] * $p->xScale;
+			$bottom = $symbols[$item]['height'] * $value * $p->yScale;
 			$yDisplayText = $curY + ($bottom / 2);
-			if (($yDisplayText - $fontHeight) < $curY) {
-				$yDisplayText += $fontHeight;
+			if (($yDisplayText - $p->fontHeight) < $curY) {
+				$yDisplayText += $p->fontHeight;
 			}
 			echo '
 			<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
@@ -403,11 +384,11 @@ foreach($strs as $str) {
 			break;
 		// Toboggan
 		case 'to':
-			$width = $symbols[$item]['width'] * $value * $xScale;
-			$bottom = $symbols[$item]['height'] * $value * $yScale;
+			$width = $symbols[$item]['width'] * $value * $p->xScale;
+			$bottom = $symbols[$item]['height'] * $value * $p->yScale;
 			$yDisplayText = $curY + ($bottom / 2);
-			if (($yDisplayText - $fontHeight) < $curY) {
-				$yDisplayText += $fontHeight;
+			if (($yDisplayText - $p->fontHeight) < $curY) {
+				$yDisplayText += $p->fontHeight;
 			}
 			echo '
 			<path style="fill:none;stroke:#' . randomColor() . ';stroke-width:'. $strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
@@ -419,8 +400,8 @@ foreach($strs as $str) {
 			break;
 		// Amarrage simple
 		case 'as':
-			$xAsOffset = 1.3 * $xScale;
-			$yAsOffset = 1.3 * $yScale;
+			$xAsOffset = 1.3 * $p->xScale;
+			$yAsOffset = 1.3 * $p->yScale;
 			$radius = $symbols[$item]['radius'];
 			echo '
 			<circle cx = "'. ($curX + $xAsOffset) .'" cy = "'. ($curY - $yAsOffset) .'" r = "'. $radius .'" fill = "#ffffff" fill-opacity = "1" stroke = "black" stroke-width = "'. $strokeWidth .'px"/>';
@@ -428,8 +409,8 @@ foreach($strs as $str) {
 			break;
 		// Amarrage double
 		case 'ad':
-			$xAsOffset = 1.3 * $xScale;
-			$yAsOffset = 1.3 * $yScale;
+			$xAsOffset = 1.3 * $p->xScale;
+			$yAsOffset = 1.3 * $p->yScale;
 			$radius = $symbols[$item]['radius'];
 			echo '
 			<circle cx = "'. ($curX + $xAsOffset) .'" cy = "'. ($curY - $yAsOffset) .'" r = "'. $radius .'" fill = "none" stroke = "black" stroke-width = "'. $strokeWidth .'px"/>
@@ -438,20 +419,20 @@ foreach($strs as $str) {
 			break;
 		// Amarrage naturel
 		case 'an':
-			$xAsOffset = 3.2 * $xScale;
-			$yAsOffset = 2 * $yScale;
+			$xAsOffset = 3.2 * $p->xScale;
+			$yAsOffset = 2 * $p->yScale;
 			displayText($displayedText, ($curX + $xAsOffset), ($curY - $yAsOffset), -10, 5, 'start');
 			break;
 		// Sapin
 		case 'sa':
-			$xAsOffset = 0 * $xScale - 60;
-			$yAsOffset = 0 * $yScale - 90;
+			$xAsOffset = 0 * $p->xScale - 60;
+			$yAsOffset = 0 * $p->yScale - 90;
 			//echo '<use xlink:href="#sapin" transform="translate('.($curX + $xAsOffset).','.($curY + $yAsOffset).')"/>';
 			echo '<use xlink:href="#sapin" x="'.($curX + $xAsOffset).'" y="'.($curY + $yAsOffset).'"/>';
 			break;
 		// Carriage return
 		case 'cr':
-			$curX = $xOffset;
+			$curX = $p->xOffset;
 			$curY -= $value;
 			break;
 	}
