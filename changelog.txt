@@ -1,3 +1,13 @@
+2013-10-11
+==========
+Changed the versionning number :
+- Simple syntax is called v1, and uses only one caracter (+ value)
+- Advanced syntax is called v2 and uses 2 caracters (+ value)
+- Extended syntax is called v3 and will use many caracters (more to come...)
+Added many protections against syntax errors
+Removed automatic uppercasing for anchors
+Comments between parenthesis will be ignored
+
 2013-09-30
 ==========
 Decreased the size of the parsed text in the rendered page

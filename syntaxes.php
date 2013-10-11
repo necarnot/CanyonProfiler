@@ -1,19 +1,19 @@
 <?php
 // Every syntax has its own set of properties
 $syntaxesProperties = array (
-	'0.1' => array (
+	'1.1' => array (
 		'length' => 1
 	),
-	'1.1' => array (
+	'2.1' => array (
 		'length' => 2
 	),
-	'2.1' => array (
+	'3.1' => array (
 		'length' => 10
 	)
 );
 
 $syntaxes = array (
-	'fr0.1' => array (
+	'fr1.1' => array (
 		'ca' => array ('c'),		// Cascade
 		'ra' => array ('r'),		// Ressaut
 		'ma' => array ('m'),		// Marche
@@ -24,7 +24,7 @@ $syntaxes = array (
 		'to' => array ('t')		// Toboggan
 	),
 	// Thanks to Antilolo
-	'es0.1' => array (
+	'es1.1' => array (
 		'ca' => array ('c'),		// Cascada
 		'ra' => array ('r'),		// Resalte
 		'ma' => array ('s'),		// Sendero
@@ -35,7 +35,7 @@ $syntaxes = array (
 		'to' => array ('t')		// Tobagan
 	),
 	// Thanks to Marie
-	'it0.1' => array (
+	'it1.1' => array (
 		'ca' => array ('c'),		// Cascata
 		'ra' => array ('r'),		// Risalto
 		'ma' => array ('m'),		// Marcia
@@ -45,7 +45,7 @@ $syntaxes = array (
 		'cr' => array ('l'),		// retour à la _l_igne
 		'to' => array ('t')		// Toboga
 	),
-	'en0.1' => array (
+	'en1.1' => array (
 		'ca' => array ('w'),		// Waterfall
 //			'ra' => array ('r'),		// Ressaut ???
 		'ma' => array ('t'),		// Track ???
@@ -55,7 +55,7 @@ $syntaxes = array (
 		'cr' => array ('l'),		// retour à la _l_igne
 		'to' => array ('s')		// Slide
 	),
-	'fr1.1' => array (
+	'fr2.1' => array (
 		'ca' => array ('ca','cb'),	// Cascade arrondie
 		'cv' => array ('cv'),		// Cascade verticale
 		'ra' => array ('ra'),		// Ressaut arrondi
@@ -72,7 +72,7 @@ $syntaxes = array (
 		'cr' => array ('cr', 'rl'),	// Carriage return, retour à la ligne
 		'to' => array ('to')		// Toboggan
 	),
-	'en0.1' => array (
+	'en2.1' => array (
 		'ca' => array ('wr','we'),
 		'cv' => array ('cv'),
 		'ra' => array ('ra'),
