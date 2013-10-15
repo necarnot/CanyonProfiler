@@ -47,11 +47,11 @@ $syntaxes = array (
 	),
 	'en1.1' => array (
 		'ca' => array ('w'),		// Waterfall
-//			'ra' => array ('r'),		// Ressaut ???
-		'ma' => array ('t'),		// Track ???
+		'ra' => array ('d'),		// Downclimb
+		'ma' => array ('t'),		// Track
 		'va' => array ('p'),		// Pool
 		'as' => array ('a'),		// Anchor
-//			'sa' => array ('p'),		// Pine tree
+		'sa' => array ('v'),		// Vegetal - Pine tree
 		'cr' => array ('l'),		// retour à la _l_igne
 		'to' => array ('s')		// Slide
 	),
