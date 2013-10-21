@@ -41,10 +41,10 @@ class Profile {
 		foreach($this->items as $item) {
 			$curX += $item->getWidth();
 			$curY += $item->getHeight();
-			//if ($item == 'cr') {
-			//	$curX = 0;
-			//	$curY = 0;
-			//}
+			if (get_class($item) == 'CarriageReturn') {
+				$curX = 0;
+				$curY = 0;
+			}
 			if ($curX > $this->maxWidth) { $this->maxWidth = $curX; }
 			if ($curY > $this->maxHeight) { $this->maxHeight = $curY; }
 		}
@@ -54,6 +54,53 @@ class Profile {
 		'.'
 		// maxHeight='.$this->maxHeight.'
 		';
+
+		$this->pageWidthPx -= $this->xOffset;
+		$this->pageHeightPx -= $this->yOffset;
+		$this->xScale = $this->pageWidthPx / $this->maxWidth;
+		$this->yScale = $this->pageHeightPx / $this->maxHeight;
+		$this->curX = $this->xOffset;
+		$this->curY = $this->yOffset;
+
+		$ratio = $this->xScale / $this->yScale;
+		echo '
+
+		// xScale='.$this->xScale.'
+
+		// yScale='.$this->yScale.'
+
+		// ratio='.$ratio.'
+		';
+
+		$minRatio = 0.5;
+		$maxRatio = 2;
+		// Dans les cas de dépassement de ratio, on force la correction
+		if ($ratio < $minRatio) {
+			echo '
+			<!-- !!!!!!!!!! RATIO WARNING : < '. $minRatio .' !!!!!!!!!!! -->
+			';
+			$this->yScale = $this->xScale * 1.5;
+		}
+		if ($ratio > $maxRatio) {
+			echo '
+			<!-- !!!!!!!!!! RATIO WARNING : > '. $maxRatio .' !!!!!!!!!!! -->
+			';
+			$this->xScale = $this->yScale;
+		}
+
+		$ratio = $this->xScale / $this->yScale;
+		echo '
+
+		// xScale='.$this->xScale.'
+
+		// yScale='.$this->yScale.'
+
+		// ratio='.$ratio.'
+		';
+
+		foreach($this->items as $item) {
+			$item->scale($this->xScale, $this->yScale);
+		}
 	}
 
 	public function draw() {
@@ -70,8 +117,10 @@ class Item {
 	public $width;
 	public $heightFactor;
 	public $widthFactor;
+	public $drawedHeight;
+	public $drawedWidth;
 	public $displayedText;
-	public $strokeWidth = 2;
+	public $strokeWidth = 4;
 
 	function __construct() {
 	}
@@ -82,6 +131,11 @@ class Item {
 
 	public function getHeight() {
 		return ($this->height * $this->heightFactor);
+	}
+
+	public function scale($xScale, $yScale) {
+		$this->drawedWidth  = $this->width  * $this->widthFactor  * $xScale;
+		$this->drawedHeight = $this->height * $this->heightFactor * $yScale;
 	}
 
 	public function draw() {
@@ -153,13 +207,13 @@ class Walk extends Item {
 		$this->width = $width;
 	}
 
-	public function draw() {
-		$curWidth = $this->width * $xScale;
+	public function draw($profile) {
+		$curWidth = $this->width * $profile->xScale;
 		echo '
 		<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
-		d="m '. $this->curX .','. $this->curY .' '. $curWidth .',0"
+		d="m '. $profile->curX .','. $profile->curY .' '. $curWidth .',0"
 		id="path3311" inkscape:connector-curvature="0" />';
-		$this->curX += $curWidth;
+		$profile->curX += $curWidth;
 	}
 }
 

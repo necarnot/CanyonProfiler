@@ -21,7 +21,7 @@ function randomColor() {
 	while(strlen($c)<6){
 		$c .= sprintf("%02X", mt_rand(0, 255));
 	}
-	$c = '000000';
+	//$c = '000000';
 	return $c;
 }
 
@@ -166,48 +166,6 @@ $p->parse($canyonStr);
 // Here was scaling code
 $p->scale();
 
-$p->pageWidthPx -= $p->xOffset;
-$p->pageHeightPx -= $p->yOffset;
-$p->xScale = $p->pageWidthPx / $p->maxWidth;
-$p->yScale = $p->pageHeightPx / $p->maxHeight;
-$p->curX = $p->xOffset;
-$p->curY = $p->yOffset;
-
-$p->ratio = $p->xScale / $p->yScale;
-echo '
-
-// xScale='.$p->xScale.'
-
-// yScale='.$p->yScale.'
-
-// ratio='.$p->ratio.'
-';
-
-$minRatio = 0.5;
-$maxRatio = 2;
-// Dans les cas de dépassement de ratio, on force la correction
-if ($p->ratio < $minRatio) {
-	echo '
-	<!-- !!!!!!!!!! RATIO WARNING : < '. $minRatio .' !!!!!!!!!!! -->
-	';
-	$p->yScale = $p->xScale * 1.5;
-}
-if ($p->ratio > $maxRatio) {
-	echo '
-	<!-- !!!!!!!!!! RATIO WARNING : > '. $maxRatio .' !!!!!!!!!!! -->
-	';
-	$p->xScale = $p->yScale;
-}
-
-$ratio = $p->xScale / $p->yScale;
-echo '
-
-// xScale='.$p->xScale.'
-
-// yScale='.$p->yScale.'
-
-// ratio='.$ratio.'
-';
 
 echo '
 <g inkscape:label="Layer 1" inkscape:groupmode="layer" id="layer1">';
