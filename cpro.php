@@ -162,48 +162,16 @@ xmlns:xlink="http://www.w3.org/1999/xlink">
 $p->parse($canyonStr);
 
 //var_dump($p->items);
-// On cherche à déterminer la largeur max et la hauteur max cumulées
-// afin de pouvoir ajuster la coupe aux dimensions de la page
 
-$curX = 0;
-$curY = 0;
-// On détermine maxHeight et maxWidth
-error_log ('310:CanyonStr=_'.$p->canyonStr.'_');
-$strs = explode($p->separator, $p->canyonStr);
-foreach($strs as $str) {
-	$item = strtolower(substr($str, 0, 2));
-	$value = substr($str, 2);
-	if (! is_numeric($value)) { $value = 0; }
-	$value = abs($value);
-	if (array_key_exists('width', $symbols[$item])) {
-		$width = $symbols[$item]['width'];
-		$curX += ($width * $value);
-	}
-	if (array_key_exists('height', $symbols[$item])) {
-		$height = $symbols[$item]['height'];
-		$curY += ($height * $value);
-	}
-	if ($item == 'cr') {
-		$curX = 0;
-		$curY = 0;
-	}
-	if ($curX > $p->maxWidth) { $p->maxWidth = $curX; }
-	if ($curY > $p->maxHeight) { $p->maxHeight = $curY; }
-}
-$curX = 0;
-$curY = 0;
-echo '
+// Here was scaling code
+$p->scale();
 
-// maxWidth='.$p->maxWidth.'
-'.'
-// maxHeight='.$p->maxHeight.'
-';
 $p->pageWidthPx -= $p->xOffset;
 $p->pageHeightPx -= $p->yOffset;
 $p->xScale = $p->pageWidthPx / $p->maxWidth;
 $p->yScale = $p->pageHeightPx / $p->maxHeight;
-$curX = $p->xOffset;
-$curY = $p->yOffset;
+$p->curX = $p->xOffset;
+$p->curY = $p->yOffset;
 
 $p->ratio = $p->xScale / $p->yScale;
 echo '
@@ -257,6 +225,9 @@ echo '
 ';
 }
 
+$p->draw();
+
+if (false) {
 foreach($strs as $str) {
 	$item = strtolower(substr($str, 0, 2));
 	if (array_key_exists('strokeWidth', $symbols[$item])) {
@@ -434,6 +405,7 @@ foreach($strs as $str) {
 			$curY -= $value;
 			break;
 	}
+}
 }
 echo '
 </g>

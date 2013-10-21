@@ -14,14 +14,14 @@ $syntaxesProperties = array (
 
 $syntaxes = array (
 	'fr1.1' => array (
-		'ca' => array ('c'),		// Cascade
-		'ra' => array ('r'),		// Ressaut
-		'ma' => array ('m'),		// Marche
-		'va' => array ('v'),		// Vasque
-		'as' => array ('a'),		// Amarrage
-		'sa' => array ('s'),		// Sapin
-		'cr' => array ('l'),		// retour à la _L_igne
-		'to' => array ('t')		// Toboggan
+		'Vertical' => array ('c'),		// Cascade
+		'DownClimb' => array ('r'),		// Ressaut
+		'Walk' => array ('m'),		// Marche
+		'Pool' => array ('v'),		// Vasque
+		'Anchor' => array ('a'),		// Amarrage
+		'PineTree' => array ('s'),		// Sapin
+		'CarriageReturn' => array ('l'),		// retour à la _L_igne
+		'Slide' => array ('t')		// Toboggan
 	),
 	// Thanks to Antilolo
 	'es1.1' => array (

@@ -71,12 +71,12 @@ function parsed($p, $canyonStr) {
 		// Removing comments between parenthesis
 		$value = preg_replace('/\(.*\)*/', '', $value);
 		// On cherche dans chaque liste de symboles si on trouve la proposition
-		$found = false;
 		foreach($syntaxSymbols as $key => $aliases) {
 			if (is_numeric(array_search($item, $aliases))) {
-				$found = true;
 				$outStr = $outStr . $p->separator . $key . $value;
-				$tmpItem = array ($key => $value);
+				error_log('220:key='.$key.' value='.$value);
+				//$tmpItem = array ($key => $value);
+				$tmpItem = new $key($value);
 				array_push($p->items, $tmpItem);
 				break;
 			}

@@ -14,6 +14,8 @@ class Profile {
 	public $maxHeight = 0;
 	public $xScale = 0;
 	public $yScale = 0;
+	public $curX = 0;
+	public $curY = 0;
 	public $origCanyonStr = '';
 	public $canyonStr = '';
 	public $defaultVersion = 'fr1.1';
@@ -29,7 +31,35 @@ class Profile {
 			exit(-1);
 		}
 	}
+
+	// On cherche à déterminer la largeur max et la hauteur max cumulées
+	// afin de pouvoir ajuster la coupe aux dimensions de la page
+	public function scale() {
+		$curX = 0;
+		$curY = 0;
+		// On détermine maxHeight et maxWidth
+		foreach($this->items as $item) {
+			$curX += $item->getWidth();
+			$curY += $item->getHeight();
+			//if ($item == 'cr') {
+			//	$curX = 0;
+			//	$curY = 0;
+			//}
+			if ($curX > $this->maxWidth) { $this->maxWidth = $curX; }
+			if ($curY > $this->maxHeight) { $this->maxHeight = $curY; }
+		}
+		echo '
+
+		// maxWidth='.$this->maxWidth.'
+		'.'
+		// maxHeight='.$this->maxHeight.'
+		';
+	}
+
 	public function draw() {
+		foreach($this->items as $item) {
+			$item->draw();
+		}
 	}
 }
 
@@ -44,6 +74,14 @@ class Item {
 	public $strokeWidth = 2;
 
 	function __construct() {
+	}
+
+	public function getWidth() {
+		return ($this->width * $this->widthFactor);
+	}
+
+	public function getHeight() {
+		return ($this->height * $this->heightFactor);
 	}
 
 	public function draw() {
@@ -67,6 +105,16 @@ class OverhangingVertical extends Vertical {
 		parent::__construct($height);
 		$this->name = 'Overhanging Vertical';
 		$this->widthFactor = -1;
+	}
+}
+
+class Slide extends Vertical {
+	function __construct($height) {
+		parent::__construct($height);
+		$this->name = 'Slide';
+		$this->widthFactor = 1.5;
+
+		$this->displayedText = 'T' . $height;
 	}
 }
 
@@ -103,6 +151,15 @@ class Walk extends Item {
 		$this->widthFactor = 1;
 
 		$this->width = $width;
+	}
+
+	public function draw() {
+		$curWidth = $this->width * $xScale;
+		echo '
+		<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
+		d="m '. $this->curX .','. $this->curY .' '. $curWidth .',0"
+		id="path3311" inkscape:connector-curvature="0" />';
+		$this->curX += $curWidth;
 	}
 }
 
@@ -185,7 +242,7 @@ class Vegetal extends Item {
 	}
 }
 
-class Pinetree extends Vegetal {
+class PineTree extends Vegetal {
 	function __construct() {
 		parent::__construct();
 		$this->name = 'Pinetree';
@@ -196,7 +253,7 @@ class Span extends Item {
 }
 
 class CarriageReturn extends Item {
-	function __construct() {
+	function __construct($offset) {
 		parent::__construct();
 		$this->name = 'Carriage return';
 		$this->heightFactor = 0;
