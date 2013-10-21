@@ -41,6 +41,8 @@ class Profile {
 		foreach($this->items as $item) {
 			$curX += $item->getWidth();
 			$curY += $item->getHeight();
+			echo '
+			// itemWidth='.$item->getWidth(). ' itemHeight='.$item->getHeight().' maxWidth='.$this->maxWidth.' maxHeight='.$this->maxHeight.' ';
 			if (get_class($item) == 'CarriageReturn') {
 				$curX = 0;
 				$curY = 0;
@@ -105,7 +107,7 @@ class Profile {
 
 	public function draw() {
 		foreach($this->items as $item) {
-			$item->draw();
+			$item->draw($this);
 		}
 	}
 }
@@ -120,7 +122,7 @@ class Item {
 	public $drawedHeight;
 	public $drawedWidth;
 	public $displayedText;
-	public $strokeWidth = 4;
+	public $strokeWidth = 2;
 
 	function __construct() {
 	}
@@ -138,7 +140,7 @@ class Item {
 		$this->drawedHeight = $this->height * $this->heightFactor * $yScale;
 	}
 
-	public function draw() {
+	public function draw(&$p) {
 	}
 }
 
@@ -151,6 +153,19 @@ class Vertical extends Item {
 
 		$this->height = $height;
 		$this->displayedText = 'C' . $height;
+	}
+
+	public function draw(&$p) {
+		$yDisplayText = $p->curY + ($this->drawedHeight / 2);
+		if (($yDisplayText - $p->fontHeight) < $p->curY) {
+			$yDisplayText += $p->fontHeight;
+		}
+		echo '
+		<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
+		d="m '. $p->curX .','. $p->curY .' 0,'. $this->drawedHeight .'"
+		id="path3311" inkscape:connector-curvature="0" />';
+		displayText($this->displayedText, $p->curX, $yDisplayText, -5, 0, 'end');
+		$p->curY += $this->drawedHeight;
 	}
 }
 
@@ -169,6 +184,22 @@ class Slide extends Vertical {
 		$this->widthFactor = 1.5;
 
 		$this->displayedText = 'T' . $height;
+		// Arbitrarily specify the angle
+		$this->width = 1;
+	}
+
+	public function draw(&$p) {
+		$yDisplayText = $p->curY + ($this->drawedHeight / 2);
+		if (($yDisplayText - $p->fontHeight) < $p->curY) {
+			$yDisplayText += $p->fontHeight;
+		}
+		echo '
+		<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
+		d="m ' . $p->curX . ',' . $p->curY . ' ' . $this->drawedWidth . ',' . $this->drawedHeight . '"
+		id="path3311" inkscape:connector-curvature="0" />';
+		displayText($this->displayedText, $p->curX, $yDisplayText, ($this->drawedWidth / 3), 6, 'end');
+		$p->curX += $this->drawedWidth;
+		$p->curY += $this->drawedHeight;
 	}
 }
 
@@ -177,6 +208,27 @@ class RoundedVertical extends Vertical {
 		parent::__construct($height);
 		$this->name = 'Rounded vertical';
 		$this->widthFactor = 0.2;
+		// Arbitrarily specify the round width
+		$this->width = 5;
+	}
+
+	public function draw(&$p) {
+		$yDisplayText = $p->curY + ($this->drawedHeight / 2);
+		if (($yDisplayText - $p->fontHeight) < $p->curY) {
+			$yDisplayText += $p->fontHeight;
+		}
+		echo '
+		<path style="fill:none;stroke:#'. randomColor() .';titi:toto;stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
+		d="m '. $p->curX .','. $p->curY 
+		.' c '. $this->drawedWidth .',0 '
+		.' '. $this->drawedWidth .','. $this->drawedWidth 
+		.' '. $this->drawedWidth .','. $this->drawedWidth 
+		.'l 0,'. ($this->drawedHeight - $this->drawedWidth) .'"
+		id="seuil3311" inkscape:connector-curvature="0" />';
+		displayText($this->displayedText, ($p->curX + $this->drawedWidth), $yDisplayText, -5, 0, 'end');
+		$p->curX += $this->drawedWidth;
+		$p->curY += $this->drawedHeight;
+		echo '<!--roundedvertical trouloulou-->';
 	}
 }
 
@@ -188,7 +240,7 @@ class DownClimb extends Vertical {
 	}
 }
 
-class RoundedDownClimb extends DownClimb {
+class RoundedDownClimb extends RoundedVertical {
 	function __construct($height) {
 		parent::__construct($height);
 		$this->name = 'Rounded downclimb';
@@ -207,13 +259,12 @@ class Walk extends Item {
 		$this->width = $width;
 	}
 
-	public function draw($profile) {
-		$curWidth = $this->width * $profile->xScale;
+	public function draw(&$p) {
 		echo '
 		<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
-		d="m '. $profile->curX .','. $profile->curY .' '. $curWidth .',0"
+		d="m '. $p->curX .','. $p->curY .' '. $this->drawedWidth .',0"
 		id="path3311" inkscape:connector-curvature="0" />';
-		$profile->curX += $curWidth;
+		$p->curX += $this->drawedWidth;
 	}
 }
 
@@ -224,8 +275,38 @@ class LongWalk extends Walk {
 		$this->heightFactor = 0.0005;
 		$this->widthFactor = 0.0005;
 
-		$this->width = $width;
 		$this->displayedText = $width;
+
+		// Arbitrarily specify the angle
+		$this->width = 10;
+	}
+
+	public function draw(&$p) {
+		$longWalkHeight = 150;
+		$longWalkAngle = 20;
+		$longWalkWidth = 10;
+		// Un petit trait horizontal qui précède
+		echo '
+		<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
+		d="m '. $p->curX .','. $p->curY .' '. $longWalkWidth .',0"
+		id="path3311" inkscape:connector-curvature="0" />';
+		$p->curX += $longWalkWidth;
+		echo '
+		<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:8,4,2,4;stroke-dashoffset:0"
+		d="m '. ($p->curX-$longWalkAngle) .','. ($p->curY+($longWalkHeight/2)) .' '. $longWalkAngle*2 .','. -($longWalkHeight*1).'"
+		id="path3311" inkscape:connector-curvature="0" />';
+		$p->curX += $longWalkWidth;
+		echo '
+		<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:8,4,2,4;stroke-dashoffset:0"
+		d="m '. ($p->curX-$longWalkAngle) .','. ($p->curY+($longWalkHeight/2)) .' '. $longWalkAngle*2 .','. -($longWalkHeight*1).'"
+		id="path3311" inkscape:connector-curvature="0" />';
+		// Un petit trait horizontal qui suit
+		echo '
+		<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
+		d="m '. $p->curX .','. $p->curY .' '. ($longWalkWidth*2.5) .',0"
+		id="path3311" inkscape:connector-curvature="0" />';
+		$p->curX += ($longWalkWidth*2.5);
+		displayText(($this->displayedText . 'm'), ($p->curX-$longWalkAngle), ($p->curY+($longWalkHeight/2)), -5, 20, 'end');
 	}
 }
 
@@ -237,6 +318,19 @@ class Pool extends Item {
 		$this->widthFactor = 1;
 
 		$this->width = $width;
+	}
+
+	public function draw(&$p) {
+		$depth = 2 * $p->yScale;
+		echo '
+		<path style="fill:#0077FF;fill-opacity:1;stroke:none"
+		d="m '. $p->curX .','. $p->curY .' c 0,'. $depth .' '. $this->drawedWidth / 2 .',0 '. $this->drawedWidth .',0"
+		id="path3223-1" inkscape:connector-curvature="0" />
+		<path style="fill:none;stroke:#000000;stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
+		d="m '. $p->curX .','. $p->curY .' c 0,'. $depth .' '. $this->drawedWidth / 2 .',0 '. $this->drawedWidth .',0"
+		id="path3311" inkscape:connector-curvature="0" />
+		';
+		$p->curX += $this->drawedWidth;
 	}
 }
 
@@ -261,8 +355,13 @@ class Anchor extends Item {
 		$this->heightFactor = 0;
 		$this->widthFactor = 0;
 
-		$this->radius = 3;
 		$this->displayedText = $text;
+	}
+
+	public function draw(&$p) {
+		$xAsOffset = 1.3 * $p->xScale;
+		$yAsOffset = 1.3 * $p->yScale;
+		displayText($this->displayedText, ($p->curX + $xAsOffset), ($p->curY - $yAsOffset), 0, -7, 'middle');
 	}
 }
 
@@ -270,6 +369,15 @@ class SingleAnchor extends Anchor {
 	function __construct($text) {
 		parent::__construct($text);
 		$this->name = 'Single anchor';
+		$this->radius = 3;
+	}
+
+	public function draw(&$p) {
+		$xAsOffset = 1.3 * $p->xScale;
+		$yAsOffset = 1.3 * $p->yScale;
+		echo '
+		<circle cx = "'. ($p->curX + $xAsOffset) .'" cy = "'. ($p->curY - $yAsOffset) .'" r = "'. $this->radius .'" fill = "#ffffff" fill-opacity = "1" stroke = "black" stroke-width = "'. $this->strokeWidth .'px"/>';
+		displayText($this->displayedText, ($p->curX + $xAsOffset), ($p->curY - $yAsOffset), 0, -7, 'middle');
 	}
 }
 
@@ -278,12 +386,27 @@ class DoubleAnchor extends SingleAnchor {
 		parent::__construct($text);
 		$this->name = 'Double anchor';
 	}
+
+	public function draw(&$p) {
+		$xAsOffset = 1.3 * $p->xScale;
+		$yAsOffset = 1.3 * $p->yScale;
+		echo '
+		<circle cx = "'. ($p->curX + $xAsOffset) .'" cy = "'. ($p->curY - $yAsOffset) .'" r = "'. $this->radius .'" fill = "#ffffff" fill-opacity = "1" stroke = "black" stroke-width = "'. $this->strokeWidth .'px"/>
+		<circle cx = "'. ($p->curX + $xAsOffset + (4 * $this->radius)) .'" cy = "'. ($p->curY - $yAsOffset) .'" r = "'. $this->radius .'" fill = "#ffffff" fill-opacity = "1" stroke = "black" stroke-width = "'. $this->strokeWidth .'px"/>';
+		displayText($this->displayedText, ($p->curX + $xAsOffset + (2 * $this->radius)), ($p->curY - $yAsOffset), 0, -7, 'middle');
+	}
 }
 
-class NaturalAnchor extends SingleAnchor {
+class NaturalAnchor extends Anchor {
 	function __construct($text) {
-		parent::__construct($text);
+		parent::__construct('AN ' . $text);
 		$this->name = 'Natural anchor';
+	}
+
+	public function draw(&$p) {
+		$xAsOffset = 3.2 * $p->xScale;
+		$yAsOffset = 2 * $p->yScale;
+		displayText($this->displayedText, ($p->curX + $xAsOffset), ($p->curY - $yAsOffset), -10, 5, 'start');
 	}
 }
 
@@ -301,6 +424,13 @@ class PineTree extends Vegetal {
 		parent::__construct();
 		$this->name = 'Pinetree';
 	}
+
+	public function draw(&$p) {
+		$xAsOffset = 0 * $p->xScale - 60;
+		$yAsOffset = 0 * $p->yScale - 90;
+		echo '<use xlink:href="#sapin" x="'.($p->curX + $xAsOffset).'" y="'.($p->curY + $yAsOffset).'"/>';
+	}
+
 }
 
 class Span extends Item {
