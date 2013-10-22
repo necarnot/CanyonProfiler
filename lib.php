@@ -18,7 +18,7 @@ class Profile {
 	public $curY = 0;
 	public $origCanyonStr = '';
 	public $canyonStr = '';
-	public $defaultVersion = 'fr1.1';
+	public $defaultVersion = 'fr2.1';
 
 	public $syntaxVersion = '';
 	public $items = array ();
@@ -39,16 +39,16 @@ class Profile {
 		$curY = 0;
 		// On détermine maxHeight et maxWidth
 		foreach($this->items as $item) {
-			$curX += $item->getWidth();
-			$curY += $item->getHeight();
-			echo '
-			// itemWidth='.$item->getWidth(). ' itemHeight='.$item->getHeight().' maxWidth='.$this->maxWidth.' maxHeight='.$this->maxHeight.' ';
+			$curX += $item->width * $item->widthFactor;
+			$curY += $item->height * $item->heightFactor;
 			if (get_class($item) == 'CarriageReturn') {
-				$curX = 0;
-				$curY = 0;
+				$curX = $this->xOffset;
+				$curY = $this->yOffset;
 			}
 			if ($curX > $this->maxWidth) { $this->maxWidth = $curX; }
 			if ($curY > $this->maxHeight) { $this->maxHeight = $curY; }
+			echo '
+			// str='.get_class($item).'|'.$item->width.'|'.$item->height.' itemWidthFactor='.$item->widthFactor. ' itemHeightFactor='.$item->heightFactor.' maxWidth='.$this->maxWidth.' maxHeight='.$this->maxHeight;
 		}
 		echo '
 
@@ -127,14 +127,6 @@ class Item {
 	function __construct() {
 	}
 
-	public function getWidth() {
-		return ($this->width * $this->widthFactor);
-	}
-
-	public function getHeight() {
-		return ($this->height * $this->heightFactor);
-	}
-
 	public function scale($xScale, $yScale) {
 		$this->drawedWidth  = $this->width  * $this->widthFactor  * $xScale;
 		$this->drawedHeight = $this->height * $this->heightFactor * $yScale;
@@ -156,7 +148,7 @@ class Vertical extends Item {
 	}
 
 	public function draw(&$p) {
-		$yDisplayText = $p->curY + ($this->drawedHeight / 2);
+		$yDisplayText = $p->curY + ($this->drawedHeight / 2) + ($p->fontHeight / 2);
 		if (($yDisplayText - $p->fontHeight) < $p->curY) {
 			$yDisplayText += $p->fontHeight;
 		}
@@ -189,7 +181,7 @@ class Slide extends Vertical {
 	}
 
 	public function draw(&$p) {
-		$yDisplayText = $p->curY + ($this->drawedHeight / 2);
+		$yDisplayText = $p->curY + ($this->drawedHeight / 2) + ($p->fontHeight / 2);
 		if (($yDisplayText - $p->fontHeight) < $p->curY) {
 			$yDisplayText += $p->fontHeight;
 		}
@@ -208,27 +200,24 @@ class RoundedVertical extends Vertical {
 		parent::__construct($height);
 		$this->name = 'Rounded vertical';
 		$this->widthFactor = 0.2;
-		// Arbitrarily specify the round width
-		$this->width = 5;
+		$this->width = $height;
 	}
 
 	public function draw(&$p) {
-		$yDisplayText = $p->curY + ($this->drawedHeight / 2);
-		if (($yDisplayText - $p->fontHeight) < $p->curY) {
-			$yDisplayText += $p->fontHeight;
-		}
+		$yDisplayText = $p->curY + ($this->drawedHeight / 2) + ($p->fontHeight / 2);
+		// Arbitrarily specify the round width
+		$curveWidth = $this->drawedWidth / 2;
 		echo '
-		<path style="fill:none;stroke:#'. randomColor() .';titi:toto;stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
+		<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
 		d="m '. $p->curX .','. $p->curY 
-		.' c '. $this->drawedWidth .',0 '
-		.' '. $this->drawedWidth .','. $this->drawedWidth 
-		.' '. $this->drawedWidth .','. $this->drawedWidth 
-		.'l 0,'. ($this->drawedHeight - $this->drawedWidth) .'"
+		.' c '. $curveWidth .',0 '
+		.' '. $curveWidth .','. $curveWidth 
+		.' '. $curveWidth .','. $curveWidth 
+		.'l 0,'. ($this->drawedHeight - $curveWidth) .'"
 		id="seuil3311" inkscape:connector-curvature="0" />';
-		displayText($this->displayedText, ($p->curX + $this->drawedWidth), $yDisplayText, -5, 0, 'end');
-		$p->curX += $this->drawedWidth;
+		displayText($this->displayedText, ($p->curX + $curveWidth), $yDisplayText, -5, 0, 'end');
+		$p->curX += $curveWidth;
 		$p->curY += $this->drawedHeight;
-		echo '<!--roundedvertical trouloulou-->';
 	}
 }
 
@@ -276,13 +265,14 @@ class LongWalk extends Walk {
 		$this->widthFactor = 0.0005;
 
 		$this->displayedText = $width;
+		$this->height = 500;
 
 		// Arbitrarily specify the angle
 		$this->width = 10;
 	}
 
 	public function draw(&$p) {
-		$longWalkHeight = 150;
+		$longWalkHeight = 150 * $this->drawedHeight;
 		$longWalkAngle = 20;
 		$longWalkWidth = 10;
 		// Un petit trait horizontal qui précède
@@ -437,11 +427,17 @@ class Span extends Item {
 }
 
 class CarriageReturn extends Item {
-	function __construct($offset) {
+	function __construct($crOffset) {
 		parent::__construct();
 		$this->name = 'Carriage return';
 		$this->heightFactor = 0;
 		$this->widthFactor = 0;
+		$this->crOffset = $crOffset;
+	}
+
+	public function draw(&$p) {
+		$p->curX = $p->xOffset;
+		$p->curY -= $this->crOffset;
 	}
 }
 
