@@ -1,3 +1,11 @@
+2013-10-23
+==========
+Complete rewrite in object-oriented code
+Added a automatically generated page to describe the syntaxes
+- This needed to rewrite the syntaxes array structure and a part of the parser
+Debug some default cases of missing values
+Better centering of text of vertical items (actually, lowest than centered is nicer)
+
 2013-10-11
 ==========
 Changed the versionning number :
