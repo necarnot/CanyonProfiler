@@ -72,7 +72,7 @@ function parsed($p, $canyonStr) {
 		$value = preg_replace('/\(.*\)*/', '', $value);
 		// On cherche dans chaque liste de symboles si on trouve la proposition
 		foreach($syntaxSymbols as $key => $aliases) {
-			if (is_numeric(array_search($item, $aliases))) {
+			if (array_key_exists($item, $aliases)) {
 				$outStr = $outStr . $p->separator . $key . $value;
 				$tmpItem = new $key($value);
 				array_push($p->items, $tmpItem);
