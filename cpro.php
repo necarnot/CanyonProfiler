@@ -53,6 +53,10 @@ echo '<?xml version="1.0" standalone="no"?>
 
 ';
 
+echo '<!--';
+var_dump($syntaxes);
+var_dump($syntaxes2);
+echo '-->';
 $p->parse($canyonStr);
 
 // Here was scaling code
