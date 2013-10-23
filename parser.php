@@ -74,7 +74,6 @@ function parsed($p, $canyonStr) {
 		foreach($syntaxSymbols as $key => $aliases) {
 			if (is_numeric(array_search($item, $aliases))) {
 				$outStr = $outStr . $p->separator . $key . $value;
-				//error_log('220:key='.$key.' value='.$value);
 				$tmpItem = new $key($value);
 				array_push($p->items, $tmpItem);
 				break;

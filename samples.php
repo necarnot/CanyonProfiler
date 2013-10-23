@@ -71,4 +71,5 @@ $canyonStr = $trefond;
 $canyonStr = $rouanne;
 $canyonStr = $laireB;
 $canyonStr = $long;
+$canyonStr = 'fr2.1:/ma5/ca5/va5/ml800/cv10/va5/re4/ma10/to3/va5/ma5';
 ?>

@@ -51,12 +51,14 @@ class Profile {
 			//echo '
 			// str='.get_class($item).'|'.$item->width.'|'.$item->height.' itemWidthFactor='.$item->widthFactor. ' itemHeightFactor='.$item->heightFactor.' maxWidth='.$this->maxWidth.' maxHeight='.$this->maxHeight;
 		}
+		/*
 		echo '
 
 		// maxWidth='.$this->maxWidth.'
 		'.'
 		// maxHeight='.$this->maxHeight.'
 		';
+		*/
 
 		$this->pageWidthPx -= $this->xOffset;
 		$this->pageHeightPx -= $this->yOffset;
@@ -67,6 +69,7 @@ class Profile {
 		$this->curY = $this->yOffset;
 
 		$ratio = $this->xScale / $this->yScale;
+		/*
 		echo '
 
 		// xScale='.$this->xScale.'
@@ -75,7 +78,7 @@ class Profile {
 
 		// ratio='.$ratio.'
 		';
-
+		*/
 		$minRatio = 0.5;
 		$maxRatio = 2;
 		// Dans les cas de dépassement de ratio, on force la correction
@@ -93,6 +96,7 @@ class Profile {
 		}
 
 		$ratio = $this->xScale / $this->yScale;
+		/*
 		echo '
 
 		// xScale='.$this->xScale.'
@@ -101,6 +105,7 @@ class Profile {
 
 		// ratio='.$ratio.'
 		';
+		*/
 
 		foreach($this->items as $item) {
 			$item->scale($this->xScale, $this->yScale);
@@ -156,8 +161,7 @@ class Vertical extends Item {
 		}
 		echo '
 		<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
-		d="m '. $p->curX .','. $p->curY .' 0,'. $this->drawedHeight .'"
-		id="path3311" inkscape:connector-curvature="0" />';
+		d="m '. $p->curX .','. $p->curY .' 0,'. $this->drawedHeight .'" />';
 		displayText($this->displayedText, $p->curX, $yDisplayText, -5, 0, 'end');
 		$p->curY += $this->drawedHeight;
 	}
@@ -189,8 +193,7 @@ class Slide extends Vertical {
 		}
 		echo '
 		<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
-		d="m ' . $p->curX . ',' . $p->curY . ' ' . $this->drawedWidth . ',' . $this->drawedHeight . '"
-		id="path3311" inkscape:connector-curvature="0" />';
+		d="m ' . $p->curX . ',' . $p->curY . ' ' . $this->drawedWidth . ',' . $this->drawedHeight . '" />';
 		displayText($this->displayedText, $p->curX, $yDisplayText, ($this->drawedWidth / 3), 6, 'end');
 		$p->curX += $this->drawedWidth;
 		$p->curY += $this->drawedHeight;
@@ -215,8 +218,7 @@ class RoundedVertical extends Vertical {
 		.' c '. $curveWidth .',0 '
 		.' '. $curveWidth .','. $curveWidth 
 		.' '. $curveWidth .','. $curveWidth 
-		.'l 0,'. ($this->drawedHeight - $curveWidth) .'"
-		id="seuil3311" inkscape:connector-curvature="0" />';
+		.'l 0,'. ($this->drawedHeight - $curveWidth) .'" />';
 		displayText($this->displayedText, ($p->curX + $curveWidth), $yDisplayText, -5, 0, 'end');
 		$p->curX += $curveWidth;
 		$p->curY += $this->drawedHeight;
@@ -253,8 +255,7 @@ class Walk extends Item {
 	public function draw(&$p) {
 		echo '
 		<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
-		d="m '. $p->curX .','. $p->curY .' '. $this->drawedWidth .',0"
-		id="path3311" inkscape:connector-curvature="0" />';
+		d="m '. $p->curX .','. $p->curY .' '. $this->drawedWidth .',0" />';
 		$p->curX += $this->drawedWidth;
 	}
 }
@@ -282,23 +283,19 @@ class LongWalk extends Walk {
 		// Un petit trait horizontal qui précède
 		echo '
 		<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
-		d="m '. $p->curX .','. $p->curY .' '. $longWalkWidth .',0"
-		id="path3311" inkscape:connector-curvature="0" />';
+		d="m '. $p->curX .','. $p->curY .' '. $longWalkWidth .',0" />';
 		$p->curX += $longWalkWidth;
 		echo '
 		<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:8,4,2,4;stroke-dashoffset:0"
-		d="m '. ($p->curX-$longWalkAngle) .','. ($p->curY+($longWalkHeight/2)) .' '. $longWalkAngle*2 .','. -($longWalkHeight*1).'"
-		id="path3311" inkscape:connector-curvature="0" />';
+		d="m '. ($p->curX-$longWalkAngle) .','. ($p->curY+($longWalkHeight/2)) .' '. $longWalkAngle*2 .','. -($longWalkHeight*1).'" />';
 		$p->curX += $longWalkWidth;
 		echo '
 		<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:8,4,2,4;stroke-dashoffset:0"
-		d="m '. ($p->curX-$longWalkAngle) .','. ($p->curY+($longWalkHeight/2)) .' '. $longWalkAngle*2 .','. -($longWalkHeight*1).'"
-		id="path3311" inkscape:connector-curvature="0" />';
+		d="m '. ($p->curX-$longWalkAngle) .','. ($p->curY+($longWalkHeight/2)) .' '. $longWalkAngle*2 .','. -($longWalkHeight*1).'" />';
 		// Un petit trait horizontal qui suit
 		echo '
 		<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
-		d="m '. $p->curX .','. $p->curY .' '. ($longWalkWidth*2.5) .',0"
-		id="path3311" inkscape:connector-curvature="0" />';
+		d="m '. $p->curX .','. $p->curY .' '. ($longWalkWidth*2.5) .',0" />';
 		$p->curX += ($longWalkWidth*2.5);
 		displayText(($this->displayedText . 'm'), ($p->curX-$longWalkAngle), ($p->curY+($longWalkHeight/2)), -5, 20, 'end');
 	}
@@ -318,11 +315,9 @@ class Pool extends Item {
 		$depth = 2 * $p->yScale;
 		echo '
 		<path style="fill:#0077FF;fill-opacity:1;stroke:none"
-		d="m '. $p->curX .','. $p->curY .' c 0,'. $depth .' '. $this->drawedWidth / 2 .',0 '. $this->drawedWidth .',0"
-		id="path3223-1" inkscape:connector-curvature="0" />
+		d="m '. $p->curX .','. $p->curY .' c 0,'. $depth .' '. $this->drawedWidth / 2 .',0 '. $this->drawedWidth .',0" />
 		<path style="fill:none;stroke:#000000;stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
-		d="m '. $p->curX .','. $p->curY .' c 0,'. $depth .' '. $this->drawedWidth / 2 .',0 '. $this->drawedWidth .',0"
-		id="path3311" inkscape:connector-curvature="0" />
+		d="m '. $p->curX .','. $p->curY .' c 0,'. $depth .' '. $this->drawedWidth / 2 .',0 '. $this->drawedWidth .',0" />
 		';
 		$p->curX += $this->drawedWidth;
 	}
