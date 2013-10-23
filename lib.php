@@ -275,6 +275,8 @@ class LongWalk extends Walk {
 
 	public function draw(&$p) {
 		$longWalkHeight = 20 * $p->yScale;
+		// Ugly, but needs advanced thinking of a better way...
+		$longWalkHeight = 150;
 		$longWalkAngle = 20;
 		$longWalkWidth = 10;
 		// Un petit trait horizontal qui précède

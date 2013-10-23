@@ -63,12 +63,12 @@ $canyonStr = 'fr1.1:/m5/c5/v5/m8/m5/arg/c10/v5/m5/s/r4/m10/s/r3/v4/m5';
 $canyonStr = 'fr1.1:/m5/c5/v5/m8/m5/arg/c10/v5/m5/s/r4/m10/s/r3/v4/m5';
 $canyonStr = 'fr1.1:/m5/v5/m8/m5/arg/v5/m5/s/m10/s/v4/m5';
 $canyonStr = 'fr2.1:/ma10/ca10/ma10';
-$canyonStr = $long;
-$canyonStr = $laireB;
 $canyonStr = $laire;
 $canyonStr = $glenlivet;
-$canyonStr = $rouanne;
 $canyonStr = '/ma10/ca10/ma10';
 $canyonStr = $canyonVertical;
 $canyonStr = $trefond;
+$canyonStr = $rouanne;
+$canyonStr = $laireB;
+$canyonStr = $long;
 ?>
