@@ -42,12 +42,13 @@ class Profile {
 			$curX += $item->width * $item->widthFactor;
 			$curY += $item->height * $item->heightFactor;
 			if (get_class($item) == 'CarriageReturn') {
-				$curX = $this->xOffset;
-				$curY = $this->yOffset;
+				error_log('curX='.$curX.' curY='.$curY.' this->xOffset='.$this->xOffset.' this->yOffset='.$this->yOffset);
+				$curX = 0;
+				$curY = 0;
 			}
 			if ($curX > $this->maxWidth) { $this->maxWidth = $curX; }
 			if ($curY > $this->maxHeight) { $this->maxHeight = $curY; }
-			echo '
+			//echo '
 			// str='.get_class($item).'|'.$item->width.'|'.$item->height.' itemWidthFactor='.$item->widthFactor. ' itemHeightFactor='.$item->heightFactor.' maxWidth='.$this->maxWidth.' maxHeight='.$this->maxHeight;
 		}
 		echo '
@@ -61,6 +62,7 @@ class Profile {
 		$this->pageHeightPx -= $this->yOffset;
 		$this->xScale = $this->pageWidthPx / $this->maxWidth;
 		$this->yScale = $this->pageHeightPx / $this->maxHeight;
+		// On remet en place les positions de départ
 		$this->curX = $this->xOffset;
 		$this->curY = $this->yOffset;
 
@@ -148,7 +150,7 @@ class Vertical extends Item {
 	}
 
 	public function draw(&$p) {
-		$yDisplayText = $p->curY + ($this->drawedHeight / 2) + ($p->fontHeight / 2);
+		$yDisplayText = $p->curY + ($this->drawedHeight / 2) + ($p->fontHeight / 1);
 		if (($yDisplayText - $p->fontHeight) < $p->curY) {
 			$yDisplayText += $p->fontHeight;
 		}
@@ -204,7 +206,7 @@ class RoundedVertical extends Vertical {
 	}
 
 	public function draw(&$p) {
-		$yDisplayText = $p->curY + ($this->drawedHeight / 2) + ($p->fontHeight / 2);
+		$yDisplayText = $p->curY + ($this->drawedHeight / 2) + ($p->fontHeight / 1);
 		// Arbitrarily specify the round width
 		$curveWidth = $this->drawedWidth / 2;
 		echo '
@@ -272,7 +274,7 @@ class LongWalk extends Walk {
 	}
 
 	public function draw(&$p) {
-		$longWalkHeight = 150 * $this->drawedHeight;
+		$longWalkHeight = 20 * $p->yScale;
 		$longWalkAngle = 20;
 		$longWalkWidth = 10;
 		// Un petit trait horizontal qui précède
