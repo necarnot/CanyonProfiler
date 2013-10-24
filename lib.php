@@ -19,6 +19,7 @@ class Profile {
 	public $origCanyonStr = '';
 	public $canyonStr = '';
 	public $defaultVersion = 'fr2.1';
+	public $neededDefs = array ();
 
 	public $syntaxVersion = '';
 	public $items = array ();
@@ -415,11 +416,14 @@ class PineTree extends Vegetal {
 	}
 
 	public function draw(&$p) {
+		$p->neededDefs[get_class($p)] = 1;
 		$xAsOffset = 0 * $p->xScale - 60;
 		$yAsOffset = 0 * $p->yScale - 90;
 		echo '<use xlink:href="#sapin" x="'.($p->curX + $xAsOffset).'" y="'.($p->curY + $yAsOffset).'"/>';
 	}
 
+	public function getDef() {
+	}
 }
 
 class Span extends Item {
