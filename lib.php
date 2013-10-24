@@ -118,6 +118,18 @@ class Profile {
 			$item->draw($this);
 		}
 	}
+
+	public function getDefs() {
+		echo '
+		<defs>
+		';
+		foreach($this->neededDefs as $neededDef => $kickme) {
+			$neededDef::getDef();
+		}
+		echo '
+		</defs>
+		';
+	}
 }
 
 
@@ -416,13 +428,19 @@ class PineTree extends Vegetal {
 	}
 
 	public function draw(&$p) {
-		$p->neededDefs[get_class($p)] = 1;
+		$p->neededDefs[get_class($this)] = 1;
 		$xAsOffset = 0 * $p->xScale - 60;
 		$yAsOffset = 0 * $p->yScale - 90;
-		echo '<use xlink:href="#sapin" x="'.($p->curX + $xAsOffset).'" y="'.($p->curY + $yAsOffset).'"/>';
+		echo '<use xlink:href="#'.get_class($this).'" x="'.($p->curX + $xAsOffset).'" y="'.($p->curY + $yAsOffset).'"/>';
 	}
 
-	public function getDef() {
+	public static function getDef() {
+		echo '
+		<g id="'.get_called_class().'">
+			<rect x="45" y="70" width="10" height="20" fill="peru"/>
+			<polygon points="20,70 80,70 60,55 70,55 55,40 65,40 50,20 35,40 45,40 30,55 40,55" fill="forestgreen"/>
+		</g>
+		';
 	}
 }
 
