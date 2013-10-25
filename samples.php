@@ -72,7 +72,7 @@ $canyonStr = $rouanne;
 $canyonStr = $laireB;
 $canyonStr = $long;
 $canyonStr = 'fr2.1:/ma5/sa/ca5/va5/ml800/sa/cv10/va5/ma5/cs10/ma5/pi10/ma5/re4/ma10/sa/to3/va5/ma5';
-$canyonStr = 'fr2.1:/ma5/sa/ca5/va5/vi10/vo10/vq10/vd10/vs10/vq10/ma5/pi10/ma5/re4/ma10/sa/to3/va5/ma5';
 $carmesAmont = 'fr2.1:/ma20/vi10/vd30/va20/ma50';
 $canyonStr = $carmesAmont;
+$canyonStr = 'fr2.1:/ma5/sa/AN/CA8/va5/ma5/sa/AN : MC impérative/Vi10/ad10m/Vo10/Ad52m/vQ10/vD10/vs10/vq10/ma5/ad2 spits/Pi10/ma5/Re3/ma10/sa/To3/va5/ma5';
 ?>

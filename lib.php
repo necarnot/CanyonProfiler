@@ -143,8 +143,22 @@ class Item {
 	public $drawedWidth;
 	public $displayedText;
 	public $strokeWidth = 2;
+	public $inStr = '';
+	public $symbolLetter = '';
 
 	function __construct() {
+	}
+
+	public function setInStr($str) {
+		$this->inStr = $str;
+	}
+
+	// Input strings whose first letter is uppercase will be displayed. Others won't.
+	public function setDisplayedText($text) {
+		$this->displayedText = '';
+		if (ctype_upper(substr($this->inStr,0,1))) {
+			$this->displayedText = $text;
+		}
 	}
 
 	public function scale($xScale, $yScale) {
@@ -164,10 +178,11 @@ class Vertical extends Item {
 		$this->widthFactor = 0;
 
 		$this->height = $height;
-		$this->displayedText = 'C' . $height;
+		$this->symbolLetter = 'C';
 	}
 
 	public function draw(&$p) {
+		$this->setDisplayedText($this->symbolLetter . $this->height);
 		$yDisplayText = $p->curY + ($this->drawedHeight / 2) + ($p->fontHeight / 1);
 		if (($yDisplayText - $p->fontHeight) < $p->curY) {
 			$yDisplayText += $p->fontHeight;
@@ -186,12 +201,12 @@ class VerticalAngle extends Vertical {
 		$this->name = 'VerticalAngle';
 		$this->widthFactor = 1;
 
-		$this->displayedText = 'C' . $height;
-		// TODO : protection against 90° x pi
+		// TODO : protection against weird values
 		$this->width = $height / tan(deg2rad($angle));
 	}
 
 	public function draw(&$p) {
+		$this->setDisplayedText($this->symbolLetter . $this->height);
 		$yDisplayText = $p->curY + ($this->drawedHeight / 2) + ($p->fontHeight / 2);
 		if (($yDisplayText - $p->fontHeight) < $p->curY) {
 			$yDisplayText += $p->fontHeight;
@@ -237,7 +252,7 @@ class Slide extends VerticalAngle {
 	function __construct($height) {
 		parent::__construct($height, 22.5);
 		$this->name = 'Slide';
-		$this->displayedText = 'T' . $height;
+		$this->symbolLetter = 'T';
 	}
 }
 
@@ -250,6 +265,7 @@ class RoundedVertical extends Vertical {
 	}
 
 	public function draw(&$p) {
+		$this->setDisplayedText($this->symbolLetter . $this->height);
 		$yDisplayText = $p->curY + ($this->drawedHeight / 2) + ($p->fontHeight / 1);
 		// Arbitrarily specify the round width
 		$curveWidth = $this->drawedWidth / 2;
@@ -270,7 +286,7 @@ class DownClimb extends Vertical {
 	function __construct($height) {
 		parent::__construct($height);
 		$this->name = 'DownClimb';
-		$this->displayedText = 'R' . $height;
+		$this->symbolLetter = 'R';
 	}
 }
 
@@ -279,7 +295,7 @@ class RoundedDownClimb extends RoundedVertical {
 		parent::__construct($height);
 		$this->name = 'Rounded downclimb';
 		$this->widthFactor = 0.2;
-		$this->displayedText = 'R' . $height;
+		$this->symbolLetter = 'R';
 	}
 }
 

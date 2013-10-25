@@ -75,6 +75,7 @@ function parsed($p, $canyonStr) {
 			if (array_key_exists($item, $aliases)) {
 				$outStr = $outStr . $p->separator . $key . $value;
 				$tmpItem = new $key($value);
+				$tmpItem->setInStr($inStr);
 				array_push($p->items, $tmpItem);
 				break;
 			}
