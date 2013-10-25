@@ -1,3 +1,10 @@
+2013-10-26
+==========
+Added various angles for vertical drops
+Ability to show/hide the text according to the case of the first letter :
+- first letter is upper case : show
+- first letter is lower case : hide
+
 2013-10-23
 ==========
 Complete rewrite in object-oriented code
