@@ -43,14 +43,6 @@ echo '<?xml version="1.0" standalone="no"?>
 <svg width="' . $p->pageWidth . 'mm" height="' . $p->pageHeight . 'mm" version="1.1"
 	xmlns="http://www.w3.org/2000/svg"
 	xmlns:xlink="http://www.w3.org/1999/xlink">
-
-<defs>
-	<g id="sapin">
-		<rect x="45" y="70" width="10" height="20" fill="peru"/>
-		<polygon points="20,70 80,70 60,55 70,55 55,40 65,40 50,20 35,40 45,40 30,55 40,55" fill="forestgreen"/>
-	</g>
-</defs>
-
 ';
 
 $canyonName = '';
@@ -77,6 +69,7 @@ echo '
 }
 
 $p->draw();
+$p->getDefs();
 
 echo '
 </g>
