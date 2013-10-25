@@ -180,23 +180,15 @@ class Vertical extends Item {
 	}
 }
 
-class OverhangingVertical extends Vertical {
-	function __construct($height) {
+class VerticalAngle extends Vertical {
+	function __construct($height, $angle) {
 		parent::__construct($height);
-		$this->name = 'Overhanging Vertical';
-		$this->widthFactor = -1;
-	}
-}
+		$this->name = 'VerticalAngle';
+		$this->widthFactor = 1;
 
-class Slide extends Vertical {
-	function __construct($height) {
-		parent::__construct($height);
-		$this->name = 'Slide';
-		$this->widthFactor = 1.5;
-
-		$this->displayedText = 'T' . $height;
-		// Arbitrarily specify the angle
-		$this->width = 1;
+		$this->displayedText = 'C' . $height;
+		// TODO : protection against 90° x pi
+		$this->width = $height / tan(deg2rad($angle));
 	}
 
 	public function draw(&$p) {
@@ -210,6 +202,42 @@ class Slide extends Vertical {
 		displayText($this->displayedText, $p->curX, $yDisplayText, ($this->drawedWidth / 3), 6, 'end');
 		$p->curX += $this->drawedWidth;
 		$p->curY += $this->drawedHeight;
+	}
+}
+
+class LeanedVertical extends VerticalAngle {
+	function __construct($height) {
+		parent::__construct($height, 22.5);
+		$this->name = 'Leaned Vertical';
+	}
+}
+
+class ObliqueVertical extends VerticalAngle {
+	function __construct($height) {
+		parent::__construct($height, 67.5);
+		$this->name = 'Oblique Vertical';
+	}
+}
+
+class SlightOverhangingVertical extends VerticalAngle {
+	function __construct($height) {
+		parent::__construct($height, 115.5);
+		$this->name = 'Slightly Overhanging Vertical';
+	}
+}
+
+class OverhangingVertical extends VerticalAngle {
+	function __construct($height) {
+		parent::__construct($height, 157.5);
+		$this->name = 'Overhanging Vertical';
+	}
+}
+
+class Slide extends VerticalAngle {
+	function __construct($height) {
+		parent::__construct($height, 22.5);
+		$this->name = 'Slide';
+		$this->displayedText = 'T' . $height;
 	}
 }
 
