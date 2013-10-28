@@ -56,15 +56,19 @@ $syntaxes = array (
 		'Slide'			=> array ('s' => 'Slide')
 	),
 	'fr2.1' => array (
-		'Vertical'			=> array ('vq' => 'Verticale quelconque', 'cv' => 'Cascade verticale'),
-		'RoundedVertical'		=> array ('ca' => 'Cascade arrondie', 'cb' => 'Cascade bombée'),
+		'Vertical'			=> array ('vv' => 'Verticale verticale', 'vq' => 'Verticale quelconque', 'cv' => 'Cascade verticale'),
+		'RoundedVertical'		=> array ('XXXXdoublonXXXXva' => 'Verticale arrondie', 'ca' => 'Cascade arrondie'),
 		'LeanedVertical'		=> array ('vi' => 'Verticale inclinée', 'pi' => 'Plan incliné'),
-		'ObliqueVertical'		=> array ('vo' => 'Verticale oblique'),
+		'ObliqueVertical'		=> array ('vo' => 'Verticale oblique', 'co' => 'Cascade oblique'),
 		'SlightOverhangingVertical'	=> array ('vd' => 'Verticale déversante', 'cd' => 'Cascade déversante'),
 		'OverhangingVertical'		=> array ('vs' => 'Verticale surplombante', 'cs' => 'Cascade surplombante'),
 		'Slide'				=> array ('to' => 'Toboggan'),
+		'Downclimb'			=> array ('re' => 'Ressaut', 'rv' => 'Ressaut vertical', 'rq' => 'Ressaut quelconque'),
 		'RoundedDownClimb'		=> array ('ra' => 'Ressaut arrondi'),
-		'Downclimb'			=> array ('re' => 'Ressaut'),
+		'LeanedDownClimb'		=> array ('ri' => 'Ressaut incliné'),
+		'ObliqueDownClimb'		=> array ('ro' => 'Ressaut oblique'),
+		'SlightOverhangingDownClimb'	=> array ('rd' => 'Ressaut déversant'),
+		'OverhangingDownClimb'		=> array ('rs' => 'Ressaut surplombant'),
 		'Walk'				=> array ('ma' => 'Marche', 'mi' => 'Marche intermédiaire'),
 		'LongWalk'			=> array ('ml' => 'Marche longue'),
 		'Pool'				=> array ('va' => 'Vasque'),
@@ -91,6 +95,16 @@ $syntaxes = array (
 		'CarriageReturn'	=> array ('cr' => 'Carriage return')
 	)
 );
+/*
 
+Vertical (sans eau)	Cascade (avec eau)	Ressaut
+VQ			CQ			RQ
+VV	VA		CV	CA		RV	RA
+VI			CI			RI
+VO			CO			RO
+VD			CD			RD
+VS			CS			RS
+VB			CB			RB
+*/
 
 ?>

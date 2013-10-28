@@ -202,6 +202,7 @@ class VerticalAngle extends Vertical {
 		$this->widthFactor = 1;
 
 		// TODO : protection against weird values
+		// TODO : Recalculer intelligement les maxwidths
 		$this->width = $height / tan(deg2rad($angle));
 	}
 
@@ -294,7 +295,38 @@ class RoundedDownClimb extends RoundedVertical {
 	function __construct($height) {
 		parent::__construct($height);
 		$this->name = 'Rounded downclimb';
-		$this->widthFactor = 0.2;
+		$this->symbolLetter = 'R';
+	}
+}
+
+class LeanedDownClimb extends LeanedVertical {
+	function __construct($height) {
+		parent::__construct($height);
+		$this->name = 'Leaned downclimb';
+		$this->symbolLetter = 'R';
+	}
+}
+
+class ObliqueDownClimb extends ObliqueVertical {
+	function __construct($height) {
+		parent::__construct($height);
+		$this->name = 'Oblique downclimb';
+		$this->symbolLetter = 'R';
+	}
+}
+
+class SlightOverhangingDownClimb extends SlightOverhangingVertical {
+	function __construct($height) {
+		parent::__construct($height);
+		$this->name = 'SlightOverhanging downclimb';
+		$this->symbolLetter = 'R';
+	}
+}
+
+class OverhangingDownClimb extends OverhangingVertical {
+	function __construct($height) {
+		parent::__construct($height);
+		$this->name = 'Overhanging downclimb';
 		$this->symbolLetter = 'R';
 	}
 }
