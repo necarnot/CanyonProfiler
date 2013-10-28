@@ -57,7 +57,7 @@ $syntaxes = array (
 	),
 	'fr2.1' => array (
 		'Vertical'			=> array ('vv' => 'Verticale verticale', 'vq' => 'Verticale quelconque', 'cv' => 'Cascade verticale'),
-		'RoundedVertical'		=> array ('XXXXdoublonXXXXva' => 'Verticale arrondie', 'ca' => 'Cascade arrondie'),
+		'RoundedVertical'		=> array ('vr' => 'Verticale ronde', 'ca' => 'Cascade arrondie'),
 		'LeanedVertical'		=> array ('vi' => 'Verticale inclinée', 'pi' => 'Plan incliné'),
 		'ObliqueVertical'		=> array ('vo' => 'Verticale oblique', 'co' => 'Cascade oblique'),
 		'SlightOverhangingVertical'	=> array ('vd' => 'Verticale déversante', 'cd' => 'Cascade déversante'),
