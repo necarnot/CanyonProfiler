@@ -1,3 +1,7 @@
+2013-10-28
+==========
+Added every types of downclimbs
+
 2013-10-26
 ==========
 Added various angles for vertical drops
