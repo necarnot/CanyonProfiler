@@ -66,8 +66,9 @@ function parsed($p, $canyonStr) {
 	$outStr = '';
 	// Pour chaque chaîne fournie par l'utilisateur
 	foreach($inStrs as $inStr) {
-		$item = strtolower(substr(trim($inStr), 0, $syntaxLength));
-		$value = substr(trim($inStr), $syntaxLength);
+		$inStr = trim($inStr);
+		$item = strtolower(substr($inStr, 0, $syntaxLength));
+		$value = substr($inStr, $syntaxLength);
 		// Removing comments between parenthesis
 		$value = preg_replace('/\(.*\)*/', '', $value);
 		// On cherche dans chaque liste de symboles si on trouve la proposition

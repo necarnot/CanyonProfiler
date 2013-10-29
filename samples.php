@@ -51,9 +51,10 @@ $canyonStr = 'es0.1:/s5/c5/b5/s8/s5/arg/c10/b5/s5/p/r4/s10/p/t3/b4/s5';
 $long = '/ma4/va2/ma4/va4/ma3/to1/va2/ma6/re5/va5/ma4/anrd/cv20/va4/ma5/re3/ma7/adrg/cv16/re2/va3/ma4/va3/ma4/va3/ma4/re3/va2/asrd/cv21/va5/ma10/ma10/an/cv13/va3/ma2/re3/va2/ma5/va2/ma2/va3/asrg/cv15/va5/ma2/re3/va5/ml700/ma6/ad/cv28/va5/ma4/va3/ma5/ma4/va2/ma4/va4/ma3/to1/va2/ma6/re5/va5/ma4/anrd/cv20/va4/ma5/re3/ma7/adrg/cv16/re2/va3/ma4/va3/ma4/va3/ma4/re3/va2/asrd/cv21/va5/ma10/ma10/cr340/ma10/an/cv13/va3/ma2/re3/va2/ma5/va2/ma2/va3/asrg/cv15/va5/ma2/re3/va5/ml700/ma6/ad/cv28/va5/ma4/va3/ma5/ma4/va2/ma4/va4/ma3/to1/va2/ma6/re5/va5/ma4/an/cv20/va4/ma5/re3/ma7/adrg/cv16/re2/va3/ma4/va3/ma4/va3/ma4/re3/va2/asrd/cv21/va5/ma10/ma10/an/cv13/va3/ma2/re3/va2/ma5/va2/ma2/va3/ma5/cr200/ma5/asrg/cv15/va5/ma2/re3/va5/ml700/ma6/ad/cv28/va5/ma4/va3/ma5/re3/va5/ml700/ma6/ad/cv28/va5/ma4/va3/ma5/re3/va5/ml700/ma6/ad/cv28/va5/ma4/va3/ma5';
 $canyonStr = 'fr2.1:/ma10/re4/ma5/re2/va3/ma15/re2/va5/cv5/va3/cv3/va10/re1/va2/va2/ma15/to3/va1/ma30/ca5/va10/ma30/re3/va5/to4/va5/to3/va5/ca12/va10/ma5/pi5/ml100/re3/va5/ml200/va50';
 
-$glenlivet = 'fr2.1:/ML200(!! Progression difficile: végétation)/MI150(!&)(descente dans chaos de blocs)/AFDE(vallonRD)/CI22/CO10/MA20/CV4(!!#)/MA30/CV10/MA20/CI19/CX15 :SI11-SV4/MA25/CV10/CO5/MA35/CX30 :SV18-SH4-SV8/CX12:SV7-SH2-SV3/MA20/RI10(!!&)/ML150/CV3/></CX20:SV8-SH4-SV8/MA5/CX14:SI7-ST2-SO7(!^)/<>/MA20/AFDE(Vallon des Absentes RG)';
 
-$glenlivet = 'fr2.1: /ML200(!! Progression difficile: végétation)/ML150(!)(descente dans chaos de blocs)/AFDE(vallonRD)/CI22/CO10/MA20/ CV4(&!!#)/MA30/CV10 	 /MA20/CI19/CX15 :SI11-SV4/MA25/CV10/CO5/MA35/CX30 :SV18-SH4-SV8/CX12:SV7-SH2-SV3/MA20/RI10(!!)/ML150/CV3/CX20:SV8-SH4-SV8/MA5/CX14:SI7-ST2-SO7(!^)/MA20/AFDE(Vallon des Absentes RG)';
+$glenlivet = 'fr2.1:/ML200(!! Progression difficile: végétation)/MI150(!&)(descente dans chaos de blocs)/AFDE(vallonRD)/CI22/CO10/MA20/CV4(!!#)/MA30/CV10/MA20/CI19/CX15 :SI11-SV4/MA25/CV10/CO5/MA35/CX30 :SV18-SH4-SV8/CX12:SV7-SH2-SV3/MA20/RI10(!!&)/ML150/CV3/></CX20:SV8-SH4-SV8/MA5/CX14:SI7-ST2-SO7(!^)/<>/MA20/AFDE(Vallon des Absentes RG)';
+$glenlivet = 'fr2.1:/ML200(!! Progression difficile: végétation)/ML150(descente dans chaos de blocs)/AFDE(vallonRD)/CI22/CO10/MA20/CV4/MA30/CV10 	 /MA20/CI19/CX15 :SI11-SV4/MA25/CV10/CO5/MA35/CX30 :SV18-SH4-SV8/CX12:SV7-SH2-SV3/MA20/RI10(!!)/ML150/CV3/CX20:SV8-SH4-SV8/MA5/CX14:SI7-ST2-SO7(!^)/MA20/AFDE(Vallon des Absentes RG)';
+
 
 $canyonStr = '/ma5/cv6/va7(danger)/cv8((salut)/ma9';
 $canyonStr = 'fr2.1:/ma5/anfémur/cv6/va7(danger)/adcouplé/cv8((salut)/ma9';
@@ -64,7 +65,6 @@ $canyonStr = 'fr1.1:/m5/c5/v5/m8/m5/arg/c10/v5/m5/s/r4/m10/s/r3/v4/m5';
 $canyonStr = 'fr1.1:/m5/v5/m8/m5/arg/v5/m5/s/m10/s/v4/m5';
 $canyonStr = 'fr2.1:/ma10/ca10/ma10';
 $canyonStr = $laire;
-$canyonStr = $glenlivet;
 $canyonStr = '/ma10/ca10/ma10';
 $canyonStr = $canyonVertical;
 $canyonStr = $trefond;
@@ -74,6 +74,8 @@ $canyonStr = $long;
 $canyonStr = 'fr2.1:/ma5/sa/ca5/va5/ml800/sa/cv10/va5/ma5/cs10/ma5/pi10/ma5/re4/ma10/sa/to3/va5/ma5';
 $carmesAmont = 'fr2.1:/ma20/vi10/vd30/va20/ma50';
 $canyonStr = $carmesAmont;
-$canyonStr = 'fr2.1:/ma5/sa/AN/CA8/va5/ma5/sa/AN : MC impérative/Vi10/ad10m/Vo10/Ad52m/vQ10/vD10/vs10/vq10/ma5/ad2 spits/Pi10/ma5/Re3/ma10/sa/To3/va5/ma5';
 $canyonStr = 'fr2.1:/ma5/sa/AN/CA8/va5/ma5/sa/AN : MC impérative/Ri10/ad10m/Ro10/Ad52m/RQ10/RD10/Rs10/Rq10/ma5/ad2 spits/Pi10/ma5/Re3/ma10/sa/To3/va5/ma5';
+$canyonStr = 'fr2.1:/ma5/sa/AN/CA8/va5/ma5/sa/AN : MC impérative/Vi10/ad10m/Vo10/Ad52m/vQ10/vD10/vs10/vq10/ma5/ad2 spits/Pi10/ma5/Re3/ma10/ml800/Cv10/ma5/sa/To3/va5/ma5';
+$canyonStr = 'fr2.1:/ma5/ml800/Cv8/ma5/CV10/ma5/Cv10';
+$canyonStr = $glenlivet;
 ?>
