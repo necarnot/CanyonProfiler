@@ -170,40 +170,18 @@ class Item {
 	}
 }
 
-class Vertical extends Item {
-	function __construct($height) {
+class VerticalAngle extends Item {
+	function __construct($height, $angle) {
 		parent::__construct();
-		$this->name = 'Vertical';
+		$this->name = 'VerticalAngle';
 		$this->heightFactor = 1;
-		$this->widthFactor = 0;
+		$this->widthFactor = 1;
 
 		$this->height = $height;
 		$this->symbolLetter = 'C';
-	}
 
-	public function draw(&$p) {
-		$this->setDisplayedText($this->symbolLetter . $this->height);
-		$yDisplayText = $p->curY + ($this->drawedHeight / 2) + ($p->fontHeight / 1);
-		if (($yDisplayText - $p->fontHeight) < $p->curY) {
-			$yDisplayText += $p->fontHeight;
-		}
-		echo '
-		<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
-		d="m '. $p->curX .','. $p->curY .' 0,'. $this->drawedHeight .'" />';
-		displayText($this->displayedText, $p->curX, $yDisplayText, -5, 0, 'end');
-		$p->curY += $this->drawedHeight;
-	}
-}
-
-class VerticalAngle extends Vertical {
-	function __construct($height, $angle) {
-		parent::__construct($height);
-		$this->name = 'VerticalAngle';
-		$this->widthFactor = 1;
-
-		// TODO : protection against weird values
 		// TODO : Recalculer intelligement les maxwidths
-		$this->width = $height / tan(deg2rad($angle));
+		$this->width = ($angle == 0) ? 0 : $height / tan(deg2rad($angle));
 	}
 
 	public function draw(&$p) {
@@ -215,9 +193,75 @@ class VerticalAngle extends Vertical {
 		echo '
 		<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
 		d="m ' . $p->curX . ',' . $p->curY . ' ' . $this->drawedWidth . ',' . $this->drawedHeight . '" />';
-		displayText($this->displayedText, $p->curX, $yDisplayText, ($this->drawedWidth / 3), 6, 'end');
+		//TODO : Pour déterminer l'offset d'xDisplay, il suffirait de le calculer grace aux points haut et bas
+		displayText($this->displayedText, $p->curX, $yDisplayText, ($this->drawedWidth / 3)-5, 6, 'end');
 		$p->curX += $this->drawedWidth;
 		$p->curY += $this->drawedHeight;
+	}
+}
+
+class WetAngle extends VerticalAngle {
+	function __construct($height, $angle) {
+		parent::__construct($height, $angle);
+		$this->name = 'Wet Angle';
+	}
+
+	public function draw(&$p) {
+		$origCurX = $p->curX;
+		$origCurY = $p->curY;
+		parent::draw($p);
+		echo '
+		<path style="fill:none;stroke:#'. waterColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
+		d="m ' . ($origCurX + $this->strokeWidth) . ',' . $origCurY . ' ' . max($this->drawedWidth,0) . ',' . ($this->drawedHeight * 1) . '" />';
+	}
+}
+
+class WetVertical extends WetAngle {
+	function __construct($height) {
+		parent::__construct($height, 0);
+		$this->name = 'Wet vertical';
+	}
+}
+
+class WetRoundedVertical extends WetAngle {
+	function __construct($height) {
+		parent::__construct($height, 0);
+		$this->name = 'Wet Rounded Vertical';
+	}
+}
+
+class WetLeanedVertical extends WetAngle {
+	function __construct($height) {
+		parent::__construct($height, 22.5);
+		$this->name = 'Wet Leaned Vertical';
+	}
+}
+
+class WetObliqueVertical extends WetAngle {
+	function __construct($height) {
+		parent::__construct($height, 67.5);
+		$this->name = 'Wet Oblique Vertical';
+	}
+}
+
+class WetSlightOverhangingVertical extends WetAngle {
+	function __construct($height) {
+		parent::__construct($height, 115.5);
+		$this->name = 'Wet Slight Overhanging Vertical';
+	}
+}
+
+class WetOverhangingVertical extends WetAngle {
+	function __construct($height) {
+		parent::__construct($height, 157.5);
+		$this->name = 'Wet Overhanging Vertical';
+	}
+}
+
+class Vertical extends VerticalAngle {
+	function __construct($height) {
+		parent::__construct($height, 0);
+		$this->name = 'Vertical';
 	}
 }
 
@@ -506,7 +550,7 @@ class PineTree extends Vegetal {
 	public function draw(&$p) {
 		$p->neededDefs[get_class($this)] = 1;
 		$xAsOffset = 0 * $p->xScale - 60;
-		$yAsOffset = 0 * $p->yScale - 90;
+		$yAsOffset = 0 * $p->yScale - 90 - ($this->strokeWidth / 2);
 		echo '<use xlink:href="#'.get_class($this).'" x="'.($p->curX + $xAsOffset).'" y="'.($p->curY + $yAsOffset).'"/>';
 	}
 

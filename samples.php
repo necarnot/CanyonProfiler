@@ -53,7 +53,7 @@ $canyonStr = 'fr2.1:/ma10/re4/ma5/re2/va3/ma15/re2/va5/cv5/va3/cv3/va10/re1/va2/
 
 
 $glenlivet = 'fr2.1:/ML200(!! Progression difficile: végétation)/MI150(!&)(descente dans chaos de blocs)/AFDE(vallonRD)/CI22/CO10/MA20/CV4(!!#)/MA30/CV10/MA20/CI19/CX15 :SI11-SV4/MA25/CV10/CO5/MA35/CX30 :SV18-SH4-SV8/CX12:SV7-SH2-SV3/MA20/RI10(!!&)/ML150/CV3/></CX20:SV8-SH4-SV8/MA5/CX14:SI7-ST2-SO7(!^)/<>/MA20/AFDE(Vallon des Absentes RG)';
-$glenlivet = 'fr2.1:/ML200(!! Progression difficile: végétation)/ML150(descente dans chaos de blocs)/AFDE(vallonRD)/CI22/CO10/MA20/CV4/MA30/CV10 	 /MA20/CI19/CX15 :SI11-SV4/MA25/CV10/CO5/MA35/CX30 :SV18-SH4-SV8/CX12:SV7-SH2-SV3/MA20/RI10(!!)/ML150/CV3/CX20:SV8-SH4-SV8/MA5/CX14:SI7-ST2-SO7(!^)/MA20/AFDE(Vallon des Absentes RG)';
+$glenlivet = 'fr2.1:/ma5/ML200(!! Progression difficile: végétation)/ma5/ML150(descente dans chaos de blocs)/AFDE(vallonRD)/CI22/CO10/MA20/Ca4/MA30/Ca10/MA20/CI19/VI11/Va4/MA25/Ca10/CO5/MA35/Va18/ma4/Va8/Ca7/ma2/Ca3/MA20/RI10/ML150/ma5/Ca3/Ca8/ma4/Ca8/MA5/CI7/cS2/CO7/MA20/AFDE(Vallon des Absentes RG)';
 
 
 $canyonStr = '/ma5/cv6/va7(danger)/cv8((salut)/ma9';
@@ -71,11 +71,13 @@ $canyonStr = $trefond;
 $canyonStr = $rouanne;
 $canyonStr = $laireB;
 $canyonStr = $long;
-$canyonStr = 'fr2.1:/ma5/sa/ca5/va5/ml800/sa/cv10/va5/ma5/cs10/ma5/pi10/ma5/re4/ma10/sa/to3/va5/ma5';
 $carmesAmont = 'fr2.1:/ma20/vi10/vd30/va20/ma50';
 $canyonStr = $carmesAmont;
 $canyonStr = 'fr2.1:/ma5/sa/AN/CA8/va5/ma5/sa/AN : MC impérative/Ri10/ad10m/Ro10/Ad52m/RQ10/RD10/Rs10/Rq10/ma5/ad2 spits/Pi10/ma5/Re3/ma10/sa/To3/va5/ma5';
 $canyonStr = 'fr2.1:/ma5/sa/AN/CA8/va5/ma5/sa/AN : MC impérative/Vi10/ad10m/Vo10/Ad52m/vQ10/vD10/vs10/vq10/ma5/ad2 spits/Pi10/ma5/Re3/ma10/ml800/Cv10/ma5/sa/To3/va5/ma5';
 $canyonStr = 'fr2.1:/ma5/ml800/Cv8/ma5/CV10/ma5/Cv10';
 $canyonStr = $glenlivet;
+$canyonStr = 'fr2.1:/ma5/CV5/ma5/CA5/ma5/CI5/ma5/CO5/ma5/CD5/ma5/CS5/ma5';
+$canyonStr = 'fr2.1:/ma5/sa/ca5/va5/ml800/ma5/sa/ca10/va5/ma5/CV10/ma5/Pi10/ma5/re4/ma10/sa/to3/va5/ma5';
+$canyonStr = 'fr2.1:/ma5/VV5/ma5/VR5/ma5/VI5/ma5/VO5/ma5/VD5/ma5/VS5/ma5/to5/ma5/RE5/ma5/RA5/ma5/RI5/ma5/RO5/ma5/RD5/ma5/RS5/ma5/CV5/ma5/CA5/ma5/CI5/ma5/CO5/ma5/CD5/ma5/CS5/ma5';
 ?>

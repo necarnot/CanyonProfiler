@@ -2,6 +2,7 @@
 ==========
 Added trimming against spaces
 Added "Cascade inclinée" that was missing
+Added falling water on every type of cascades
 
 2013-10-28
 ==========

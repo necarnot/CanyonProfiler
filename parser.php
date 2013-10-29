@@ -57,7 +57,7 @@ function parsed($p, $canyonStr) {
 
 	// Le tout premier caractère est le séparateur dynamique
 	$p->separator = substr($canyonStr, 0, 1);
-	error_log('210:separator=_'.$p->separator.'_');
+	// error_log('210:separator=_'.$p->separator.'_');
 	# On enlève le tout premier séparateur
 	$canyonStr = substr($canyonStr, 1);
 	// Tableau des éléments fournis par l'utilisateur

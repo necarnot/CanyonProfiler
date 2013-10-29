@@ -14,6 +14,10 @@ function isNullOrEmptyString($question){
 	return (!isset($question) || trim($question)==='');
 }
 
+function waterColor() {
+	return '0078FF';
+}
+
 function randomColor() {
 	return '000000';
 	mt_srand((double)microtime()*1000000);
