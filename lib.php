@@ -216,7 +216,7 @@ class WetAngle extends VerticalAngle {
 		$origCurY = $p->curY;
 		parent::draw($p);
 		echo '
-		<path style="fill:none;stroke:#'. waterColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
+		<path style="fill:none;stroke:#'. getWaterColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
 		d="m ' . ($origCurX + $this->strokeWidth) . ',' . $origCurY . ' ' . max($this->drawedWidth,0) . ',' . ($this->drawedHeight * 1) . '" />';
 	}
 }
@@ -338,7 +338,7 @@ class WetRoundedVertical extends RoundedVertical {
 		// Arbitrarily specify the round width
 		$curveWidth = ($this->drawedWidth / 2) + $this->strokeWidth;
 		echo '
-		<path style="fill:none;stroke:#'. waterColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
+		<path style="fill:none;stroke:#'. getWaterColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
 		d="m '. $origCurX .','. ($origCurY - $this->strokeWidth)
 		.' c '. $curveWidth .',0 '
 		.' '. $curveWidth .','. $curveWidth
@@ -424,7 +424,7 @@ class WetWalk extends Walk {
 		$origCurY = $p->curY;
 		parent::draw($p);
 		echo '
-		<path style="fill:none;stroke:#'. waterColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
+		<path style="fill:none;stroke:#'. getWaterColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
 		d="m '. ($origCurX + $this->strokeWidth) .','. ($origCurY - $this->strokeWidth) .' '. ($this->drawedWidth - $this->strokeWidth) .',0" />';
 	}
 }
@@ -483,7 +483,7 @@ class Pool extends Item {
 	public function draw(&$p) {
 		$depth = 2 * $p->yScale;
 		echo '
-		<path style="fill:#'. waterColor() .';fill-opacity:1;stroke:none"
+		<path style="fill:#'. getWaterColor() .';fill-opacity:1;stroke:none"
 		d="m '. $p->curX .','. $p->curY .' c 0,'. $depth .' '. $this->drawedWidth / 2 .',0 '. $this->drawedWidth .',0" />
 		<path style="fill:none;stroke:#'. $p->getCurColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
 		d="m '. $p->curX .','. $p->curY .' c 0,'. $depth .' '. $this->drawedWidth / 2 .',0 '. $this->drawedWidth .',0" />
@@ -532,10 +532,10 @@ class SingleAnchor extends Anchor {
 
 	public function draw(&$p) {
 		$xAsOffset = 1.3 * $p->xScale;
-		$yAsOffset = 1.3 * $p->yScale;
+		$yAsOffset = 0.9 * $p->yScale;
 		echo '
-		<circle cx = "'. ($p->curX + $xAsOffset) .'" cy = "'. ($p->curY - $yAsOffset) .'" r = "'. $this->radius .'" fill = "#ffffff" fill-opacity = "1" stroke = "black" stroke-width = "'. $this->strokeWidth .'px"/>';
-		displayText($this->displayedText, ($p->curX + $xAsOffset), ($p->curY - $yAsOffset), 0, -7, 'middle');
+		<circle cx = "'. ($p->curX + $xAsOffset) .'" cy = "'. ($p->curY - $yAsOffset) .'" r = "'. $this->radius .'" fill = "#FFFFFF" fill-opacity = "1" stroke = "#'.getAnchorColor().'" stroke-width = "'. $this->strokeWidth .'px"/>';
+		displayText($this->displayedText, ($p->curX + $xAsOffset), ($p->curY - $yAsOffset), 5, 5, 'left');
 	}
 }
 
@@ -546,12 +546,12 @@ class DoubleAnchor extends SingleAnchor {
 	}
 
 	public function draw(&$p) {
-		$xAsOffset = 1.3 * $p->xScale;
-		$yAsOffset = 1.3 * $p->yScale;
+		$xAsOffset = 1.0 * $p->xScale;
+		$yAsOffset = 1.1 * $p->yScale;
 		echo '
-		<circle cx = "'. ($p->curX + $xAsOffset) .'" cy = "'. ($p->curY - $yAsOffset) .'" r = "'. $this->radius .'" fill = "#ffffff" fill-opacity = "1" stroke = "black" stroke-width = "'. $this->strokeWidth .'px"/>
-		<circle cx = "'. ($p->curX + $xAsOffset + (4 * $this->radius)) .'" cy = "'. ($p->curY - $yAsOffset) .'" r = "'. $this->radius .'" fill = "#ffffff" fill-opacity = "1" stroke = "black" stroke-width = "'. $this->strokeWidth .'px"/>';
-		displayText($this->displayedText, ($p->curX + $xAsOffset + (2 * $this->radius)), ($p->curY - $yAsOffset), 0, -7, 'middle');
+		<circle cx = "'. ($p->curX + $xAsOffset) .'" cy = "'. ($p->curY - $yAsOffset) .'" r = "'. $this->radius .'" fill = "#FFFFFF" fill-opacity = "1" stroke = "#'.getAnchorColor().'" stroke-width = "'. $this->strokeWidth .'px"/>
+		<circle cx = "'. ($p->curX + $xAsOffset + (3.5 * $this->radius)) .'" cy = "'. ($p->curY - $yAsOffset) .'" r = "'. $this->radius .'" fill = "#FFFFFF" fill-opacity = "1" stroke = "#'.getAnchorColor().'" stroke-width = "'. $this->strokeWidth .'px"/>';
+		displayText($this->displayedText, ($p->curX + $xAsOffset + (2 * $this->radius)), ($p->curY - $yAsOffset), 10, 5, 'left');
 	}
 }
 
@@ -595,6 +595,31 @@ class PineTree extends Vegetal {
 		<g id="'.get_called_class().'">
 			<rect x="45" y="70" width="10" height="20" fill="peru"/>
 			<polygon points="20,70 80,70 60,55 70,55 55,40 65,40 50,20 35,40 45,40 30,55 40,55" fill="forestgreen"/>
+		</g>
+		';
+	}
+}
+
+class ExitPoint extends Item {
+	function __construct($text) {
+		parent::__construct();
+		$this->name = 'Exit point';
+		$this->displayedText = $text;
+	}
+
+	public function draw(&$p) {
+		$p->neededDefs[get_class($this)] = 1;
+		$xOffset = -20;
+		$yOffset = -45;
+		echo '<use xlink:href="#'.get_class($this).'"  x="'.($p->curX + $xOffset).'" y="'.($p->curY + $yOffset).'"/>';
+		displayText($this->displayedText, ($p->curX + $xOffset + 32), ($p->curY + $yOffset), 0, 0, 'left');
+	}
+
+	public static function getDef() {
+		echo '
+		<g id="'.get_called_class().'">
+			<path style="fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;
+			stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" d="M 30.698485,1.0151594 16.556349,3.8435866 20.79899,8.0862273 1,20.814149 l 8.4852813,1.414214 1.4142137,8.485281 12.727922,-19.79899 4.242641,4.242641 z"/>
 		</g>
 		';
 	}

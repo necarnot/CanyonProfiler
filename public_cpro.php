@@ -14,8 +14,12 @@ function isNullOrEmptyString($question){
 	return (!isset($question) || trim($question)==='');
 }
 
-function waterColor() {
+function getWaterColor() {
 	return '0078FF';
+}
+
+function getAnchorColor() {
+	return 'FF0000';
 }
 
 function randomColor() {

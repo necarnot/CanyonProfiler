@@ -2,6 +2,7 @@
 ==========
 Added "Wet rounded cascade". Cascade arrondie et arrosée.
 Added "Wet walk".
+Added "Exit point"
 
 2013-10-29
 ==========
