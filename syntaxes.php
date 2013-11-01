@@ -83,7 +83,7 @@ $syntaxes = array (
 		'DoubleAnchor'			=> array ('ad' => 'Amarrage double', 'am' => 'Amarrage multiple'),
 		'NaturalAnchor'			=> array ('an' => 'Amarrage naturel'),
 		'PineTree'			=> array ('sa' => 'Sapin'),
-		'ExitPoint'			=> array ('ex' => 'Exit', 'ec' => 'Echapatoire'),
+		'ExitPoint'			=> array ('ex' => 'Exit', 'ec' => 'Echappatoire'),
 		'CarriageReturn'		=> array ('cr' => 'Carriage return', 'rl' => 'retour à la ligne'),
 	),
 	'en2.1' => array (
