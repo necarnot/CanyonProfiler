@@ -16,6 +16,7 @@ class Profile {
 	public $yScale = 0;
 	public $curX = 0;
 	public $curY = 0;
+	public $curColor = '000000';
 	public $origCanyonStr = '';
 	public $canyonStr = '';
 	public $defaultVersion = 'fr2.1';
@@ -23,6 +24,10 @@ class Profile {
 
 	public $syntaxVersion = '';
 	public $items = array ();
+
+	public function getCurColor() {
+		return $this->curColor;
+	}
 
 	public function parse($str) {
 		$this->origCanyonStr = $str;
@@ -191,7 +196,7 @@ class VerticalAngle extends Item {
 			$yDisplayText += $p->fontHeight;
 		}
 		echo '
-		<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
+		<path style="fill:none;stroke:#'. $p->getCurColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
 		d="m ' . $p->curX . ',' . $p->curY . ' ' . $this->drawedWidth . ',' . $this->drawedHeight . '" />';
 		//TODO : Pour déterminer l'offset d'xDisplay, il suffirait de le calculer grace aux points haut et bas
 		displayText($this->displayedText, $p->curX, $yDisplayText, ($this->drawedWidth / 3)-5, 6, 'end');
@@ -220,13 +225,6 @@ class WetVertical extends WetAngle {
 	function __construct($height) {
 		parent::__construct($height, 0);
 		$this->name = 'Wet vertical';
-	}
-}
-
-class WetRoundedVertical extends WetAngle {
-	function __construct($height) {
-		parent::__construct($height, 0);
-		$this->name = 'Wet Rounded Vertical';
 	}
 }
 
@@ -315,15 +313,37 @@ class RoundedVertical extends Vertical {
 		// Arbitrarily specify the round width
 		$curveWidth = $this->drawedWidth / 2;
 		echo '
-		<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
-		d="m '. $p->curX .','. $p->curY 
+		<path style="fill:none;stroke:#'. $p->getCurColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
+		d="m '. $p->curX .','. $p->curY
 		.' c '. $curveWidth .',0 '
-		.' '. $curveWidth .','. $curveWidth 
-		.' '. $curveWidth .','. $curveWidth 
+		.' '. $curveWidth .','. $curveWidth
+		.' '. $curveWidth .','. $curveWidth
 		.'l 0,'. ($this->drawedHeight - $curveWidth) .'" />';
 		displayText($this->displayedText, ($p->curX + $curveWidth), $yDisplayText, -5, 0, 'end');
 		$p->curX += $curveWidth;
 		$p->curY += $this->drawedHeight;
+	}
+}
+
+class WetRoundedVertical extends RoundedVertical {
+	function __construct($height) {
+		parent::__construct($height, 0);
+		$this->name = 'Wet Rounded Vertical';
+	}
+
+	public function draw(&$p) {
+		$origCurX = $p->curX;
+		$origCurY = $p->curY;
+		parent::draw($p);
+		// Arbitrarily specify the round width
+		$curveWidth = ($this->drawedWidth / 2) + $this->strokeWidth;
+		echo '
+		<path style="fill:none;stroke:#'. waterColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
+		d="m '. $origCurX .','. ($origCurY - $this->strokeWidth)
+		.' c '. $curveWidth .',0 '
+		.' '. $curveWidth .','. $curveWidth
+		.' '. $curveWidth .','. $curveWidth
+		.'l 0,'. ($this->drawedHeight - $curveWidth + $this->strokeWidth) .'" />';
 	}
 }
 
@@ -387,7 +407,7 @@ class Walk extends Item {
 
 	public function draw(&$p) {
 		echo '
-		<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
+		<path style="fill:none;stroke:#'. $p->getCurColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
 		d="m '. $p->curX .','. $p->curY .' '. $this->drawedWidth .',0" />';
 		$p->curX += $this->drawedWidth;
 	}
@@ -415,19 +435,19 @@ class LongWalk extends Walk {
 		$longWalkWidth = 10;
 		// Un petit trait horizontal qui précède
 		echo '
-		<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
+		<path style="fill:none;stroke:#'. $p->getCurColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
 		d="m '. $p->curX .','. $p->curY .' '. $longWalkWidth .',0" />';
 		$p->curX += $longWalkWidth;
 		echo '
-		<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:8,4,2,4;stroke-dashoffset:0"
+		<path style="fill:none;stroke:#'. $p->getCurColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:8,4,2,4;stroke-dashoffset:0"
 		d="m '. ($p->curX-$longWalkAngle) .','. ($p->curY+($longWalkHeight/2)) .' '. $longWalkAngle*2 .','. -($longWalkHeight*1).'" />';
 		$p->curX += $longWalkWidth;
 		echo '
-		<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:8,4,2,4;stroke-dashoffset:0"
+		<path style="fill:none;stroke:#'. $p->getCurColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:8,4,2,4;stroke-dashoffset:0"
 		d="m '. ($p->curX-$longWalkAngle) .','. ($p->curY+($longWalkHeight/2)) .' '. $longWalkAngle*2 .','. -($longWalkHeight*1).'" />';
 		// Un petit trait horizontal qui suit
 		echo '
-		<path style="fill:none;stroke:#'. randomColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
+		<path style="fill:none;stroke:#'. $p->getCurColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
 		d="m '. $p->curX .','. $p->curY .' '. ($longWalkWidth*2.5) .',0" />';
 		$p->curX += ($longWalkWidth*2.5);
 		displayText(($this->displayedText . 'm'), ($p->curX-$longWalkAngle), ($p->curY+($longWalkHeight/2)), -5, 20, 'end');
@@ -447,9 +467,9 @@ class Pool extends Item {
 	public function draw(&$p) {
 		$depth = 2 * $p->yScale;
 		echo '
-		<path style="fill:#0077FF;fill-opacity:1;stroke:none"
+		<path style="fill:#'. waterColor() .';fill-opacity:1;stroke:none"
 		d="m '. $p->curX .','. $p->curY .' c 0,'. $depth .' '. $this->drawedWidth / 2 .',0 '. $this->drawedWidth .',0" />
-		<path style="fill:none;stroke:#000000;stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
+		<path style="fill:none;stroke:#'. $p->getCurColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
 		d="m '. $p->curX .','. $p->curY .' c 0,'. $depth .' '. $this->drawedWidth / 2 .',0 '. $this->drawedWidth .',0" />
 		';
 		$p->curX += $this->drawedWidth;

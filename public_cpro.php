@@ -19,7 +19,6 @@ function waterColor() {
 }
 
 function randomColor() {
-	return '000000';
 	mt_srand((double)microtime()*1000000);
 	$c = '';
 	while(strlen($c)<6){
