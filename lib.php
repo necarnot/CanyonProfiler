@@ -413,6 +413,22 @@ class Walk extends Item {
 	}
 }
 
+class WetWalk extends Walk {
+	function __construct($width) {
+		parent::__construct($width);
+		$this->name = 'Wet Walk';
+	}
+
+	public function draw(&$p) {
+		$origCurX = $p->curX;
+		$origCurY = $p->curY;
+		parent::draw($p);
+		echo '
+		<path style="fill:none;stroke:#'. waterColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
+		d="m '. ($origCurX + $this->strokeWidth) .','. ($origCurY - $this->strokeWidth) .' '. ($this->drawedWidth - $this->strokeWidth) .',0" />';
+	}
+}
+
 class LongWalk extends Walk {
 	function __construct($width) {
 		parent::__construct($width);

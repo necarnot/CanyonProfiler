@@ -79,5 +79,5 @@ $canyonStr = 'fr2.1:/ma5/ml800/Cv8/ma5/CV10/ma5/Cv10';
 $canyonStr = $glenlivet;
 $canyonStr = 'fr2.1:/ma5/CV5/ma5/CA5/ma5/CI5/ma5/CO5/ma5/CD5/ma5/CS5/ma5';
 $canyonStr = 'fr2.1:/ma5/VV5/ma5/VR5/ma5/VI5/ma5/VO5/ma5/VD5/ma5/VS5/ma5/to5/ma5/RE5/ma5/RA5/ma5/RI5/ma5/RO5/ma5/RD5/ma5/RS5/ma5/CV5/ma5/CA5/ma5/CI5/ma5/CO5/ma5/CD5/ma5/CS5/ma5';
-$canyonStr = 'fr2.1:/ma5/sa/Ca5/va5/ml800/ma5/sa/Co5/va5/ma5/adC10/cd10/ma10/CV5/ma5/CA5/ma10/sa/Ci3/va5/ma5';
+$canyonStr = 'fr2.1:/ma5/sa/Ca5/va5/ml800/ma5/sa/Co5/va5/ma5/adC10/cd10/ma10/Cv5/mr5/CA5/ma10/sa/Ci3/va5/ma5';
 ?>

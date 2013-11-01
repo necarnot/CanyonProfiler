@@ -76,6 +76,7 @@ $syntaxes = array (
 		'SlightOverhangingDownClimb'	=> array ('rd' => 'Ressaut déversant'),
 		'OverhangingDownClimb'		=> array ('rs' => 'Ressaut surplombant'),
 		'Walk'				=> array ('ma' => 'Marche', 'mi' => 'Marche intermédiaire'),
+		'WetWalk'			=> array ('mr' => 'Marche en rivière'),
 		'LongWalk'			=> array ('ml' => 'Marche longue'),
 		'Pool'				=> array ('va' => 'Vasque'),
 		'SingleAnchor'			=> array ('as' => 'Amarrage simple', 'au' => 'Amarrage unique'),

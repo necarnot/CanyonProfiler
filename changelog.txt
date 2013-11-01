@@ -1,6 +1,7 @@
 2013-11-01
 ==========
 Added "Wet rounded cascade". Cascade arrondie et arrosée.
+Added "Wet walk".
 
 2013-10-29
 ==========
