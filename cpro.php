@@ -6,10 +6,7 @@ include 'parser.php';
 include 'samples.php';
 include 'lib.php';
 
-// TODO
-// Décider de garder ou non la distinction Pi / To
-
-// Function for basic field validation (present and neither empty nor only white space
+// Function for basic field validation (present and neither empty nor only white space)
 function isNullOrEmptyString($question){
 	return (!isset($question) || trim($question)==='');
 }
@@ -22,7 +19,7 @@ function getAnchorColor() {
 	return 'FF0000';
 }
 
-function randomColor() {
+function getRandomColor() {
 	mt_srand((double)microtime()*1000000);
 	$c = '';
 	while(strlen($c)<6){
@@ -32,6 +29,9 @@ function randomColor() {
 }
 
 function displayText($text, $xText, $yText, $xOffset, $yOffset, $align = 'start') {
+	if (isNullOrEmptyString($text)) {
+		return;
+	}
 	$xText += $xOffset;
 	$yText += $yOffset;
 	echo '
@@ -56,7 +56,6 @@ $p->parse($canyonStr);
 
 // Here was scaling code
 $p->scale();
-
 
 echo '
 <g id="layer1">';
