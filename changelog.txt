@@ -1,3 +1,9 @@
+2013-11-02
+==========
+Added grouping items by layers, allowing z-indexing
+Tidy the SVG generated code
+Corrected the pool dimensions
+
 2013-11-01
 ==========
 Added "Wet rounded cascade". Cascade arrondie et arrosée.

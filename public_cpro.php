@@ -6,10 +6,7 @@ include 'parser.php';
 include 'samples.php';
 include 'lib.php';
 
-// TODO
-// Décider de garder ou non la distinction Pi / To
-
-// Function for basic field validation (present and neither empty nor only white space
+// Function for basic field validation (present and neither empty nor only white space)
 function isNullOrEmptyString($question){
 	return (!isset($question) || trim($question)==='');
 }
@@ -22,22 +19,13 @@ function getAnchorColor() {
 	return 'FF0000';
 }
 
-function randomColor() {
+function getRandomColor() {
 	mt_srand((double)microtime()*1000000);
 	$c = '';
 	while(strlen($c)<6){
 		$c .= sprintf("%02X", mt_rand(0, 255));
 	}
 	return $c;
-}
-
-function displayText($text, $xText, $yText, $xOffset, $yOffset, $align = 'start') {
-	$xText += $xOffset;
-	$yText += $yOffset;
-	echo '
-	<g font-size="16" font-family="sans-serif" fill="black" stroke="none" text-anchor="'. $align .'">
-		<text x="' . $xText . '" y="' . $yText . '">' . $text . '</text>
-	</g>';
 }
 
 $p = new Profile();
@@ -59,12 +47,8 @@ $p->parse($canyonStr);
 // Here was scaling code
 $p->scale();
 
-
-echo '
-<g id="layer1">';
 $displayOrigCanyonStr = preg_replace('/&/', '&amp;', $p->origCanyonStr);
-//if (false) {
-if (true) {
+if (1) {
 echo '
 	<switch>
 		<foreignObject x="10" y="0" width="'. $p->pageWidthPx .'" height="200">
@@ -79,7 +63,6 @@ $p->draw();
 $p->getDefs();
 
 echo '
-</g>
 
 </svg>';
 ?>
