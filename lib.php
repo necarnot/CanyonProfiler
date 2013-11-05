@@ -63,6 +63,24 @@ class Profile {
 		}
 	}
 
+	public function chainItems() {
+		// Linking to the next item
+		$nbItems = count($this->items);
+		for ($i = 0; $i < ($nbItems-1); $i++) {
+			error_log('chaining:i='.$i.',itemName='.$this->items[$i]->name);
+			$this->items[$i]->nextItem = &$this->items[$i+1];
+		}
+				//$this->items[$i+1]->prevItem = &$this->items[$i];
+		//error_log('now checking next items...');
+		//for ($i = 0; $i < $nbItems; $i++) {
+		//	error_log('checking chaining:i='.$i.',itemName='.$this->items[$i]->name.',nextItemName='.$this->items[$i]->nextItem->name);
+		//}
+		//error_log('now checking prev items...');
+		//for ($i = $nbItems-1; $i >= 0; $i--) {
+		//	error_log('checking chaining:i='.$i.',itemName='.$this->items[$i]->name.',prevItemName='.$this->items[$i]->prevItem->name);
+		//}
+	}
+
 	// On cherche à déterminer la largeur max et la hauteur max cumulées
 	// afin de pouvoir ajuster la coupe aux dimensions de la page
 	public function scale() {
@@ -175,6 +193,8 @@ class Profile {
 
 class Item {
 	public $name;
+	public $prevItem;
+	public $nextItem;
 	public $height;
 	public $width;
 	public $heightFactor;
@@ -187,6 +207,13 @@ class Item {
 	public $symbolLetter = '';
 
 	function __construct() {
+	}
+
+	public function getNextItemClass() {
+		if ( isset($this->nextItem) ) {
+			return get_class($this->nextItem);
+		}
+		return null;
 	}
 
 	public function setInStr($str) {
@@ -250,9 +277,14 @@ class WetAngle extends VerticalAngle {
 		$origCurX = $p->curX;
 		$origCurY = $p->curY;
 		parent::draw($p);
+		$offsetNextItem = 0;
+		if ( preg_match('/.*Walk.*/', $this->getNextItemClass()) OR preg_match('/.*Rounded.*/', $this->getNextItemClass()) ) {
+			$offsetNextItem = $this->strokeWidth;
+		}
+		error_log('WetAngle:nextItemClass='.get_class($this->nextItem).',offsetNextItem='.$offsetNextItem);
 		$p->appendToLayer('water','
 		<path style="fill:none;stroke:#'. getWaterColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
-		d="m ' . ($origCurX + $this->strokeWidth) . ',' . $origCurY . ' ' . max($this->drawedWidth,0) . ',' . ($this->drawedHeight * 1) . '" />');
+		d="m ' . ($origCurX + $this->strokeWidth) . ',' . $origCurY . ' ' . max($this->drawedWidth,0) . ',' . ($this->drawedHeight - $offsetNextItem) . '" />');
 	}
 }
 
@@ -370,15 +402,21 @@ class WetRoundedVertical extends RoundedVertical {
 		$origCurX = $p->curX;
 		$origCurY = $p->curY;
 		parent::draw($p);
+		$offsetNextItem = 0;
+		if ( preg_match('/.*Walk.*/', $this->getNextItemClass()) OR preg_match('/.*Rounded.*/', $this->getNextItemClass()) ) {
+			$offsetNextItem = $this->strokeWidth;
+		}
 		// Arbitrarily specify the round width
 		$curveWidth = ($this->drawedWidth / 2) + $this->strokeWidth;
+		// TODO : Faire démarrer l'arrondi 2px plus loin si le previous est un vertical. Bon courage.
+		// TODO : rétablir le chaining des previous
 		$p->appendToLayer('water','
 		<path style="fill:none;stroke:#'. getWaterColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
 		d="m '. $origCurX .','. ($origCurY - $this->strokeWidth)
 		.' c '. $curveWidth .',0 '
 		.' '. $curveWidth .','. $curveWidth
 		.' '. $curveWidth .','. $curveWidth
-		.'l 0,'. ($this->drawedHeight - $curveWidth + $this->strokeWidth) .'" />');
+		.'l 0,'. ($this->drawedHeight - $curveWidth + $this->strokeWidth - $offsetNextItem) .'" />');
 	}
 }
 

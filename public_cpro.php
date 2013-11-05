@@ -43,6 +43,7 @@ echo '<?xml version="1.0" standalone="no"?>
 $canyonName = '';
 $canyonStr = $_POST['canyonStr'];
 $p->parse($canyonStr);
+$p->chainItems();
 
 // Here was scaling code
 $p->scale();

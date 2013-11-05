@@ -1,3 +1,7 @@
+2013-11-05
+==========
+Added items chaining (previous and next) allowing testing between items (covering)
+
 2013-11-02
 ==========
 Added grouping items by layers, allowing z-indexing

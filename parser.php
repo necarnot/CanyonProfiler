@@ -84,6 +84,7 @@ function parsed($p, $canyonStr) {
 	}
 	# On enlève le tout premier séparateur
 	$outStr = substr($outStr, 1);
+	//error_log ($outStr);
 	return $outStr;
 }
 ?>
