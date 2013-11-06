@@ -67,16 +67,20 @@ class Profile {
 		// Linking to the next item
 		$nbItems = count($this->items);
 		for ($i = 0; $i < ($nbItems-1); $i++) {
-			error_log('chaining:i='.$i.',itemName='.$this->items[$i]->name);
+			//error_log('>chaining:i='.$i.',itemName='.$this->items[$i]->name);
 			$this->items[$i]->nextItem = &$this->items[$i+1];
 		}
-				//$this->items[$i+1]->prevItem = &$this->items[$i];
+		for ($i = ($nbItems-1); $i > 0 ; $i--) {
+			//error_log('<chaining:i='.$i.',itemName='.$this->items[$i]->name);
+			$this->items[$i]->prevItem = &$this->items[$i-1];
+		}
+
 		//error_log('now checking next items...');
-		//for ($i = 0; $i < $nbItems; $i++) {
+		//for ($i = 0; $i < ($nbItems-1); $i++) {
 		//	error_log('checking chaining:i='.$i.',itemName='.$this->items[$i]->name.',nextItemName='.$this->items[$i]->nextItem->name);
 		//}
 		//error_log('now checking prev items...');
-		//for ($i = $nbItems-1; $i >= 0; $i--) {
+		//for ($i = ($nbItems-1); $i > 0 ; $i--) {
 		//	error_log('checking chaining:i='.$i.',itemName='.$this->items[$i]->name.',prevItemName='.$this->items[$i]->prevItem->name);
 		//}
 	}
@@ -91,7 +95,7 @@ class Profile {
 			$curX += $item->width * $item->widthFactor;
 			$curY += $item->height * $item->heightFactor;
 			if (get_class($item) == 'CarriageReturn') {
-				error_log('curX='.$curX.' curY='.$curY.' this->xOffset='.$this->xOffset.' this->yOffset='.$this->yOffset);
+				//error_log('curX='.$curX.' curY='.$curY.' this->xOffset='.$this->xOffset.' this->yOffset='.$this->yOffset);
 				$curX = 0;
 				$curY = 0;
 			}
@@ -202,7 +206,7 @@ class Item {
 	public $drawedHeight;
 	public $drawedWidth;
 	public $displayedText;
-	public $strokeWidth = 2;
+	public $strokeWidth = 20;
 	public $inStr = '';
 	public $symbolLetter = '';
 
@@ -281,7 +285,7 @@ class WetAngle extends VerticalAngle {
 		if ( preg_match('/.*Walk.*/', $this->getNextItemClass()) OR preg_match('/.*Rounded.*/', $this->getNextItemClass()) ) {
 			$offsetNextItem = $this->strokeWidth;
 		}
-		error_log('WetAngle:nextItemClass='.get_class($this->nextItem).',offsetNextItem='.$offsetNextItem);
+		//error_log('WetAngle:nextItemClass='.get_class($this->nextItem).',offsetNextItem='.$offsetNextItem);
 		$p->appendToLayer('water','
 		<path style="fill:none;stroke:#'. getWaterColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
 		d="m ' . ($origCurX + $this->strokeWidth) . ',' . $origCurY . ' ' . max($this->drawedWidth,0) . ',' . ($this->drawedHeight - $offsetNextItem) . '" />');
@@ -409,7 +413,6 @@ class WetRoundedVertical extends RoundedVertical {
 		// Arbitrarily specify the round width
 		$curveWidth = ($this->drawedWidth / 2) + $this->strokeWidth;
 		// TODO : Faire démarrer l'arrondi 2px plus loin si le previous est un vertical. Bon courage.
-		// TODO : rétablir le chaining des previous
 		$p->appendToLayer('water','
 		<path style="fill:none;stroke:#'. getWaterColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
 		d="m '. $origCurX .','. ($origCurY - $this->strokeWidth)
