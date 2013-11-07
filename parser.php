@@ -14,6 +14,7 @@ function parsed($p, $canyonStr) {
 	// Tidying the user-provided string
 	// Protection basique contre les tentatives de piratage
 	$canyonStr = htmlspecialchars($canyonStr);
+	error_log($canyonStr);
 	// On supprime les espaces de début et fin
 	$canyonStr = trim($canyonStr);
 
