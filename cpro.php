@@ -49,12 +49,14 @@ $p->scale();
 $displayOrigCanyonStr = preg_replace('/&/', '&amp;', $p->origCanyonStr);
 if (1) {
 echo '
+<!--
 	<switch>
 		<foreignObject x="10" y="0" width="'. $p->pageWidthPx .'" height="200">
 			<p xmlns="http://www.w3.org/1999/xhtml" style="font-size:8px">Submitted : '.$canyonName .' : '. $displayOrigCanyonStr.'<br/>Parsed as : '.$canyonName .' : '. $p->canyonStr.'</p>
 		</foreignObject>
 		<text x="20" y="20">Your SVG viewer cannot display html.</text>
 	</switch>
+-->
 ';
 }
 

@@ -1,3 +1,7 @@
+2013-11-07
+==========
+Commented out the submitted and parsed text. Still available as a comment, but not displayed.
+
 2013-11-05
 ==========
 Added items chaining (previous and next) allowing testing between items (covering)

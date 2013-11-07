@@ -206,7 +206,7 @@ class Item {
 	public $drawedHeight;
 	public $drawedWidth;
 	public $displayedText;
-	public $strokeWidth = 20;
+	public $strokeWidth = 2;
 	public $inStr = '';
 	public $symbolLetter = '';
 
