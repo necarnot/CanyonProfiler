@@ -1,3 +1,9 @@
+2013-11-08
+==========
+An external file is generated for each submission. It is then displayed (embedded) in a classic HTML page,
+and is still clickable for the ease of downloading or display.
+Re-added the submitted and parsed text in the HTML page as raw text.
+
 2013-11-07
 ==========
 Commented out the submitted and parsed text. Still available as a comment, but not displayed.
