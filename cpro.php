@@ -14,7 +14,7 @@ $p->chainItems();
 $p->scale();
 
 $outDir = 'profiles';
-$outFile = 'outfile_' . uniqid() . '.xml';
+$outFile = 'outfile_' . uniqid() . '.svg';
 $curFileName = $outDir . '/' . $outFile;
 $curFileHandle = fopen($curFileName, 'w+') or die("Can't open file:".$curFileName);
 
