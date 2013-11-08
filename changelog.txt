@@ -3,6 +3,7 @@
 An external file is generated for each submission. It is then displayed (embedded) in a classic HTML page,
 and is still clickable for the ease of downloading or display.
 Re-added the submitted and parsed text in the HTML page as raw text.
+Added a torture test page with ugly syntax errors and stupid cases to cope with.
 
 2013-11-07
 ==========

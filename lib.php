@@ -1,5 +1,49 @@
 <?php
 
+function includeProfile($canyonStr) {
+	// TODO : changer ça, c'est perfectible
+	global $curFileHandle;
+	// TODO : changer ça, c'est perfectible
+	global $canyonName;
+	$p = new Profile();
+	$p->pageWidthPx -= $p->xEndOffset;
+	$p->pageHeightPx -= $p->yEndOffset;
+	$p->parse($canyonStr);
+	$p->chainItems();
+	$p->scale();
+
+	$outDir = 'profiles';
+	$outFile = 'outfile_' . uniqid() . '.svg';
+	$curFileName = $outDir . '/' . $outFile;
+	$curFileHandle = fopen($curFileName, 'w+') or die("Can't open file:".$curFileName);
+
+	appendToFile('<?xml version="1.0" standalone="no"?>
+	<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+
+	<svg width="' . $p->pageWidth . 'mm" height="' . $p->pageHeight . 'mm" version="1.1"
+		xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink">
+	');
+
+	$displayOrigCanyonStr = preg_replace('/&/', '&amp;', $p->origCanyonStr);
+	$p->draw();
+	$p->getDefs();
+	appendToFile('
+	</svg>');
+	fclose($curFileHandle);
+	if (1) {
+		echo '
+		<p style="font-size:8px"><b>Submitted :</b> '.$canyonName .' : '. $displayOrigCanyonStr.'<br/>
+		<b>Parsed as :</b> '.$canyonName .' : '. $p->canyonStr.'</p>';
+	}
+	echo '
+	<a href="'.$curFileName.'" style="display: block">
+	<object data="'.$curFileName.'" style="pointer-events:none"></object>
+	</a>
+
+	';
+}
+
 // Function for basic field validation (present and neither empty nor only white space)
 function isNullOrEmptyString($question){
 	return (!isset($question) || trim($question)==='');
@@ -136,6 +180,8 @@ class Profile {
 	// On cherche à déterminer la largeur max et la hauteur max cumulées
 	// afin de pouvoir ajuster la coupe aux dimensions de la page
 	public function scale() {
+		//TODO : c'est moche
+		global $curFileHandle;
 		$curX = 0;
 		$curY = 0;
 		// On détermine maxHeight et maxWidth
@@ -184,15 +230,15 @@ class Profile {
 		$maxRatio = 2;
 		// Dans les cas de dépassement de ratio, on force la correction
 		if ($ratio < $minRatio) {
-			appendToFile('
-			<!-- !!!!!!!!!! RATIO WARNING : < '. $minRatio .' !!!!!!!!!!! -->
-			');
+			//appendToFile('
+			//<!-- !!!!!!!!!! RATIO WARNING : < '. $minRatio .' !!!!!!!!!!! -->
+			//');
 			$this->yScale = $this->xScale * 1.5;
 		}
 		if ($ratio > $maxRatio) {
-			appendToFile('
-			<!-- !!!!!!!!!! RATIO WARNING : > '. $maxRatio .' !!!!!!!!!!! -->
-			');
+			//appendToFile('
+			//<!-- !!!!!!!!!! RATIO WARNING : > '. $maxRatio .' !!!!!!!!!!! -->
+			//');
 			$this->xScale = $this->yScale;
 		}
 
