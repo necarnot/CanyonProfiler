@@ -1,5 +1,53 @@
 <?php
 
+// Function for basic field validation (present and neither empty nor only white space)
+function isNullOrEmptyString($question){
+	return (!isset($question) || trim($question)==='');
+}
+
+function getWaterColor() {
+	return '0078FF';
+}
+
+function getAnchorColor() {
+	return 'FF0000';
+}
+
+function getRandomColor() {
+	mt_srand((double)microtime()*1000000);
+	$c = '';
+	while(strlen($c)<6){
+		$c .= sprintf("%02X", mt_rand(0, 255));
+	}
+	return $c;
+}
+
+function appendToFile($text) {
+	global $curFileHandle;
+	fwrite($curFileHandle, $text);
+}
+
+function plf ($chaine) {
+	print $chaine . "\n";
+}
+
+function top() {
+	plf('<?xml version="1.0" encoding="iso-8859-15"?>');
+	plf('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">');
+	plf('<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">');
+	plf('  <head>');
+	plf('    <meta http-equiv="Content-Type" content="text/html; charset=utf8" />');
+	plf('    <title>CanyonProfiler</title>');
+	//plf('    <link rel="stylesheet" href="styles.css" />');
+	plf('  </head>');
+	plf('  <body>');
+}
+
+function bottom () {
+	plf ('  </body>');
+	plf ('</html>');
+}
+
 class Profile {
 	public $fontHeight = 12;
 	public $pageWidth = 297;
@@ -101,16 +149,16 @@ class Profile {
 			}
 			if ($curX > $this->maxWidth) { $this->maxWidth = $curX; }
 			if ($curY > $this->maxHeight) { $this->maxHeight = $curY; }
-			//echo '
-			// str='.get_class($item).'|'.$item->width.'|'.$item->height.' itemWidthFactor='.$item->widthFactor. ' itemHeightFactor='.$item->heightFactor.' maxWidth='.$this->maxWidth.' maxHeight='.$this->maxHeight;
+			//appendToFile('
+			// str='.get_class($item).'|'.$item->width.'|'.$item->height.' itemWidthFactor='.$item->widthFactor. ' itemHeightFactor='.$item->heightFactor.' maxWidth='.$this->maxWidth.' maxHeight='.$this->maxHeight');
 		}
 		/*
-		echo '
+		appendToFile('
 
 		// maxWidth='.$this->maxWidth.'
 		'.'
 		// maxHeight='.$this->maxHeight.'
-		';
+		');
 		*/
 
 		$this->pageWidthPx -= $this->xOffset;
@@ -123,41 +171,41 @@ class Profile {
 
 		$ratio = $this->xScale / $this->yScale;
 		/*
-		echo '
+		appendToFile('
 
 		// xScale='.$this->xScale.'
 
 		// yScale='.$this->yScale.'
 
 		// ratio='.$ratio.'
-		';
+		');
 		*/
 		$minRatio = 0.5;
 		$maxRatio = 2;
 		// Dans les cas de dépassement de ratio, on force la correction
 		if ($ratio < $minRatio) {
-			echo '
+			appendToFile('
 			<!-- !!!!!!!!!! RATIO WARNING : < '. $minRatio .' !!!!!!!!!!! -->
-			';
+			');
 			$this->yScale = $this->xScale * 1.5;
 		}
 		if ($ratio > $maxRatio) {
-			echo '
+			appendToFile('
 			<!-- !!!!!!!!!! RATIO WARNING : > '. $maxRatio .' !!!!!!!!!!! -->
-			';
+			');
 			$this->xScale = $this->yScale;
 		}
 
 		$ratio = $this->xScale / $this->yScale;
 		/*
-		echo '
+		appendToFile('
 
 		// xScale='.$this->xScale.'
 
 		// yScale='.$this->yScale.'
 
 		// ratio='.$ratio.'
-		';
+		');
 		*/
 
 		foreach($this->items as $item) {
@@ -173,10 +221,10 @@ class Profile {
 			if(isNullOrEmptyString($layerText)) {
 				continue;
 			}
-			echo '
+			appendToFile('
 	<g id="'.$layerName.'"> '.$layerText.'
 	</g>
-			';
+			');
 		}
 	}
 
@@ -184,13 +232,13 @@ class Profile {
 		if(empty($this->neededDefs)) {
 			return;
 		}
-		echo '
-	<defs>';
+		appendToFile('
+	<defs>');
 		foreach($this->neededDefs as $neededDef => $kickme) {
 			$neededDef::getDef();
 		}
-		echo '
-	</defs>';
+		appendToFile('
+	</defs>');
 	}
 }
 
@@ -668,12 +716,12 @@ class PineTree extends Vegetal {
 	}
 
 	public static function getDef() {
-		echo '
+		appendToFile('
 		<g id="'.get_called_class().'">
 			<rect x="45" y="70" width="10" height="20" fill="peru"/>
 			<polygon points="20,70 80,70 60,55 70,55 55,40 65,40 50,20 35,40 45,40 30,55 40,55" fill="forestgreen"/>
 		</g>
-		';
+		');
 	}
 }
 
@@ -694,12 +742,12 @@ class ExitPoint extends Item {
 	}
 
 	public static function getDef() {
-		echo '
+		appendToFile('
 		<g id="'.get_called_class().'">
 			<path style="fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;
 			stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" d="M 30.698485,1.0151594 16.556349,3.8435866 20.79899,8.0862273 1,20.814149 l 8.4852813,1.414214 1.4142137,8.485281 12.727922,-19.79899 4.242641,4.242641 z"/>
 		</g>
-		';
+		');
 	}
 }
 

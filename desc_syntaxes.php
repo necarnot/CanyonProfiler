@@ -1,89 +1,9 @@
 <?php
 
-include 'syntaxes.php';
-
-function plf ($chaine)
-{
-	print $chaine . "\n";
-}
-
-function top()
-{
-	plf('<?xml version="1.0" encoding="iso-8859-15"?>');
-	plf('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">');
-	plf('<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">');
-	plf('  <head>');
-	plf('    <meta http-equiv="Content-Type" content="text/html; charset=utf8" />');
-	plf('    <title>CanyonProfiler : Syntaxes description</title>');
-	//plf('    <link rel="stylesheet" href="styles.css" />');
-	plf('  </head>');
-	plf('  <body>');
-}
-
-function openTable()
-{
-	plf ('<table class="globalContent" cellpadding="10" cellspacing="0" width="100%">');
-	plf ('  <tr>');
-}
-
-function menu()
-{
-	plf('<td valign="top">');
-	plf ('    <table cellpadding="10" cellspacing="0" width="100%">');
-	plf ('      <tr>');
-	plf ('        <td class="menuTD">');
-	plf ('          <a href="http://www.ecarnot.net">');
-	plf ('            <img class="noborder" src="img/logo_ecarnot.png" width="147" height="23" alt="www.ecarnot.net" /></a><br /><br />');
-	plf ('          <b>~</b>&nbsp;<a href="index.php">Accueil</a><br />');
-	plf ('          <b>~</b>&nbsp;<a href="cv.php">Mon&nbsp;C.V.</a><br />');
-	plf ('          <b>~</b>&nbsp;<a href="ulm.php">ULM</a><br />');
-	plf ('          <b>~</b>&nbsp;<a href="modems.php">Docs&nbsp;modem</a><br />');
-	plf ('          <b>~</b>&nbsp;<a href="http://lavraievie.ecarnot.net">La&nbsp;vraie&nbsp;vi</a><a href="http://cal.ecarnot.net/">e</a>');
-	plf ('        </td>');
-	plf ('      </tr>');
-	plf ('    </table>');
-	plf('</td>');
-}
-
-function startContent()
-{
-	plf('<td valign="top">');
-	// Content
-	plf ('    <table cellpadding="10" cellspacing="0" width="100%">');
-	plf ('      <tr>');
-	plf ('        <td class="contentTD">');
-}
-
-function hr()
-{
-	plf ('<hr class="perso" />');
-}
-
-function endContent()
-{
-	plf ('        </td>');
-	plf ('      </tr>');
-	plf ('    </table>');
-	plf ('</td>');
-}
-
-function closeTable()
-{
-	plf ('  </tr>');
-	plf ('</table>');
-}
-
-function bottom ()
-{
-	plf ('  </body>');
-	plf ('</html>');
-}
-
+include_once 'lib.php';
+include_once 'syntaxes.php';
 
 top();
-//openTable();
-//menu();
-//startContent();
 ?>
    <h1>CanyonProfiler</h1>
    <h2>Syntaxes description - Description des syntaxes</h2>
@@ -138,7 +58,5 @@ foreach($syntaxes as $syntaxName => $syntax) {
 ?>
 
 <?
-//endContent();
-//closeTable();
 bottom();
 ?>
