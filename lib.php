@@ -2,8 +2,6 @@
 
 function includeProfile($canyonStr) {
 	// TODO : changer ça, c'est perfectible
-	global $curFileHandle;
-	// TODO : changer ça, c'est perfectible
 	global $canyonName;
 	$p = new Profile();
 	$p->pageWidthPx -= $p->xEndOffset;
@@ -15,9 +13,9 @@ function includeProfile($canyonStr) {
 	$outDir = 'profiles';
 	$outFile = 'outfile_' . uniqid() . '.svg';
 	$curFileName = $outDir . '/' . $outFile;
-	$curFileHandle = fopen($curFileName, 'w+') or die("Can't open file:".$curFileName);
+	$p->fileHandle = fopen($curFileName, 'w+') or die("Can't open file:".$curFileName);
 
-	appendToFile('<?xml version="1.0" standalone="no"?>
+	$p->appendToFile('<?xml version="1.0" standalone="no"?>
 	<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 
 	<svg width="' . $p->pageWidth . 'mm" height="' . $p->pageHeight . 'mm" version="1.1"
@@ -28,9 +26,9 @@ function includeProfile($canyonStr) {
 	$displayOrigCanyonStr = preg_replace('/&/', '&amp;', $p->origCanyonStr);
 	$p->draw();
 	$p->getDefs();
-	appendToFile('
+	$p->appendToFile('
 	</svg>');
-	fclose($curFileHandle);
+	fclose($p->fileHandle);
 	if (1) {
 		echo '
 		<p style="font-size:8px"><b>Submitted :</b> '.$canyonName .' : '. $displayOrigCanyonStr.'<br/>
@@ -64,11 +62,6 @@ function getRandomColor() {
 		$c .= sprintf("%02X", mt_rand(0, 255));
 	}
 	return $c;
-}
-
-function appendToFile($text) {
-	global $curFileHandle;
-	fwrite($curFileHandle, $text);
 }
 
 function plf ($chaine) {
@@ -116,6 +109,7 @@ class Profile {
 
 	public $syntaxVersion = '';
 	public $items = array ();
+	public $fileHandle;
 
 	public $layers = array (
 		'base' => '',
@@ -125,6 +119,10 @@ class Profile {
 		'text' => '',
 		'infos' => ''
 	);
+
+	public function appendToFile($text) {
+		fwrite($this->fileHandle, $text);
+	}
 
 	public function displayText($text, $xText, $yText, $xOffset, $yOffset, $align = 'start') {
 		if (isNullOrEmptyString($text)) {
@@ -166,22 +164,11 @@ class Profile {
 			//error_log('<chaining:i='.$i.',itemName='.$this->items[$i]->name);
 			$this->items[$i]->prevItem = &$this->items[$i-1];
 		}
-
-		//error_log('now checking next items...');
-		//for ($i = 0; $i < ($nbItems-1); $i++) {
-		//	error_log('checking chaining:i='.$i.',itemName='.$this->items[$i]->name.',nextItemName='.$this->items[$i]->nextItem->name);
-		//}
-		//error_log('now checking prev items...');
-		//for ($i = ($nbItems-1); $i > 0 ; $i--) {
-		//	error_log('checking chaining:i='.$i.',itemName='.$this->items[$i]->name.',prevItemName='.$this->items[$i]->prevItem->name);
-		//}
 	}
 
 	// On cherche à déterminer la largeur max et la hauteur max cumulées
 	// afin de pouvoir ajuster la coupe aux dimensions de la page
 	public function scale() {
-		//TODO : c'est moche
-		global $curFileHandle;
 		$curX = 0;
 		$curY = 0;
 		// On détermine maxHeight et maxWidth
@@ -195,11 +182,11 @@ class Profile {
 			}
 			if ($curX > $this->maxWidth) { $this->maxWidth = $curX; }
 			if ($curY > $this->maxHeight) { $this->maxHeight = $curY; }
-			//appendToFile('
-			// str='.get_class($item).'|'.$item->width.'|'.$item->height.' itemWidthFactor='.$item->widthFactor. ' itemHeightFactor='.$item->heightFactor.' maxWidth='.$this->maxWidth.' maxHeight='.$this->maxHeight');
+			//$this->appendToFile('
+			//str='.get_class($item).'|'.$item->width.'|'.$item->height.' itemWidthFactor='.$item->widthFactor. ' itemHeightFactor='.$item->heightFactor.' maxWidth='.$this->maxWidth.' maxHeight='.$this->maxHeight);
 		}
 		/*
-		appendToFile('
+		$this->appendToFile('
 
 		// maxWidth='.$this->maxWidth.'
 		'.'
@@ -267,7 +254,7 @@ class Profile {
 			if(isNullOrEmptyString($layerText)) {
 				continue;
 			}
-			appendToFile('
+			$this->appendToFile('
 	<g id="'.$layerName.'"> '.$layerText.'
 	</g>
 			');
@@ -278,12 +265,12 @@ class Profile {
 		if(empty($this->neededDefs)) {
 			return;
 		}
-		appendToFile('
+		$this->appendToFile('
 	<defs>');
 		foreach($this->neededDefs as $neededDef => $kickme) {
-			$neededDef::getDef();
+			$neededDef::getDef($this);
 		}
-		appendToFile('
+		$this->appendToFile('
 	</defs>');
 	}
 }
@@ -359,7 +346,8 @@ class VerticalAngle extends Item {
 		<path style="fill:none;stroke:#'. $p->getCurColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
 		d="m ' . $p->curX . ',' . $p->curY . ' ' . $this->drawedWidth . ',' . $this->drawedHeight . '" />');
 		//TODO : Pour déterminer l'offset d'xDisplay, il suffirait de le calculer grace aux points haut et bas
-		$p->displayText($this->displayedText, $p->curX, $yDisplayText, ($this->drawedWidth / 3)-5, 6, 'end');
+		#$p->displayText($this->displayedText, $p->curX, $yDisplayText, ($this->drawedWidth / 3)-5, 6, 'end');
+		$p->displayText($this->displayedText, $p->curX, $yDisplayText, ($this->drawedWidth / 2) - ($p->xScale * 0.8), $this->drawedWidth * $p->yScale * 0.009, 'end');
 		$p->curX += $this->drawedWidth;
 		$p->curY += $this->drawedHeight;
 	}
@@ -386,6 +374,15 @@ class WetAngle extends VerticalAngle {
 	}
 }
 
+# 22.5
+# 45
+# 67.5
+# 90
+# 112.5
+# 135
+# 157.5
+# 180
+
 class WetVertical extends WetAngle {
 	function __construct($height) {
 		parent::__construct($height, 0);
@@ -409,7 +406,7 @@ class WetObliqueVertical extends WetAngle {
 
 class WetSlightOverhangingVertical extends WetAngle {
 	function __construct($height) {
-		parent::__construct($height, 115.5);
+		parent::__construct($height, 112.5);
 		$this->name = 'Wet Slight Overhanging Vertical';
 	}
 }
@@ -444,7 +441,7 @@ class ObliqueVertical extends VerticalAngle {
 
 class SlightOverhangingVertical extends VerticalAngle {
 	function __construct($height) {
-		parent::__construct($height, 115.5);
+		parent::__construct($height, 112.5);
 		$this->name = 'Slightly Overhanging Vertical';
 	}
 }
@@ -761,8 +758,8 @@ class PineTree extends Vegetal {
 		<use xlink:href="#'.get_class($this).'" x="'.($p->curX + $xAsOffset).'" y="'.($p->curY + $yAsOffset).'"/>');
 	}
 
-	public static function getDef() {
-		appendToFile('
+	public static function getDef(&$p) {
+		$p->appendToFile('
 		<g id="'.get_called_class().'">
 			<rect x="45" y="70" width="10" height="20" fill="peru"/>
 			<polygon points="20,70 80,70 60,55 70,55 55,40 65,40 50,20 35,40 45,40 30,55 40,55" fill="forestgreen"/>
@@ -787,8 +784,8 @@ class ExitPoint extends Item {
 		$p->displayText($this->displayedText, ($p->curX + $xOffset + 32), ($p->curY + $yOffset), 0, 0, 'left');
 	}
 
-	public static function getDef() {
-		appendToFile('
+	public static function getDef(&$p) {
+		$p->appendToFile('
 		<g id="'.get_called_class().'">
 			<path style="fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;
 			stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" d="M 30.698485,1.0151594 16.556349,3.8435866 20.79899,8.0862273 1,20.814149 l 8.4852813,1.414214 1.4142137,8.485281 12.727922,-19.79899 4.242641,4.242641 z"/>
