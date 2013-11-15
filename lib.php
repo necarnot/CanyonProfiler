@@ -297,6 +297,8 @@ class Item {
 
 class VerticalAngle extends Item {
 	function __construct($height, $angle) {
+		$height = abs($height);
+		$angle = abs($angle);
 		parent::__construct();
 		$this->name = 'VerticalAngle';
 		$this->heightFactor = 1;
@@ -305,7 +307,7 @@ class VerticalAngle extends Item {
 		$this->height = $height;
 		$this->symbolLetter = 'C';
 
-		// TODO : Recalculer intelligement les maxwidths
+		// TODO : Recalculer intelligement les maxwidths, y compris dans les dévers/surplombs
 		$this->width = ($angle == 0) ? 0 : $height / tan(deg2rad($angle));
 	}
 
@@ -346,15 +348,6 @@ class WetAngle extends VerticalAngle {
 		d="m ' . ($origCurX + $this->strokeWidth) . ',' . $origCurY . ' ' . max($this->drawedWidth,0) . ',' . ($this->drawedHeight - $offsetNextItem) . '" />');
 	}
 }
-
-# 22.5
-# 45
-# 67.5
-# 90
-# 112.5
-# 135
-# 157.5
-# 180
 
 class WetVertical extends WetAngle {
 	function __construct($height) {
@@ -462,7 +455,7 @@ class RoundedVertical extends Vertical {
 
 class WetRoundedVertical extends RoundedVertical {
 	function __construct($height) {
-		parent::__construct($height, 0);
+		parent::__construct($height);
 		$this->name = 'Wet Rounded Vertical';
 	}
 
@@ -537,6 +530,7 @@ class OverhangingDownClimb extends OverhangingVertical {
 
 class Walk extends Item {
 	function __construct($width) {
+		$width = abs($width);
 		parent::__construct();
 		$this->name = 'Walk';
 		$this->heightFactor = 0;
@@ -612,6 +606,7 @@ class LongWalk extends Walk {
 
 class Pool extends Item {
 	function __construct($width) {
+		$width = abs($width);
 		parent::__construct();
 		$this->name = 'Pool';
 		$this->heightFactor = 0;
@@ -772,6 +767,7 @@ class Span extends Item {
 
 class CarriageReturn extends Item {
 	function __construct($crOffset) {
+		$crOffset = abs($crOffset);
 		parent::__construct();
 		$this->name = 'Carriage return';
 		$this->heightFactor = 0;
