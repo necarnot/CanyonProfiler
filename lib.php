@@ -121,6 +121,10 @@ class Profile {
 	);
 
 	public function appendToFile($text) {
+		//echo('in appendToFile debut');
+		//echo($text);
+		//var_dump($this->fileHandle);
+		//echo('in appendToFile fin');
 		fwrite($this->fileHandle, $text);
 	}
 
@@ -169,6 +173,10 @@ class Profile {
 	// On cherche à déterminer la largeur max et la hauteur max cumulées
 	// afin de pouvoir ajuster la coupe aux dimensions de la page
 	public function scale() {
+		#var_dump($this);
+		//echo '<!-- in scale(), trying to appendToFile -->';
+		$this->appendToFile('coucou');
+		//return;
 		$curX = 0;
 		$curY = 0;
 		// On détermine maxHeight et maxWidth
