@@ -320,9 +320,7 @@ class VerticalAngle extends Item {
 		$p->appendToLayer('base','
 		<path style="fill:none;stroke:#'. $p->getCurColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
 		d="m ' . $p->curX . ',' . $p->curY . ' ' . $this->drawedWidth . ',' . $this->drawedHeight . '" />');
-		//TODO : Pour déterminer l'offset d'xDisplay, il suffirait de le calculer grace aux points haut et bas
-		#$p->displayText($this->displayedText, $p->curX, $yDisplayText, ($this->drawedWidth / 3)-5, 6, 'end');
-		$p->displayText($this->displayedText, $p->curX, $yDisplayText, ($this->drawedWidth / 2) - ($p->xScale * 0.8), $this->drawedWidth * $p->yScale * 0.009, 'end');
+		$p->displayText($this->displayedText, $p->curX, $yDisplayText, ($this->drawedWidth / 2) - ($p->xScale * 0.8), $this->drawedWidth * 0.09, 'end');
 		$p->curX += $this->drawedWidth;
 		$p->curY += $this->drawedHeight;
 	}
