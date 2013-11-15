@@ -6,15 +6,10 @@ function includeProfile($canyonStr) {
 	$p = new Profile();
 	$p->pageWidthPx -= $p->xEndOffset;
 	$p->pageHeightPx -= $p->yEndOffset;
-	$p->parse($canyonStr);
-	$p->chainItems();
-	$p->scale();
-
 	$outDir = 'profiles';
 	$outFile = 'outfile_' . uniqid() . '.svg';
 	$curFileName = $outDir . '/' . $outFile;
 	$p->fileHandle = fopen($curFileName, 'w+') or die("Can't open file:".$curFileName);
-
 	$p->appendToFile('<?xml version="1.0" standalone="no"?>
 	<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 
@@ -22,6 +17,10 @@ function includeProfile($canyonStr) {
 		xmlns="http://www.w3.org/2000/svg"
 		xmlns:xlink="http://www.w3.org/1999/xlink">
 	');
+	$p->parse($canyonStr);
+	$p->chainItems();
+	$p->scale();
+
 
 	$displayOrigCanyonStr = preg_replace('/&/', '&amp;', $p->origCanyonStr);
 	$p->draw();
@@ -121,10 +120,6 @@ class Profile {
 	);
 
 	public function appendToFile($text) {
-		//echo('in appendToFile debut');
-		//echo($text);
-		//var_dump($this->fileHandle);
-		//echo('in appendToFile fin');
 		fwrite($this->fileHandle, $text);
 	}
 
@@ -173,10 +168,6 @@ class Profile {
 	// On cherche à déterminer la largeur max et la hauteur max cumulées
 	// afin de pouvoir ajuster la coupe aux dimensions de la page
 	public function scale() {
-		#var_dump($this);
-		//echo '<!-- in scale(), trying to appendToFile -->';
-		$this->appendToFile('coucou');
-		//return;
 		$curX = 0;
 		$curY = 0;
 		// On détermine maxHeight et maxWidth
@@ -190,18 +181,11 @@ class Profile {
 			}
 			if ($curX > $this->maxWidth) { $this->maxWidth = $curX; }
 			if ($curY > $this->maxHeight) { $this->maxHeight = $curY; }
-			//$this->appendToFile('
-			//str='.get_class($item).'|'.$item->width.'|'.$item->height.' itemWidthFactor='.$item->widthFactor. ' itemHeightFactor='.$item->heightFactor.' maxWidth='.$this->maxWidth.' maxHeight='.$this->maxHeight);
+			$this->appendToFile('
+			<!-- str='.get_class($item).'|'.$item->width.'|'.$item->height.' itemWidthFactor='.$item->widthFactor. ' itemHeightFactor='.$item->heightFactor.' maxWidth='.$this->maxWidth.' maxHeight='.$this->maxHeight.' -->');
 		}
-		/*
 		$this->appendToFile('
-
-		// maxWidth='.$this->maxWidth.'
-		'.'
-		// maxHeight='.$this->maxHeight.'
-		');
-		*/
-
+		<!-- maxWidth='.$this->maxWidth.' '.' maxHeight='.$this->maxHeight.' -->');
 		$this->pageWidthPx -= $this->xOffset;
 		$this->pageHeightPx -= $this->yOffset;
 		$this->xScale = $this->pageWidthPx / $this->maxWidth;
@@ -211,43 +195,24 @@ class Profile {
 		$this->curY = $this->yOffset;
 
 		$ratio = $this->xScale / $this->yScale;
-		/*
-		appendToFile('
-
-		// xScale='.$this->xScale.'
-
-		// yScale='.$this->yScale.'
-
-		// ratio='.$ratio.'
-		');
-		*/
+		$this->appendToFile('
+		<!-- xScale='.$this->xScale.' // yScale='.$this->yScale.' // ratio='.$ratio.' -->');
 		$minRatio = 0.5;
 		$maxRatio = 2;
 		// Dans les cas de dépassement de ratio, on force la correction
 		if ($ratio < $minRatio) {
-			//appendToFile('
-			//<!-- !!!!!!!!!! RATIO WARNING : < '. $minRatio .' !!!!!!!!!!! -->
-			//');
+			$this->appendToFile('
+			<!-- !!!!!!!!!! RATIO WARNING : < '. $minRatio .' !!!!!!!!!!! --> ');
 			$this->yScale = $this->xScale * 1.5;
 		}
 		if ($ratio > $maxRatio) {
-			//appendToFile('
-			//<!-- !!!!!!!!!! RATIO WARNING : > '. $maxRatio .' !!!!!!!!!!! -->
-			//');
+			$this->appendToFile('
+			<!-- !!!!!!!!!! RATIO WARNING : > '. $maxRatio .' !!!!!!!!!!! --> ');
 			$this->xScale = $this->yScale;
 		}
-
 		$ratio = $this->xScale / $this->yScale;
-		/*
-		appendToFile('
-
-		// xScale='.$this->xScale.'
-
-		// yScale='.$this->yScale.'
-
-		// ratio='.$ratio.'
-		');
-		*/
+		$this->appendToFile('
+		<!-- xScale='.$this->xScale.' // yScale='.$this->yScale.' // ratio='.$ratio.' -->');
 
 		foreach($this->items as $item) {
 			$item->scale($this->xScale, $this->yScale);

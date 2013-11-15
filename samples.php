@@ -78,8 +78,8 @@ $canyonStr = $laire;
 $canyonStr = $trefond;
 $canyonStr = $rouanne;
 $canyonStr = $carmesAmont;
-$canyonStr = 'fr2.1:/ma10/vv5/ca11';
 $canyonStr = 'fr1.1:/m5/c5/v5/m8/m5/arg/c10/v5/m5/s/r4/m10/s/t3/v4/m5';
 $canyonStr = $glenlivet;
+$canyonStr = 'fr2.1:/ca11';
 $canyonStr = 'fr2.1:/ma5/sa/ASRG/Ca5/va5/ml800/ma5/sa/exRD/Co5/va5/ma5/adC10/cd10/ma10/exDélicate en RG/ADRG : Chaîne/Cv5/mr5/sa/CA5/ma10/sa/Ci3/va5/ma5';
 ?>
