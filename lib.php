@@ -540,7 +540,7 @@ class Walk extends Item {
 	public function draw(&$p) {
 		$p->appendToLayer('base','
 		<path style="fill:none;stroke:#'. $p->getCurColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
-		d="m '. $p->curX .','. $p->curY .' '. $this->drawedWidth .',0" />');
+		d="m '. $p->curX .','. $p->curY .' h'. $this->drawedWidth .'" />');
 		$p->curX += $this->drawedWidth;
 	}
 }
@@ -557,7 +557,7 @@ class WetWalk extends Walk {
 		parent::draw($p);
 		$p->appendToLayer('water','
 		<path style="fill:none;stroke:#'. getWaterColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
-		d="m '. ($origCurX + $this->strokeWidth) .','. ($origCurY - $this->strokeWidth) .' '. ($this->drawedWidth - $this->strokeWidth) .',0" />');
+		d="m '. ($origCurX + $this->strokeWidth) .','. ($origCurY - $this->strokeWidth) .' h'. ($this->drawedWidth - $this->strokeWidth) .'" />');
 	}
 }
 
