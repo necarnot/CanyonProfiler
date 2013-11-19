@@ -178,16 +178,19 @@ class Profile {
 		foreach($this->items as $item) {
 			$curX += $item->width * $item->widthFactor;
 			$curY += $item->height * $item->heightFactor;
+			$minX = min($minX, $curX);
+			$minY = min($minY, $curY);
+			$maxX = max($maxX, $curX);
+			$maxY = max($maxY, $curY);
 			if (get_class($item) == 'CarriageReturn') {
-				//error_log('curX='.$curX.' curY='.$curY.' this->xOffset='.$this->xOffset.' this->yOffset='.$this->yOffset);
 				$curX = 0;
-				$curY = 0;
 			}
-			if ($curX > $this->maxWidth) { $this->maxWidth = $curX; }
-			if ($curY > $this->maxHeight) { $this->maxHeight = $curY; }
-			$this->appendToFile('
-			<!-- str='.get_class($item).'|'.$item->width.'|'.$item->height.' itemWidthFactor='.$item->widthFactor. ' itemHeightFactor='.$item->heightFactor.' maxWidth='.$this->maxWidth.' maxHeight='.$this->maxHeight.' minX='.$minX.' minY='.$minY.' maxX='.$maxX.' maxY='.$maxY.' -->');
+			//$this->appendToFile('
+			//<!-- str='.get_class($item).'|'.$item->width.'|'.$item->height.' itemWidthFactor='.$item->widthFactor. ' itemHeightFactor='.$item->heightFactor.' minX='.$minX.' minY='.$minY.' maxX='.$maxX.' maxY='.$maxY.' -->');
 		}
+		$this->maxWidth = $maxX - $minX;
+		$this->maxHeight = $maxY - $minY;
+
 		$this->appendToFile('
 		<!-- maxWidth='.$this->maxWidth.' '.' maxHeight='.$this->maxHeight.' -->');
 		$this->pageWidthPx -= $this->xOffset;
@@ -195,8 +198,8 @@ class Profile {
 		$this->xScale = $this->pageWidthPx / $this->maxWidth;
 		$this->yScale = $this->pageHeightPx / $this->maxHeight;
 		// On remet en place les positions de départ
-		$this->curX = $this->xOffset;
-		$this->curY = $this->yOffset;
+		$this->curX = $this->xOffset - ($minX*$this->xScale);
+		$this->curY = $this->yOffset - ($minY*$this->yScale);;
 
 		$ratio = $this->xScale / $this->yScale;
 		$this->appendToFile('

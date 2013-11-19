@@ -1,3 +1,9 @@
+2013-11-20
+==========
+Corrected framing of negative x-axis on very overhanging cliffs.
+(https://github.com/necarnot/CanyonProfiler/issues/41)
+Also been validated with carriage returns.
+
 2013-11-15
 ==========
 Better text positionning in non-vertical obstacles

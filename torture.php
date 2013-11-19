@@ -6,11 +6,12 @@ include_once 'lib.php';
 top();
 $handle = @fopen('torture.dat', 'r');
 if ($handle) {
-	while (($buffer = stream_get_line($handle,65535,"\n")) !== false) {
+	while (($buffer = fgets($handle)) !== false) {
 		if(substr($buffer, 0, 1) == '#') {
 			continue;
 		}
-		$canyonStr = $buffer;
+		$canyonStr = rtrim($buffer,"\n");
+		//error_log($canyonStr);
 		includeProfile($canyonStr);
 	}
 	if (!feof($handle)) {

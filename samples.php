@@ -83,4 +83,5 @@ $canyonStr = $glenlivet;
 $canyonStr = 'fr2.1:/ca11';
 $canyonStr = 'fr2.1:/ma5/sa/ASRG/Ca5/va5/ml800/ma5/sa/exRD/Co5/va5/ma5/adC10/cd10/ma10/exDélicate en RG/ADRG : Chaîne/Cv5/mr5/sa/CA5/ma10/sa/Ci3/va5/ma5';
 $canyonStr = 'fr2.1:/ma5/vs10/ma5';
+$canyonStr = 'fr2.1:/ma5/sa/AN/CA8/va5/ma5/sa/AN : MC impérative/Ri10/ad10m/Ro10/Ad52m/RQ10/RD10/Rs10/Rq10/ma5/ad2 spits/Pi10/ma5/Re3/ma10/sa/To3/va5/ma5';
 ?>
