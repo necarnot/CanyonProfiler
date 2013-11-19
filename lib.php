@@ -170,6 +170,10 @@ class Profile {
 	public function scale() {
 		$curX = 0;
 		$curY = 0;
+		$minX = 0;
+		$minY = 0;
+		$maxX = 0;
+		$maxY = 0;
 		// On détermine maxHeight et maxWidth
 		foreach($this->items as $item) {
 			$curX += $item->width * $item->widthFactor;
@@ -182,7 +186,7 @@ class Profile {
 			if ($curX > $this->maxWidth) { $this->maxWidth = $curX; }
 			if ($curY > $this->maxHeight) { $this->maxHeight = $curY; }
 			$this->appendToFile('
-			<!-- str='.get_class($item).'|'.$item->width.'|'.$item->height.' itemWidthFactor='.$item->widthFactor. ' itemHeightFactor='.$item->heightFactor.' maxWidth='.$this->maxWidth.' maxHeight='.$this->maxHeight.' -->');
+			<!-- str='.get_class($item).'|'.$item->width.'|'.$item->height.' itemWidthFactor='.$item->widthFactor. ' itemHeightFactor='.$item->heightFactor.' maxWidth='.$this->maxWidth.' maxHeight='.$this->maxHeight.' minX='.$minX.' minY='.$minY.' maxX='.$maxX.' maxY='.$maxY.' -->');
 		}
 		$this->appendToFile('
 		<!-- maxWidth='.$this->maxWidth.' '.' maxHeight='.$this->maxHeight.' -->');
