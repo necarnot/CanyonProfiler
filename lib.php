@@ -140,6 +140,12 @@ class Profile {
 	}
 
 	public function appendToLayer($layer, $text) {
+		if ($layer == 'base') {
+			if(isNullOrEmptyString($this->layers[$layer])) {
+				$this->layers[$layer] = '<path style="fill:none;stroke:#000000;stroke-width:2px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
+				d="';
+			}
+		}
 		$this->layers[$layer] .= $text;
 	}
 
@@ -245,6 +251,10 @@ class Profile {
 			if(isNullOrEmptyString($layerText)) {
 				continue;
 			}
+			if ($layerName == 'base') {
+				$layerText .= '" />
+				';
+			}
 			$this->appendToFile('
 	<g id="'.$layerName.'"> '.$layerText.'
 	</g>
@@ -336,8 +346,7 @@ class VerticalAngle extends Item {
 			$yDisplayText += $p->fontHeight;
 		}
 		$p->appendToLayer('base','
-		<path style="fill:none;stroke:#'. $p->getCurColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
-		d="m ' . $p->curX . ',' . $p->curY . ' ' . $this->drawedWidth . ',' . $this->drawedHeight . '" />');
+		m ' . $p->curX . ',' . $p->curY . ' ' . $this->drawedWidth . ',' . $this->drawedHeight . ' ');
 		$p->displayText($this->displayedText, $p->curX, $yDisplayText, ($this->drawedWidth / 2) - ($p->xScale * 0.8), $this->drawedWidth * 0.09, 'end');
 		$p->curX += $this->drawedWidth;
 		$p->curY += $this->drawedHeight;
@@ -458,12 +467,11 @@ class RoundedVertical extends Vertical {
 		// Arbitrarily specify the round width
 		$curveWidth = $this->drawedWidth / 2;
 		$p->appendToLayer('base','
-		<path style="fill:none;stroke:#'. $p->getCurColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
-		d="m '. $p->curX .','. $p->curY
+		m '. $p->curX .','. $p->curY
 		.' c '. $curveWidth .',0 '
 		.' '. $curveWidth .','. $curveWidth
 		.' '. $curveWidth .','. $curveWidth
-		.'l 0,'. ($this->drawedHeight - $curveWidth) .'" />');
+		.'l 0,'. ($this->drawedHeight - $curveWidth) .' ');
 		$p->displayText($this->displayedText, ($p->curX + $curveWidth), $yDisplayText, -5, 0, 'end');
 		$p->curX += $curveWidth;
 		$p->minX = min($p->minX, $p->curX);
@@ -559,8 +567,7 @@ class Walk extends Item {
 
 	public function draw(&$p) {
 		$p->appendToLayer('base','
-		<path style="fill:none;stroke:#'. $p->getCurColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
-		d="m '. $p->curX .','. $p->curY .' h'. $this->drawedWidth .'" />');
+		m '. $p->curX .','. $p->curY .' h'. $this->drawedWidth .' ');
 		$p->minX = min($p->minX, $p->curX);
 		$p->curX += $this->drawedWidth;
 	}
