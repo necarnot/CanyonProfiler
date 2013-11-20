@@ -224,11 +224,7 @@ class Profile {
 		if ($ratio > $maxRatio) {
 			$this->appendToFile('
 			<!-- !!!!!!!!!! RATIO WARNING : > '. $maxRatio .' !!!!!!!!!!! --> ');
-<<<<<<< HEAD
 			$this->xScale = $this->yScale * 2;
-=======
-			$this->xScale = $this->yScale * 2.5;
->>>>>>> baeca7567211ba29046f838826fba9fc06ec6de0
 		}
 		$ratio = $this->xScale / $this->yScale;
 		$this->appendToFile('
