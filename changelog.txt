@@ -1,5 +1,6 @@
 2013-11-20
 ==========
+Linked every base segment paths into a single one. Preparing backgrounds structure.
 Corrected framing of negative x-axis on very overhanging cliffs.
 (https://github.com/necarnot/CanyonProfiler/issues/41)
 Also been validated with carriage returns.

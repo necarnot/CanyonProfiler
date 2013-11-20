@@ -141,9 +141,15 @@ class Profile {
 
 	public function appendToLayer($layer, $text) {
 		if ($layer == 'base') {
+			// If this path is the first one, we add the path tag
 			if(isNullOrEmptyString($this->layers[$layer])) {
-				$this->layers[$layer] = '<path style="fill:none;stroke:#000000;stroke-width:2px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
-				d="';
+				$this->layers[$layer] = '
+			<path style="fill:none;stroke:#000000;stroke-width:2px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
+			d="';
+			} else {
+				// If this path is not the first one, we remove the moveto command
+				preg_match('/m\s*\d*\.*\d*,\d*\.*\d*\s*(.*)/',$text,$matches);
+				$text = "\n\t\t\t" . $matches[1];
 			}
 		}
 		$this->layers[$layer] .= $text;
@@ -252,8 +258,7 @@ class Profile {
 				continue;
 			}
 			if ($layerName == 'base') {
-				$layerText .= '" />
-				';
+				$layerText .= '" />';
 			}
 			$this->appendToFile('
 	<g id="'.$layerName.'"> '.$layerText.'
@@ -335,7 +340,6 @@ class VerticalAngle extends Item {
 		$this->height = $height;
 		$this->symbolLetter = 'C';
 
-		// TODO : Recalculer intelligement les maxwidths, y compris dans les dévers/surplombs
 		$this->width = ($angle == 0) ? 0 : $height / tan(deg2rad($angle));
 	}
 
@@ -345,8 +349,7 @@ class VerticalAngle extends Item {
 		if (($yDisplayText - $p->fontHeight) < $p->curY) {
 			$yDisplayText += $p->fontHeight;
 		}
-		$p->appendToLayer('base','
-		m ' . $p->curX . ',' . $p->curY . ' ' . $this->drawedWidth . ',' . $this->drawedHeight . ' ');
+		$p->appendToLayer('base','m ' . $p->curX . ',' . $p->curY . ' l' . $this->drawedWidth . ',' . $this->drawedHeight);
 		$p->displayText($this->displayedText, $p->curX, $yDisplayText, ($this->drawedWidth / 2) - ($p->xScale * 0.8), $this->drawedWidth * 0.09, 'end');
 		$p->curX += $this->drawedWidth;
 		$p->curY += $this->drawedHeight;
@@ -466,12 +469,11 @@ class RoundedVertical extends Vertical {
 		$yDisplayText = $p->curY + ($this->drawedHeight / 2) + ($p->fontHeight / 1);
 		// Arbitrarily specify the round width
 		$curveWidth = $this->drawedWidth / 2;
-		$p->appendToLayer('base','
-		m '. $p->curX .','. $p->curY
+		$p->appendToLayer('base','m '. $p->curX .','. $p->curY
 		.' c '. $curveWidth .',0 '
 		.' '. $curveWidth .','. $curveWidth
 		.' '. $curveWidth .','. $curveWidth
-		.'l 0,'. ($this->drawedHeight - $curveWidth) .' ');
+		.'l 0,'. ($this->drawedHeight - $curveWidth));
 		$p->displayText($this->displayedText, ($p->curX + $curveWidth), $yDisplayText, -5, 0, 'end');
 		$p->curX += $curveWidth;
 		$p->minX = min($p->minX, $p->curX);
@@ -566,8 +568,7 @@ class Walk extends Item {
 	}
 
 	public function draw(&$p) {
-		$p->appendToLayer('base','
-		m '. $p->curX .','. $p->curY .' h'. $this->drawedWidth .' ');
+		$p->appendToLayer('base','m '. $p->curX .','. $p->curY .' h'. $this->drawedWidth);
 		$p->minX = min($p->minX, $p->curX);
 		$p->curX += $this->drawedWidth;
 	}
@@ -609,6 +610,15 @@ class LongWalk extends Walk {
 		$longWalkHeight = 150;
 		$longWalkAngle = 20;
 		$longWalkWidth = 10;
+
+// TODO :
+/*
+- Sur le layer "base" : tirer un seul trait from start to end of long walk
+- Créer un dernier layer over all et y placer :
+  - un rectangle blanc penché
+  - recouvert par les traits pointillés de part et d'autre
+*/
+
 		// Un petit trait horizontal qui précède
 		$p->appendToLayer('base','
 		<path style="fill:none;stroke:#'. $p->getCurColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
@@ -643,9 +653,7 @@ class Pool extends Item {
 
 	public function draw(&$p) {
 		$depth = 2 * $p->yScale;
-		$p->appendToLayer('base','
-		<path style="fill:none;stroke:#'. $p->getCurColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
-		d="m '. $p->curX .','. $p->curY .' c 0,'. $depth .' '. $this->drawedWidth / 2 .',0 '. $this->drawedWidth .',0" />');
+		$p->appendToLayer('base','m '. $p->curX .','. $p->curY .' c 0,'. $depth .' '. $this->drawedWidth / 2 .',0 '. $this->drawedWidth .',0');
 		$p->appendToLayer('water','
 		<path style="fill:#'. getWaterColor() .';fill-opacity:1;stroke:none"
 		d="m '. ($p->curX + ($this->strokeWidth/2)) .','. ($p->curY - ($this->strokeWidth/2)) .' c '.-$this->strokeWidth.','. $depth .' '. $this->drawedWidth / 2 .',0 '. $this->drawedWidth .',0" />');
