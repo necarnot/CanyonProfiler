@@ -23,7 +23,7 @@ $trefond = '/ma1/va3/ma3/to3/ma3/ra2/ma2/ra2/ma2/ra3/ma5/to1/va3/ma1/to2/va2/ma1
 $laire = 'fr2.1:/ma4/va2/ma4/va4/ma3/to1/va2/ma6/ra5/va5/ma4/anrd/ca20/va4/ma5/ra3/ma2/admc/ma15/adrg/ca26/ra2/va3/ma4/va3/ma4/va3/ma4/ra3/va2/asrd/ca21/va5/an/ca13/va3/ml800/ra3/va2/ma5/va2/ma2/va3/asrg/ca15/va5/ma2/re3/va5/ml700/ad/ca28/va5/ma4/va3/ma5';
 // Bidouillé
 $laireB = '/ma4/va2/ma4/va4/ma3/to1/va2/ma6/re5/va5/ma4/anrd/ca20/va4/ma5/ra3/ma7/adrg/cv16/ra2/va3/ma4/va3/ma4/va3/ma4/re3/va2/asrd/cv21/va5/an/cv13/va3/ma2/re3/va2/ma5/va2/ma2/va3/asrg/cv-15/va5/ma2/re4/va5/ml700/ma6/ad/cv28/va5/ma4/va3/ma5';
-$laireB = 'fr2.1:/ma4/va2/ma4/va4/ma3/to1/va2/ma6/re5/va5/ma4/anrd/cv20/va4/ma5/re3/ma7/adrg/cv16/re2/va3/ma4/va3/ma4/va3/ma4/re3/va2/asrd/cv21/va5/ma10/cr460/ma10/an/cv13/va3/ma2/re3/va2/ma5/va2/ma2/va3/asrg/cv15/va5/ma2/re3/va5/ml700/ma6/ad/cv28/va5/ma4/va3/ma5';
+$laireB = 'fr2.1:/ma4/va2/ma4/va4/ma3/to1/va2/ma6/re5/va5/ma4/anrd/cv20/va4/ma5/re3/ma7/adrg/cv16/re2/va3/ma4/va3/ma4/va3/ma4/re3/va2/asrd/cv21/va5/ma10/cr160/ma10/an/cv13/va3/ma2/re3/va2/ma5/va2/ma2/va3/asrg/cv15/va5/ma2/re3/va5/ml700/ma6/ad/cv28/va5/ma4/va3/ma5';
 $canyonName = 'Trefond-Pernaz';
 $canyonName = 'Saut du Laïre';
 $canyonName = 'Baranc del Norte';
@@ -48,7 +48,6 @@ $canyonStr = 'fr1.1:/m5/c5/v5/m8/m5/arg/c10/v5/m5/s/r4/m10/s/t3/v4/m5';
 $canyonStr = 'fr1.1:/m5/c5/v5/m8/m5/arg/c10/v5/m5/s/r4/m10/s/t3/v4/m5';
 $canyonStr = 'fr1.1:/m5/c5/v5/m8/m5/arg/c10/v5/m5/s/r4/m10/s/t3/v4/m5';
 $canyonStr = 'es0.1:/s5/c5/b5/s8/s5/arg/c10/b5/s5/p/r4/s10/p/t3/b4/s5';
-$long = '/ma4/va2/ma4/va4/ma3/to1/va2/ma6/re5/va5/ma4/anrd/cv20/va4/ma5/re3/ma7/adrg/cv16/re2/va3/ma4/va3/ma4/va3/ma4/re3/va2/asrd/cv21/va5/ma10/ma10/an/cv13/va3/ma2/re3/va2/ma5/va2/ma2/va3/asrg/cv15/va5/ma2/re3/va5/ml700/ma6/ad/cv28/va5/ma4/va3/ma5/ma4/va2/ma4/va4/ma3/to1/va2/ma6/re5/va5/ma4/anrd/cv20/va4/ma5/re3/ma7/adrg/cv16/re2/va3/ma4/va3/ma4/va3/ma4/re3/va2/asrd/cv21/va5/ma10/ma10/cr340/ma10/an/cv13/va3/ma2/re3/va2/ma5/va2/ma2/va3/asrg/cv15/va5/ma2/re3/va5/ml700/ma6/ad/cv28/va5/ma4/va3/ma5/ma4/va2/ma4/va4/ma3/to1/va2/ma6/re5/va5/ma4/an/cv20/va4/ma5/re3/ma7/adrg/cv16/re2/va3/ma4/va3/ma4/va3/ma4/re3/va2/asrd/cv21/va5/ma10/ma10/an/cv13/va3/ma2/re3/va2/ma5/va2/ma2/va3/ma5/cr200/ma5/asrg/cv15/va5/ma2/re3/va5/ml700/ma6/ad/cv28/va5/ma4/va3/ma5/re3/va5/ml700/ma6/ad/cv28/va5/ma4/va3/ma5/re3/va5/ml700/ma6/ad/cv28/va5/ma4/va3/ma5';
 $canyonStr = 'fr2.1:/ma10/re4/ma5/re2/va3/ma15/re2/va5/cv5/va3/cv3/va10/re1/va2/va2/ma15/to3/va1/ma30/ca5/va10/ma30/re3/va5/to4/va5/to3/va5/ca12/va10/ma5/pi5/ml100/re3/va5/ml200/va50';
 
 
@@ -66,14 +65,12 @@ $canyonStr = 'fr1.1:/m5/v5/m8/m5/arg/v5/m5/s/m10/s/v4/m5';
 $canyonStr = 'fr2.1:/ma10/ca10/ma10';
 $canyonStr = '/ma10/ca10/ma10';
 $canyonStr = $canyonVertical;
-$canyonStr = $laireB;
 $carmesAmont = 'fr2.1:/ma20/vi10/vd30/va20/ma50';
 $canyonStr = 'fr2.1:/ma5/sa/AN/CA8/va5/ma5/sa/AN : MC impérative/Ri10/ad10m/Ro10/Ad52m/RQ10/RD10/Rs10/Rq10/ma5/ad2 spits/Pi10/ma5/Re3/ma10/sa/To3/va5/ma5';
 $canyonStr = 'fr2.1:/ma5/sa/AN/CA8/va5/ma5/sa/AN : MC impérative/Vi10/ad10m/Vo10/Ad52m/vQ10/vD10/vs10/vq10/ma5/ad2 spits/Pi10/ma5/Re3/ma10/ml800/Cv10/ma5/sa/To3/va5/ma5';
 $canyonStr = 'fr2.1:/ma5/ml800/Cv8/ma5/CV10/ma5/Cv10';
 $canyonStr = 'fr2.1:/ma5/CV5/ma5/CA5/ma5/CI5/ma5/CO5/ma5/CD5/ma5/CS5/ma5';
 $canyonStr = 'fr2.1:/ma5/VV5/ma5/VR5/ma5/VI5/ma5/VO5/ma5/VD5/ma5/VS5/ma5/to5/ma5/RE5/ma5/RA5/ma5/RI5/ma5/RO5/ma5/RD5/ma5/RS5/ma5/CV5/ma5/CA5/ma5/CI5/ma5/CO5/ma5/CD5/ma5/CS5/ma5';
-$canyonStr = $long;
 $canyonStr = $laire;
 $canyonStr = $trefond;
 $canyonStr = $rouanne;
@@ -84,4 +81,12 @@ $canyonStr = 'fr2.1:/ca11';
 $canyonStr = 'fr2.1:/ma5/sa/ASRG/Ca5/va5/ml800/ma5/sa/exRD/Co5/va5/ma5/adC10/cd10/ma10/exDélicate en RG/ADRG : Chaîne/Cv5/mr5/sa/CA5/ma10/sa/Ci3/va5/ma5';
 $canyonStr = 'fr2.1:/ma5/vs10/ma5';
 $canyonStr = 'fr2.1:/ma5/sa/AN/CA8/va5/ma5/sa/AN : MC impérative/Ri10/ad10m/Ro10/Ad52m/RQ10/RD10/Rs10/Rq10/ma5/ad2 spits/Pi10/ma5/Re3/ma10/sa/To3/va5/ma5';
+$canyonStr = 'fr2.1:/ml300/adrg chaine rouillée/CV7/va4/ma15/adrg 8m en hauteur sur vire/VO8/adrg 11m suspendu/cv3/CD11/va7/ma10/adrg 2 pts usés + lunule/cv4/CI30/ma1/adrg/ma10/adrg 3 pts usés à relier au 1er/CV12/va5/MR50/adrd 2 lunules/VO10/pi4/va4/pi15desc rg/va20/adrg 1pt + lunule au ras du sol/PI26 grande dalle sèche/asrg vieux spit inutile/pi5/re8/ma7/adrg protégés/CI10m/ma30/ml100/asrg lunule au ras du sol/VD6/va6/ma5/adrg au centre/vo2/ma3/VV6/va4/ma100';
+$canyonStr = 'fr2.1:/ml300/adrg chaine rouillée/CV7/va4/ma15/adrg 8m en hauteur sur vire/VO8/adrg 11m suspendu/cv3/CD11/va7/ma10/adrg 2 pts usés + lunule/cv4/CI30/ma1/adrg/ma10';
+$long = '/ma4/va2/ma4/va4/ma3/to1/va2/ma6/re5/va5/ma4/anrd/cv20/va4/ma5/re3/ma7/adrg/cv16/re2/va3/ma4/va3/ma4/va3/ma4/re3/va2/asrd/cv21/va5/ma10/ma10/an/cv13/va3/ma2/re3/va2/ma5/va2/ma2/va3/asrg/cv15/va5/ma2/re3/va5/ml700/ma6/ad/cv28/va5/ma4/va3/ma5/ma4/va2/ma4/va4/ma3/to1/va2/ma6/re5/va5/ma4/anrd/cv20/va4/ma5/re3/ma7/adrg/cv16/re2/va3/ma4/va3/ma4/va3/ma4/re3/va2/asrd/Cs40/va5/ma10/ma10/cr80/ma10/an/cv13/va3/ma2/re3/va2/ma5/va2/ma2/va3/asrg/cv15/va5/ma2/re3/va5/ml700/ma6/ad/cv28/va5/ma4/va3/ma5/ma4/va2/ma4/va4/ma3/to1/va2/ma6/re5/va5/ma4/an/cv20/va4/ma5/re3/ma7/adrg/cv16/re2/va3/ma4/va3/ma4/va3/ma4/re3/va2/asrd/cv21/va5/ma10/ma10/an/cv13/va3/ma2/re3/va2/ma5/va2/ma2/va3/ma5/cr50/ma5/asrg/cv15/va5/ma2/re3/va5/ml700/ma6/ad/cv28/va5/ma4/va3/ma5/re3/va5/ml700/ma6/ad/cv28/va5/ma4/va3/ma5/re3/va5/ml700/ma6/ad/cv28/va5/ma4/va3/ma5';
+$canyonStr = $laireB;
+$canyonStr = $long;
+$canyonStr = 'fr2.1:/(cascades des Albines)/ad/ma1/co1/CV8/as/mr0.5/ca1/mr0.2/asC18/cv1/cd1/vo1/co1/cd14/ma10/VA25';
+$canyonStr = 'fr2.1:/MA5/Vv10/ma5/VV10/MA5/VV10/CR000/Mr5/VV5/MA5/Vv10/MA5';
+$canyonStr = 'fr2.1:/MA5/VS10/VV10/MA5/VV10/vo2/CR000/Mr5/VV5/MA5/VS10/MA5';
 ?>

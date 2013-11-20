@@ -100,6 +100,10 @@ class Profile {
 	public $yScale = 0;
 	public $curX = 0;
 	public $curY = 0;
+	public $minX = 9999999999;
+	public $minY = 9999999999;
+	public $maxX = 0;
+	public $maxY = 0;
 	public $curColor = '000000';
 	public $origCanyonStr = '';
 	public $canyonStr = '';
@@ -176,15 +180,20 @@ class Profile {
 		$maxY = 0;
 		// On détermine maxHeight et maxWidth
 		foreach($this->items as $item) {
-			$curX += $item->width * $item->widthFactor;
+			//error_log('1 : '.get_class($item).' curX='.$curX.' width='.$item->width.' itemWidthFactor='.$item->widthFactor.' minX='.$minX);
+			if (get_class($item) == 'CarriageReturn') {
+				//$curX = 0 - $item->width;
+				$curX = 0;
+				$curX = $minX;
+			} else {
+				$curX += $item->width * $item->widthFactor;
+			}
 			$curY += $item->height * $item->heightFactor;
 			$minX = min($minX, $curX);
 			$minY = min($minY, $curY);
 			$maxX = max($maxX, $curX);
 			$maxY = max($maxY, $curY);
-			if (get_class($item) == 'CarriageReturn') {
-				$curX = 0;
-			}
+			//error_log('2 : curX='.$curX.' minX='.$minX);
 			//$this->appendToFile('
 			//<!-- str='.get_class($item).'|'.$item->width.'|'.$item->height.' itemWidthFactor='.$item->widthFactor. ' itemHeightFactor='.$item->heightFactor.' minX='.$minX.' minY='.$minY.' maxX='.$maxX.' maxY='.$maxY.' -->');
 		}
@@ -215,7 +224,7 @@ class Profile {
 		if ($ratio > $maxRatio) {
 			$this->appendToFile('
 			<!-- !!!!!!!!!! RATIO WARNING : > '. $maxRatio .' !!!!!!!!!!! --> ');
-			$this->xScale = $this->yScale;
+			$this->xScale = $this->yScale * 2.5;
 		}
 		$ratio = $this->xScale / $this->yScale;
 		$this->appendToFile('
@@ -227,9 +236,11 @@ class Profile {
 	}
 
 	public function draw() {
+		// We request every item to draw its graphical part into its dedicated layer
 		foreach($this->items as $item) {
 			$item->draw($this);
 		}
+		// We draw every layer in the respective z order
 		foreach($this->layers as $layerName => $layerText) {
 			if(isNullOrEmptyString($layerText)) {
 				continue;
@@ -330,6 +341,7 @@ class VerticalAngle extends Item {
 		$p->displayText($this->displayedText, $p->curX, $yDisplayText, ($this->drawedWidth / 2) - ($p->xScale * 0.8), $this->drawedWidth * 0.09, 'end');
 		$p->curX += $this->drawedWidth;
 		$p->curY += $this->drawedHeight;
+		$p->minX = min($p->minX, $p->curX);
 	}
 }
 
@@ -454,6 +466,7 @@ class RoundedVertical extends Vertical {
 		.'l 0,'. ($this->drawedHeight - $curveWidth) .'" />');
 		$p->displayText($this->displayedText, ($p->curX + $curveWidth), $yDisplayText, -5, 0, 'end');
 		$p->curX += $curveWidth;
+		$p->minX = min($p->minX, $p->curX);
 		$p->curY += $this->drawedHeight;
 	}
 }
@@ -548,6 +561,7 @@ class Walk extends Item {
 		$p->appendToLayer('base','
 		<path style="fill:none;stroke:#'. $p->getCurColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
 		d="m '. $p->curX .','. $p->curY .' h'. $this->drawedWidth .'" />');
+		$p->minX = min($p->minX, $p->curX);
 		$p->curX += $this->drawedWidth;
 	}
 }
@@ -781,7 +795,7 @@ class CarriageReturn extends Item {
 	}
 
 	public function draw(&$p) {
-		$p->curX = $p->xOffset;
+		$p->curX = $p->minX;
 		$p->curY -= $this->crOffset;
 	}
 }
