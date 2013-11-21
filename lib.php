@@ -120,7 +120,8 @@ class Profile {
 		'vegetal' => '',
 		'anchors' => '',
 		'text' => '',
-		'infos' => ''
+		'infos' => '',
+		'overall' => '',
 	);
 
 	public function appendToFile($text) {
@@ -611,38 +612,29 @@ class LongWalk extends Walk {
 		$longWalkAngle = 20;
 		$longWalkWidth = 10;
 
-// TODO :
-/*
-- Sur le layer "base" : tirer un seul trait from start to end of long walk
-- Créer un dernier layer over all et y placer :
-  - un rectangle blanc penché
-  - recouvert par les traits pointillés de part et d'autre
-*/
+		$p->appendToLayer('base','m '. $p->curX .','. $p->curY .' h'. $this->drawedWidth);
+		$p->appendToLayer('base','m '. $p->curX .','. $p->curY .' h'. ($longWalkWidth*4.5));
 
-		// Un petit trait horizontal qui précède
-		$p->appendToLayer('base','
-		<path style="fill:none;stroke:#'. $p->getCurColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
-		d="m '. $p->curX .','. $p->curY .' '. $longWalkWidth .',0" />');
 		$p->curX += $longWalkWidth;
 
+		// Un rectangle oblique blanc
+		$p->appendToLayer('overall','
+		<path style="fill:#FFFFFF;stroke:#FFFFFF;stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
+		d="m '. ($p->curX-$longWalkAngle) .','. ($p->curY+($longWalkHeight/2)) .' '. $longWalkAngle*2 .','. -($longWalkHeight*1).'
+		h '.$longWalkWidth.'
+		l '. (-$longWalkAngle*2) .','. $longWalkHeight .' z" />');
 
 		// Un premier trait oblique
-		$p->appendToLayer('base','
+		$p->appendToLayer('overall','
 		<path style="fill:none;stroke:#'. $p->getCurColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:8,4,2,4;stroke-dashoffset:0"
 		d="m '. ($p->curX-$longWalkAngle) .','. ($p->curY+($longWalkHeight/2)) .' '. $longWalkAngle*2 .','. -($longWalkHeight*1).'" />');
 		$p->curX += $longWalkWidth;
 
-
 		// Un deuxième trait oblique
-		$p->appendToLayer('base','
+		$p->appendToLayer('overall','
 		<path style="fill:none;stroke:#'. $p->getCurColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:8,4,2,4;stroke-dashoffset:0"
 		d="m '. ($p->curX-$longWalkAngle) .','. ($p->curY+($longWalkHeight/2)) .' '. $longWalkAngle*2 .','. -($longWalkHeight*1).'" />');
 
-
-		// Un petit trait horizontal qui suit
-		$p->appendToLayer('base','
-		<path style="fill:none;stroke:#'. $p->getCurColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
-		d="m '. $p->curX .','. $p->curY .' '. ($longWalkWidth*2.5) .',0" />');
 		$p->curX += ($longWalkWidth*2.5);
 		$p->displayText(($this->displayedText . 'm'), ($p->curX-$longWalkAngle), ($p->curY+($longWalkHeight/2)), -5, 20, 'end');
 	}

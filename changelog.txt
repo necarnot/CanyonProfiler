@@ -1,3 +1,7 @@
+2013-11-21
+==========
+LongWalk : Added a very last layer ("overall") with a white rectangle surounded by dashed lines
+
 2013-11-20
 ==========
 Linked every base segment paths into a single one. Preparing backgrounds structure.
