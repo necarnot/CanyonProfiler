@@ -149,8 +149,12 @@ class Profile {
 			d="';
 			} else {
 				// If this path is not the first one, we remove the moveto command
-				preg_match('/m\s*\d*\.*\d*,\d*\.*\d*\s*(.*)/',$text,$matches);
-				$text = "\n\t\t\t" . $matches[1];
+				if(preg_match('/m\s*\d*\.*\d*,\d*\.*\d*\s*(.*)/',$text,$matches)) {
+					$text = "\n\t\t\t" . $matches[1];
+				} else {
+					// Used for carriage returns
+					$text = "\n\t\t\t" . $text;
+				}
 			}
 		}
 		$this->layers[$layer] .= $text;
@@ -195,8 +199,6 @@ class Profile {
 		foreach($this->items as $item) {
 			//error_log('1 : '.get_class($item).' curX='.$curX.' width='.$item->width.' itemWidthFactor='.$item->widthFactor.' minX='.$minX);
 			if (get_class($item) == 'CarriageReturn') {
-				//$curX = 0 - $item->width;
-				$curX = 0;
 				$curX = $minX;
 			} else {
 				$curX += $item->width * $item->widthFactor;
@@ -812,6 +814,7 @@ class CarriageReturn extends Item {
 	public function draw(&$p) {
 		$p->curX = $p->minX;
 		$p->curY -= $this->crOffset;
+		$p->appendToLayer('base','M '. $p->curX .','. $p->curY);
 	}
 }
 

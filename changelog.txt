@@ -1,6 +1,7 @@
 2013-11-21
 ==========
 LongWalk : Added a very last layer ("overall") with a white rectangle surounded by dashed lines
+Debug : Management of base single path and carriage returns
 
 2013-11-20
 ==========
