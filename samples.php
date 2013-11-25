@@ -92,4 +92,5 @@ $canyonStr = 'fr2.1:/ma5/Ca5/ma5/Co5/ma5/cd10/ma10/Cv5/mr5/CA5/ma10/Ci3/ma5';
 $long = '/ma4/va2/ma4/va4/ma3/to1/va2/ma6/re5/va5/ma4/anrd/cv20/va4/ma5/re3/ma7/adrg/cv16/re2/va3/ma4/va3/ma4/va3/ma4/re3/va2/asrd/cv21/va5/ma10/ma10/an/cv13/va3/ma2/re3/va2/ma5/va2/ma2/va3/asrg/cv15/va5/ma2/re3/va5/ml700/ma6/ad/cv28/va5/ma4/va3/ma5/ma4/va2/ma4/va4/ma3/to1/va2/ma6/re5/va5/ma4/anrd/cv20/va4/ma5/re3/ma7/adrg/cv16/re2/va3/ma4/va3/ma4/va3/ma4/re3/va2/asrd/Cs40/va5/ma10/ma10/cr80/ma10/an/cv13/va3/ma2/re3/va2/ma5/va2/ma2/va3/asrg/cv15/va5/ma2/re3/va5/ml700/ma6/ad/cv28/va5/ma4/va3/ma5/ma4/va2/ma4/va4/ma3/to1/va2/ma6/re5/va5/ma4/an/cv20/va4/ma5/re3/ma7/adrg/cv16/re2/va3/ma4/va3/ma4/va3/ma4/re3/va2/asrd/cv21/va5/ma10/ma10/an/cv13/va3/ma2/re3/va2/ma5/va2/ma2/va3/ma5/cr50/ma5/asrg/cv15/va5/ma2/re3/va5/ml700/ma6/ad/cv28/va5/ma4/va3/ma5/re3/va5/ml700/ma6/ad/cv28/va5/ma4/va3/ma5/re3/va5/ml700/ma6/ad/cv28/va5/ma4/va3/ma5';
 $canyonStr = $long;
 $canyonStr = 'fr2.1:/ma5/Ca5/va5/ma5/ml800/Co5/va5/ma5/cd10/ma10/cr/Cv5/mr5/CA5/ma10/Ci3/va5/ma5';
+$canyonStr = 'fr2.1:/ma5/Cv5/ma10';
 ?>
