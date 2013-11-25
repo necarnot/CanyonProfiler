@@ -141,10 +141,30 @@ class Profile {
 	}
 
 	public function appendToLayer($layer, $text) {
+
+		// For the base layer, we :
+		// - keep the original path that will be drawn on top of this layer (last one)
+		// - create a shape based on the original one, with a diagonal offset
+		// - put a version of this box below the base path, and fill it with the below color shade
+		// - put a version of this box above the base path, and fill it with the above color shade
+
 		if ($layer == 'base') {
-			$this->layers[$layer] .= $text;
-		} else {
+			// If this path is the first one, we add the path tag
+			if(isNullOrEmptyString($this->layers[$layer])) {
+				$this->layers[$layer] = '
+			<path style="fill:none;stroke:#000000;stroke-width:2px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
+			d="';
+			} else {
+				// If this path is not the first one, we remove the moveto command
+				if(preg_match('/m\s*\d*\.*\d*,\d*\.*\d*\s*(.*)/',$text,$matches)) {
+					$text = "\n\t\t\t" . $matches[1];
+				} else {
+					// Used for carriage returns
+					$text = "\n\t\t\t" . $text;
+				}
+			}
 		}
+		$this->layers[$layer] .= $text;
 	}
 
 	public function getCurColor() {
@@ -243,37 +263,14 @@ class Profile {
 			$item->draw($this);
 		}
 
-		// For the base layer, we :
-		// - keep the original path that will be drawn on top of this layer (last one)
-		// - create a shape based on the original one, with a diagonal offset
-		// - put a version of this box below the base path, and fill it with the below color shade
-		// - put a version of this box above the base path, and fill it with the above color shade
-
-		if ($layer == 'base') {
-			// If this path is the first one, we add the path tag
-			if(isNullOrEmptyString($this->layers[$layer])) {
-				$this->layers[$layer] = '
-			<path style="fill:none;stroke:#000000;stroke-width:2px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
-			d="';
-			} else {
-				// If this path is not the first one, we remove the moveto command
-				if(preg_match('/m\s*\d*\.*\d*,\d*\.*\d*\s*(.*)/',$text,$matches)) {
-					$text = "\n\t\t\t" . $matches[1];
-				} else {
-					// Used for carriage returns
-					$text = "\n\t\t\t" . $text;
-				}
-			}
-		}
-
 		// We draw every layer in the respective z order
 		foreach($this->layers as $layerName => $layerText) {
 			if(isNullOrEmptyString($layerText)) {
 				continue;
 			}
-			//if ($layerName == 'base') {
-			//	$layerText .= '" />';
-			//}
+			if ($layerName == 'base') {
+				$layerText .= '" />';
+			}
 			$this->appendToFile('
 	<g id="'.$layerName.'"> '.$layerText.'
 	</g>
