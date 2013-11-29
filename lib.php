@@ -143,7 +143,6 @@ class Profile {
 
 	public function appendToLayer($layer, $text) {
 		if ($layer == 'base') {
-			error_log('filling baseLayer with '.$text);
 			array_push($this->baseLayer, $text);
 		} else {
 			$this->layers[$layer] .= $text;
@@ -248,7 +247,6 @@ class Profile {
 
 		// We draw every layer in the respective z order
 		foreach($this->layers as $layerName => $layerText) {
-			error_log('draw:layerName='.$layerName);
 			if ($layerName == 'base') {
 				// For the base layer, we :
 				// - keep the original path that will be drawn on top of this layer (last one)
@@ -257,27 +255,35 @@ class Profile {
 				// - put a version of this box above the base path, and fill it with the above color shade
 
 				$layerText = '';
-				$belowLayer = '';
+				$oppositeText = '';
 				foreach($this->baseLayer as $index => $text) {
 					error_log('xxx1:'.$text);
-					// If this path is the first one, we add the path tag
-					if ($index == 0) {
-						$layerText = '
-					<path style="fill:none;stroke:#000000;stroke-width:2px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
-					d="';
-					} else {
-						// This path is not the first ones : we remove the moveto command
-						if(preg_match('/m\s*\d*\.*\d*,\d*\.*\d*\s*(.*)/',$text,$matches)) {
-							$text = "\n\t\t\t" . $matches[1];
+					if(preg_match('/m\s*\d*\.*\d*,\d*\.*\d*\s*(.*)/',$text,$matches)) {
+						if ($index == 0) {
+							$layerText .= $text;
 						} else {
-							// Used for carriage returns
-							$text = "\n\t\t\t" . $text;
+							// If this path is not the first one : we remove the moveto command
+							$layerText .= "\n\t\t\t" . $matches[1];
 						}
+						// On convertit à l'opposé les valeurs trouvées
+						$opposite = preg_replace('/(\D)(\d*\.?\d*)/', '\1-\2', $matches[1]);
+						$oppositeText = $opposite . "\n\t\t\t" . $oppositeText;
+					} else {
+						// Used for carriage returns
+						$layerText .= "\n\t\t\t" . $text;
 					}
-					$layerText .= $text;
 				}
-
+				//$belowText = '<path style="fill:#8e4a3a;fill-opacity:1;stroke:none;filter:url(#filter3928)" d=" ' . $layerText . ' l-20,20 ' . $oppositeText . ' z ';
+				$belowText = '<path style="fill:#8e4a3a;fill-opacity:1;stroke:none" d=" ' . $layerText . ' l-40,40 ' . $oppositeText . ' z ';
+				$aboveText = '<path style="fill:#808080;fill-opacity:1;stroke:none" d=" ' . $layerText . ' l80,-80 ' . $oppositeText . ' z ';
+				$layerText = '<path style="fill:none;stroke:#000000;stroke-width:2px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1" d=" ' . $layerText;
 				$layerText .= '" />';
+				$belowText .= '" />';
+				$aboveText .= '" />';
+				//$aboveText = '';
+
+				// Final concatenation
+				$layerText = "\n" . $belowText . "\n" . $aboveText . "\n" . $layerText;
 			}
 			if(isNullOrEmptyString($layerText)) {
 				continue;
@@ -492,10 +498,10 @@ class RoundedVertical extends Vertical {
 		// Arbitrarily specify the round width
 		$curveWidth = $this->drawedWidth / 2;
 		$p->appendToLayer('base','m '. $p->curX .','. $p->curY
-		.' c '. $curveWidth .',0 '
+		.' c'. $curveWidth .',0'
 		.' '. $curveWidth .','. $curveWidth
 		.' '. $curveWidth .','. $curveWidth
-		.'l 0,'. ($this->drawedHeight - $curveWidth));
+		.'v'. ($this->drawedHeight - $curveWidth));
 		$p->displayText($this->displayedText, ($p->curX + $curveWidth), $yDisplayText, -5, 0, 'end');
 		$p->curX += $curveWidth;
 		$p->minX = min($p->minX, $p->curX);
@@ -523,7 +529,7 @@ class WetRoundedVertical extends RoundedVertical {
 		$p->appendToLayer('water','
 		<path style="fill:none;stroke:#'. getWaterColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
 		d="m '. $origCurX .','. ($origCurY - $this->strokeWidth)
-		.' c '. $curveWidth .',0 '
+		.' c '. $curveWidth .',0'
 		.' '. $curveWidth .','. $curveWidth
 		.' '. $curveWidth .','. $curveWidth
 		.'l 0,'. ($this->drawedHeight - $curveWidth + $this->strokeWidth - $offsetNextItem) .'" />');
@@ -674,7 +680,7 @@ class Pool extends Item {
 
 	public function draw(&$p) {
 		$depth = 2 * $p->yScale;
-		$p->appendToLayer('base','m '. $p->curX .','. $p->curY .' c 0,'. $depth .' '. $this->drawedWidth / 2 .',0 '. $this->drawedWidth .',0');
+		$p->appendToLayer('base','m '. $p->curX .','. $p->curY .' c0,'. $depth .' '. $this->drawedWidth / 2 .',0 '. $this->drawedWidth .',0');
 		$p->appendToLayer('water','
 		<path style="fill:#'. getWaterColor() .';fill-opacity:1;stroke:none"
 		d="m '. ($p->curX + ($this->strokeWidth/2)) .','. ($p->curY - ($this->strokeWidth/2)) .' c '.-$this->strokeWidth.','. $depth .' '. $this->drawedWidth / 2 .',0 '. $this->drawedWidth .',0" />');

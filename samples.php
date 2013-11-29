@@ -63,7 +63,6 @@ $canyonStr = 'fr1.1:/m5/c5/v5/m8/m5/arg/c10/v5/m5/s/r4/m10/s/r3/v4/m5';
 $canyonStr = 'fr1.1:/m5/c5/v5/m8/m5/arg/c10/v5/m5/s/r4/m10/s/r3/v4/m5';
 $canyonStr = 'fr1.1:/m5/v5/m8/m5/arg/v5/m5/s/m10/s/v4/m5';
 $canyonStr = 'fr2.1:/ma10/ca10/ma10';
-$canyonStr = '/ma10/ca10/ma10';
 $canyonStr = $canyonVertical;
 $carmesAmont = 'fr2.1:/ma20/vi10/vd30/va20/ma50';
 $canyonStr = 'fr2.1:/ma5/sa/AN/CA8/va5/ma5/sa/AN : MC impérative/Ri10/ad10m/Ro10/Ad52m/RQ10/RD10/Rs10/Rq10/ma5/ad2 spits/Pi10/ma5/Re3/ma10/sa/To3/va5/ma5';
@@ -93,5 +92,6 @@ $long = '/ma4/va2/ma4/va4/ma3/to1/va2/ma6/re5/va5/ma4/anrd/cv20/va4/ma5/re3/ma7/
 $canyonStr = $long;
 $canyonStr = 'fr2.1:/ma5/Ca5/va5/ma5/ml800/Co5/va5/ma5/cd10/ma10/cr/Cv5/mr5/CA5/ma10/Ci3/va5/ma5';
 $canyonStr = 'fr2.1:/ma5/Ca5/va5/ma5/ml800/Co5/va5/ma5/cd10/ma10/Cv5/mr5/CA5/ma10/Ci3/va5/ma5';
-$canyonStr = 'fr2.1:/ma5/Cv5/ma10';
+$canyonStr = 'fr2.1:/ma5/Cv5/va5/ma10';
+$canyonStr = 'fr2.1:/ma10/ca10/ma10';
 ?>
