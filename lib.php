@@ -266,7 +266,13 @@ class Profile {
 							$layerText .= "\n\t\t\t" . $matches[1];
 						}
 						// On convertit à l'opposé les valeurs trouvées
-						$opposite = preg_replace('/(\D)(\d*\.?\d*)/', '\1-\2', $matches[1]);
+						$opposite = preg_replace_callback(
+							'/(\s*)(\D)(-)?(\d*\.?\d*)/',
+							function ($localMatches) {
+								return $localMatches[1] . $localMatches[2] . ($localMatches[3] == '-' ? '' : '-') . $localMatches[4];
+							},
+							$matches[1]
+						);
 						$oppositeText = $opposite . "\n\t\t\t" . $oppositeText;
 					} else {
 						// Used for carriage returns
@@ -274,8 +280,8 @@ class Profile {
 					}
 				}
 				//$belowText = '<path style="fill:#8e4a3a;fill-opacity:1;stroke:none;filter:url(#filter3928)" d=" ' . $layerText . ' l-20,20 ' . $oppositeText . ' z ';
-				$belowText = '<path style="fill:#8e4a3a;fill-opacity:1;stroke:none" d=" ' . $layerText . ' l-40,40 ' . $oppositeText . ' z ';
-				$aboveText = '<path style="fill:#808080;fill-opacity:1;stroke:none" d=" ' . $layerText . ' l80,-80 ' . $oppositeText . ' z ';
+				$belowText = '<path style="fill:#ae6a5a;fill-opacity:1;stroke:none" d=" ' . $layerText . ' l-40,40 ' . $oppositeText . ' z ';
+				$aboveText = '<path style="fill:#b5b5b5;fill-opacity:1;stroke:none" d=" ' . $layerText . ' l80,-80 ' . $oppositeText . ' z ';
 				$layerText = '<path style="fill:none;stroke:#000000;stroke-width:2px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1" d=" ' . $layerText;
 				$layerText .= '" />';
 				$belowText .= '" />';
@@ -501,7 +507,7 @@ class RoundedVertical extends Vertical {
 		.' c'. $curveWidth .',0'
 		.' '. $curveWidth .','. $curveWidth
 		.' '. $curveWidth .','. $curveWidth
-		.'v'. ($this->drawedHeight - $curveWidth));
+		.' v'. ($this->drawedHeight - $curveWidth));
 		$p->displayText($this->displayedText, ($p->curX + $curveWidth), $yDisplayText, -5, 0, 'end');
 		$p->curX += $curveWidth;
 		$p->minX = min($p->minX, $p->curX);
