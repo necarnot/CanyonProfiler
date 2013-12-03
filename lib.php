@@ -123,7 +123,10 @@ class Profile {
 		'infos' => '',
 		'overall' => '',
 	);
-	public $baseLayer = array ();
+	public $baseLayer = array (
+		'direct' => array(),
+		'reverse' => array(),
+	);
 
 	public function appendToFile($text) {
 		fwrite($this->fileHandle, $text);
@@ -141,9 +144,10 @@ class Profile {
 		</g>');
 	}
 
-	public function appendToLayer($layer, $text) {
+	public function appendToLayer($layer, $text, $reverse = '') {
 		if ($layer == 'base') {
-			array_push($this->baseLayer, $text);
+			array_push($this->baseLayer['direct'], $text);
+			array_push($this->baseLayer['reverse'], $reverse);
 		} else {
 			$this->layers[$layer] .= $text;
 		}
@@ -256,7 +260,7 @@ class Profile {
 
 				$layerText = '';
 				$oppositeText = '';
-				foreach($this->baseLayer as $index => $text) {
+				foreach($this->baseLayer['direct'] as $index => $text) {
 					error_log('xxx1:'.$text);
 					if(preg_match('/m\s*\d*\.*\d*,\d*\.*\d*\s*(.*)/',$text,$matches)) {
 						if ($index == 0) {
@@ -383,7 +387,9 @@ class VerticalAngle extends Item {
 		if (($yDisplayText - $p->fontHeight) < $p->curY) {
 			$yDisplayText += $p->fontHeight;
 		}
-		$p->appendToLayer('base','m ' . $p->curX . ',' . $p->curY . ' l' . $this->drawedWidth . ',' . $this->drawedHeight);
+		$p->appendToLayer('base',
+		'm ' . $p->curX . ',' . $p->curY . ' l' . $this->drawedWidth . ',' . $this->drawedHeight,
+		'reverse');
 		$p->displayText($this->displayedText, $p->curX, $yDisplayText, ($this->drawedWidth / 2) - ($p->xScale * 0.8), $this->drawedWidth * 0.09, 'end');
 		$p->curX += $this->drawedWidth;
 		$p->curY += $this->drawedHeight;

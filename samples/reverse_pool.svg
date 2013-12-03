@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="297mm" height="210mm" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	
+		<!-- maxWidth=20  maxHeight=5 -->
+		<!-- xScale=49.618 // yScale=122.818 // ratio=0.40399615691511 -->
+			<!-- !!!!!!!!!! RATIO WARNING : < 0.5 !!!!!!!!!!! --> 
+		<!-- xScale=49.618 // yScale=74.427 // ratio=0.66666666666667 -->
+	<g id="base"> 
+<path style="fill:#ae6a5a;fill-opacity:1;stroke:none" d="
+m 20,90 h248.09    
+l0,372.135    
+c0,148.854 124.045,0 248.09,0    
+h496.18 
+l-40,40 
+h-496.18    
+c-0,-148.854 -124.045,-0 -248.09,-0    
+l-0,-372.135    
+h-248.09     
+z "/>
+<path style="fill:#b5b5b5;fill-opacity:1;stroke:none" d="
+m 20,90 h248.09    
+l0,372.135    
+c0,148.854 124.045,0 248.09,0    
+h496.18 l80,-80 
+h-496.18    
+c-0,-148.854 -124.045,-0 -248.09,-0
+c-124.045,-0 -248.09,148.854 -248.09,-0    
+l-0,-372.135    
+h-248.09     
+z "/>
+<path style="fill:none;stroke:#000000;stroke-width:2px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1" d="
+m 20,90 
+h248.09    
+l0,372.135    
+c0,148.854 124.045,0 248.09,0    
+h496.18"/>
+	</g>
+			
+	<g id="water"> 
+		<path style="fill:none;stroke:#0078FF;stroke-width:2px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1" d="m 270.09,90 0,372.135"/>
+		<path style="fill:#0078FF;fill-opacity:1;stroke:none" d="m 269.09,461.135 c -2,148.854 124.045,0 248.09,0"/>
+	</g>
+			
+	<g id="text"> 
+		<g font-size="16" font-family="sans-serif" fill="black" stroke="none" text-anchor="end">
+			<text x="228.3956" y="282.0675">C5</text>
+		</g>
+	</g>
+			
+	</svg>
