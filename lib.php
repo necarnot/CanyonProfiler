@@ -261,7 +261,6 @@ class Profile {
 				$layerText = '';
 				$oppositeText = '';
 				foreach($this->baseLayer['direct'] as $index => $text) {
-					error_log('xxx1:'.$text);
 					if(preg_match('/m\s*\d*\.*\d*,\d*\.*\d*\s*(.*)/',$text,$matches)) {
 						if ($index == 0) {
 							$layerText .= $text;
@@ -269,28 +268,19 @@ class Profile {
 							// If this path is not the first one : we remove the moveto command
 							$layerText .= "\n\t\t\t" . $matches[1];
 						}
-						// On convertit à l'opposé les valeurs trouvées
-						$opposite = preg_replace_callback(
-							'/(\s*)(\D)(-)?(\d*\.?\d*)/',
-							function ($localMatches) {
-								return $localMatches[1] . $localMatches[2] . ($localMatches[3] == '-' ? '' : '-') . $localMatches[4];
-							},
-							$matches[1]
-						);
+						$opposite = $this->baseLayer['reverse'][$index];
 						$oppositeText = $opposite . "\n\t\t\t" . $oppositeText;
 					} else {
 						// Used for carriage returns
 						$layerText .= "\n\t\t\t" . $text;
 					}
 				}
-				//$belowText = '<path style="fill:#8e4a3a;fill-opacity:1;stroke:none;filter:url(#filter3928)" d=" ' . $layerText . ' l-20,20 ' . $oppositeText . ' z ';
-				$belowText = '<path style="fill:#ae6a5a;fill-opacity:1;stroke:none" d=" ' . $layerText . ' l-40,40 ' . $oppositeText . ' z ';
-				$aboveText = '<path style="fill:#b5b5b5;fill-opacity:1;stroke:none" d=" ' . $layerText . ' l80,-80 ' . $oppositeText . ' z ';
+				$belowText = '<path style="fill:#ae6a5a;fill-opacity:1;stroke:none;filter:url(#filterBelow)" d="m20,-20 ' . $layerText . ' l-40,40 ' . $oppositeText . ' z ';
+				$aboveText = '<path style="fill:#b5b5b5;fill-opacity:1;stroke:none;filter:url(#filterAbove)" d=" ' . $layerText . ' l80,-80 ' . $oppositeText . ' z ';
 				$layerText = '<path style="fill:none;stroke:#000000;stroke-width:2px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1" d=" ' . $layerText;
 				$layerText .= '" />';
 				$belowText .= '" />';
 				$aboveText .= '" />';
-				//$aboveText = '';
 
 				// Final concatenation
 				$layerText = "\n" . $belowText . "\n" . $aboveText . "\n" . $layerText;
@@ -306,15 +296,21 @@ class Profile {
 	}
 
 	public function getDefs() {
-		if(empty($this->neededDefs)) {
-			return;
-		}
+		//if(empty($this->neededDefs)) {
+		//	return;
+		//}
 		$this->appendToFile('
 	<defs>');
 		foreach($this->neededDefs as $neededDef => $kickme) {
 			$neededDef::getDef($this);
 		}
 		$this->appendToFile('
+		    <filter id="filterBelow">
+		      <feGaussianBlur stdDeviation="25" />
+		    </filter>
+		    <filter id="filterAbove">
+		      <feGaussianBlur stdDeviation="10" />
+		    </filter>
 	</defs>');
 	}
 }
@@ -389,7 +385,7 @@ class VerticalAngle extends Item {
 		}
 		$p->appendToLayer('base',
 		'm ' . $p->curX . ',' . $p->curY . ' l' . $this->drawedWidth . ',' . $this->drawedHeight,
-		'reverse');
+		'l' . -$this->drawedWidth . ',' . -$this->drawedHeight);
 		$p->displayText($this->displayedText, $p->curX, $yDisplayText, ($this->drawedWidth / 2) - ($p->xScale * 0.8), $this->drawedWidth * 0.09, 'end');
 		$p->curX += $this->drawedWidth;
 		$p->curY += $this->drawedHeight;
@@ -509,11 +505,16 @@ class RoundedVertical extends Vertical {
 		$yDisplayText = $p->curY + ($this->drawedHeight / 2) + ($p->fontHeight / 1);
 		// Arbitrarily specify the round width
 		$curveWidth = $this->drawedWidth / 2;
-		$p->appendToLayer('base','m '. $p->curX .','. $p->curY
+		$p->appendToLayer('base',
+		'm '. $p->curX .','. $p->curY
 		.' c'. $curveWidth .',0'
 		.' '. $curveWidth .','. $curveWidth
 		.' '. $curveWidth .','. $curveWidth
-		.' v'. ($this->drawedHeight - $curveWidth));
+		.' v'. ($this->drawedHeight - $curveWidth),
+		'v'. -($this->drawedHeight - $curveWidth)
+		.' c0,'. -$curveWidth
+		.' '. -$curveWidth .','. -$curveWidth
+		.' '. -$curveWidth .','. -$curveWidth);
 		$p->displayText($this->displayedText, ($p->curX + $curveWidth), $yDisplayText, -5, 0, 'end');
 		$p->curX += $curveWidth;
 		$p->minX = min($p->minX, $p->curX);
@@ -608,7 +609,9 @@ class Walk extends Item {
 	}
 
 	public function draw(&$p) {
-		$p->appendToLayer('base','m '. $p->curX .','. $p->curY .' h'. $this->drawedWidth);
+		$p->appendToLayer('base',
+		'm '. $p->curX .','. $p->curY .' h'. $this->drawedWidth,
+		'h'. -$this->drawedWidth);
 		$p->minX = min($p->minX, $p->curX);
 		$p->curX += $this->drawedWidth;
 	}
@@ -647,12 +650,13 @@ class LongWalk extends Walk {
 	public function draw(&$p) {
 		$longWalkHeight = 20 * $p->yScale;
 		// Ugly, but needs advanced thinking of a better way...
-		$longWalkHeight = 150;
+		$longWalkHeight = 170;
 		$longWalkAngle = 20;
 		$longWalkWidth = 10;
 
-		$p->appendToLayer('base','m '. $p->curX .','. $p->curY .' h'. $this->drawedWidth);
-		$p->appendToLayer('base','m '. $p->curX .','. $p->curY .' h'. ($longWalkWidth*4.5));
+		$p->appendToLayer('base',
+		'm '. $p->curX .','. $p->curY .' h'. ($longWalkWidth*4.5),
+		'h'. -($longWalkWidth*4.5));
 
 		$p->curX += $longWalkWidth;
 
@@ -692,7 +696,9 @@ class Pool extends Item {
 
 	public function draw(&$p) {
 		$depth = 2 * $p->yScale;
-		$p->appendToLayer('base','m '. $p->curX .','. $p->curY .' c0,'. $depth .' '. $this->drawedWidth / 2 .',0 '. $this->drawedWidth .',0');
+		$p->appendToLayer('base',
+		'm '. $p->curX .','. $p->curY .' c0,'. $depth .' '. $this->drawedWidth / 2 .',0 '. $this->drawedWidth .',0',
+		'c'.-($this->drawedWidth / 2).',0 '. -$depth .',0 '. -$this->drawedWidth .',0');
 		$p->appendToLayer('water','
 		<path style="fill:#'. getWaterColor() .';fill-opacity:1;stroke:none"
 		d="m '. ($p->curX + ($this->strokeWidth/2)) .','. ($p->curY - ($this->strokeWidth/2)) .' c '.-$this->strokeWidth.','. $depth .' '. $this->drawedWidth / 2 .',0 '. $this->drawedWidth .',0" />');

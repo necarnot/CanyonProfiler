@@ -92,6 +92,8 @@ $canyonStr = $long;
 $canyonStr = 'fr2.1:/ma5/Ca5/va5/ma5/ml800/Co5/va5/ma5/cd10/ma10/cr/Cv5/mr5/CA5/ma10/Ci3/va5/ma5';
 $canyonStr = 'fr2.1:/ma5/Ca5/va5/ma5/ml800/Co5/va5/ma5/cd10/ma10/Cv5/mr5/CA5/ma10/Ci3/va5/ma5';
 $canyonStr = 'fr2.1:/ma10/ca10/ma10';
-$canyonStr = 'fr2.1:/ma5/sa/ASRG/Ca5/va5/ma5/sa/exRD/Co5/va5/ma5/adC10/cd10/ma10/exDélicate en RG/ADRG : Chaîne/Cv5/mr5/sa/CA5/ma10/sa/Ci3/va5/ma5';
-$canyonStr = 'fr2.1:/ma5/Cv5/va5/ma10';
+$canyonStr = 'fr2.1:/ma5/Cv5/ma10';
+$canyonStr = 'fr2.1:/ma5/Ca5/va5/ma10';
+$canyonStr = 'fr2.1:/ma5/cv3/ma5/re3/ma5/re3/va5/ml800/va5/ma5/re2/ma5';
+$canyonStr = 'fr2.1:/ma5/sa/ASRG/Ca5/va5/ma5/sa/exRD/Co5/va5/ma5/adC10/cd10/ma10/exDélicate en RG/ADRG : Chaîne/Cv5/mr5/sa/CA5/ma5/ml200/ma5/sa/Ci3/va5/ma5';
 ?>
