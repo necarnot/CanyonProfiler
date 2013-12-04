@@ -56,6 +56,7 @@ $syntaxes = array (
 		'Slide'			=> array ('s' => 'Slide')
 	),
 	'fr2.1' => array (
+		'Option'			=> array ('op' => 'Option'),
 		'Vertical'			=> array ('vv' => 'Verticale verticale', 'vq' => 'Verticale quelconque'),
 		'WetVertical'			=> array ('cv' => 'Cascade verticale'),
 		'RoundedVertical'		=> array ('vr' => 'Verticale ronde'),

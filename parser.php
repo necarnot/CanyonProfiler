@@ -71,14 +71,17 @@ function parsed($p, $canyonStr) {
 		$item = strtolower(substr($inStr, 0, $syntaxLength));
 		$value = substr($inStr, $syntaxLength);
 		// Removing comments between parenthesis
-		$value = preg_replace('/\(.*\)*/', '', $value);
+		// and triming the whole string
+		$value = trim(preg_replace('/\(.*\)*/', '', $value));
 		// On cherche dans chaque liste de symboles si on trouve la proposition
 		foreach($syntaxSymbols as $key => $aliases) {
 			if (array_key_exists($item, $aliases)) {
 				$outStr = $outStr . $p->separator . $key . $value;
 				$tmpItem = new $key($value);
-				$tmpItem->setInStr($inStr);
-				array_push($p->items, $tmpItem);
+				if($key != 'Option') {
+					$tmpItem->setInStr($inStr);
+					array_push($p->items, $tmpItem);
+				}
 				break;
 			}
 		}

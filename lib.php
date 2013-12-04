@@ -18,6 +18,7 @@ function includeProfile($canyonStr) {
 		xmlns:xlink="http://www.w3.org/1999/xlink">
 	');
 	$p->parse($canyonStr);
+	$p->getOptions();
 	$p->chainItems();
 	$p->scale();
 
@@ -113,6 +114,8 @@ class Profile {
 	public $syntaxVersion = '';
 	public $items = array ();
 	public $fileHandle;
+
+	public $options = array();
 
 	public $layers = array (
 		'base' => '',
@@ -858,6 +861,20 @@ class CarriageReturn extends Item {
 		$p->curX = $p->minX;
 		$p->curY -= $this->crOffset;
 		$p->appendToLayer('base','M '. $p->curX .','. $p->curY);
+	}
+}
+
+class Option {
+	public $name;
+	public $optionsStr;
+
+	function __construct($optionsStr) {
+		error_log('optionsStr='.$optionsStr);
+		$this->optionsStr = $optionsStr;
+	}
+
+	public function getOptions() {
+		$pairs = explode(',', $this->optionsStr);
 	}
 }
 
