@@ -114,6 +114,8 @@ class Profile {
 	public $canyonName = '';
 
 	public $allowedOptions = array('canyonName', 'fontHeight', 'belowBackground', 'aboveBackground');
+	public $belowBackground = TRUE;
+	public $aboveBackground = TRUE;
 
 	public $layers = array (
 		'base' => '',
@@ -427,7 +429,6 @@ class WetAngle extends VerticalAngle {
 		if ( preg_match('/.*Walk.*/', $this->getNextItemClass()) OR preg_match('/.*Rounded.*/', $this->getNextItemClass()) ) {
 			$offsetNextItem = $this->strokeWidth;
 		}
-		//error_log('WetAngle:nextItemClass='.get_class($this->nextItem).',offsetNextItem='.$offsetNextItem);
 		$p->appendToLayer('water','
 		<path style="fill:none;stroke:#'. getWaterColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
 		d="m ' . ($origCurX + $this->strokeWidth) . ',' . $origCurY . ' ' . max($this->drawedWidth,0) . ',' . ($this->drawedHeight - $offsetNextItem) . '" />');
@@ -501,6 +502,11 @@ class OverhangingVertical extends VerticalAngle {
 	function __construct($height) {
 		parent::__construct($height, 157.5);
 		$this->name = 'Overhanging Vertical';
+	}
+	public function draw(&$p) {
+		parent::draw($p);
+		$p->belowBackground = FALSE;
+		$p->aboveBackground = FALSE;
 	}
 }
 
@@ -872,12 +878,15 @@ class CarriageReturn extends Item {
 		$this->heightFactor = 0;
 		$this->widthFactor = 0;
 		$this->crOffset = $crOffset;
+
 	}
 
 	public function draw(&$p) {
 		$p->curX = $p->minX;
 		$p->curY -= $this->crOffset;
 		$p->appendToLayer('base','M '. $p->curX .','. $p->curY);
+		$p->belowBackground = FALSE;
+		$p->aboveBackground = FALSE;
 	}
 }
 
