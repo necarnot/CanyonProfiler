@@ -77,8 +77,10 @@ function parsed($p, $canyonStr) {
 		foreach($syntaxSymbols as $key => $aliases) {
 			if (array_key_exists($item, $aliases)) {
 				$outStr = $outStr . $p->separator . $key . $value;
-				$tmpItem = new $key($value);
-				if($key != 'Option') {
+				if($key == 'Option') {
+					$p->setOptions($value);
+				} else {
+					$tmpItem = new $key($value);
 					$tmpItem->setInStr($inStr);
 					array_push($p->items, $tmpItem);
 				}

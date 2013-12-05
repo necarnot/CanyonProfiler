@@ -1,8 +1,6 @@
 <?php
 
 function includeProfile($canyonStr) {
-	// TODO : changer ça, c'est perfectible
-	global $canyonName;
 	$p = new Profile();
 	$p->pageWidthPx -= $p->xEndOffset;
 	$p->pageHeightPx -= $p->yEndOffset;
@@ -18,10 +16,8 @@ function includeProfile($canyonStr) {
 		xmlns:xlink="http://www.w3.org/1999/xlink">
 	');
 	$p->parse($canyonStr);
-	$p->getOptions();
 	$p->chainItems();
 	$p->scale();
-
 
 	$displayOrigCanyonStr = preg_replace('/&/', '&amp;', $p->origCanyonStr);
 	$p->draw();
@@ -31,8 +27,8 @@ function includeProfile($canyonStr) {
 	fclose($p->fileHandle);
 	if (1) {
 		echo '
-		<p style="font-size:8px"><b>Submitted :</b> '.$canyonName .' : '. $displayOrigCanyonStr.'<br/>
-		<b>Parsed as :</b> '.$canyonName .' : '. $p->canyonStr.'</p>';
+		<p style="font-size:8px"><b>Submitted :</b> '.$p->canyonName .' : '. $displayOrigCanyonStr.'<br/>
+		<b>Parsed as :</b> '.$p->canyonName .' : '. $p->canyonStr.'</p>';
 	}
 	echo '
 	<a href="'.$curFileName.'" style="display: block">
@@ -115,7 +111,9 @@ class Profile {
 	public $items = array ();
 	public $fileHandle;
 
-	public $options = array();
+	public $canyonName = '';
+
+	public $allowedOptions = array('canyonName', 'fontHeight', 'belowBackground', 'aboveBackground');
 
 	public $layers = array (
 		'base' => '',
@@ -285,6 +283,9 @@ class Profile {
 				$belowText .= '" />';
 				$aboveText .= '" />';
 
+				if($this->belowBackground == FALSE) { $belowText = ''; }
+				if($this->aboveBackground == FALSE) { $aboveText = ''; }
+
 				// Final concatenation
 				$layerText = "\n" . $belowText . "\n" . $aboveText . "\n" . $layerText;
 			}
@@ -316,8 +317,24 @@ class Profile {
 		    </filter>
 	</defs>');
 	}
-}
 
+	public function setOptions($optionsStr) {
+		$pairs = explode(',', $optionsStr);
+		foreach($pairs as $pair) {
+			$pair = trim($pair);
+			$optParts = explode('=', $pair);
+			if(count($optParts) != 2) { continue; }
+			$key = trim($optParts[0]);
+			$value = trim($optParts[1]);
+			if(isNullOrEmptyString($key) || isNullOrEmptyString($value)) { continue; }
+			if (in_array($key, $this->allowedOptions)) {
+				$this->$key = $value;
+				error_log('--------> Setting '.$key.'='.$value);
+			}
+		}
+	}
+
+}
 
 class Item {
 	public $name;
@@ -838,7 +855,7 @@ class ExitPoint extends Item {
 		$p->appendToFile('
 		<g id="'.get_called_class().'">
 			<path style="fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;
-			stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" d="M 30.698485,1.0151594 16.556349,3.8435866 20.79899,8.0862273 1,20.814149 l 8.4852813,1.414214 1.4142137,8.485281 12.727922,-19.79899 4.242641,4.242641 z"/>
+			stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" d="M 30.69,1.01 16.55,3.84 20.79,8.08 1,20.81 l 8.48,1.41 1.41,8.48 12.72,-19.79 4.24,4.24 z"/>
 		</g>
 		');
 	}
@@ -861,20 +878,6 @@ class CarriageReturn extends Item {
 		$p->curX = $p->minX;
 		$p->curY -= $this->crOffset;
 		$p->appendToLayer('base','M '. $p->curX .','. $p->curY);
-	}
-}
-
-class Option {
-	public $name;
-	public $optionsStr;
-
-	function __construct($optionsStr) {
-		error_log('optionsStr='.$optionsStr);
-		$this->optionsStr = $optionsStr;
-	}
-
-	public function getOptions() {
-		$pairs = explode(',', $this->optionsStr);
 	}
 }
 
