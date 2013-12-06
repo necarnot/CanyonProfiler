@@ -114,8 +114,8 @@ class Profile {
 	public $canyonName = '';
 
 	public $allowedOptions = array('canyonName', 'fontHeight', 'belowBackground', 'aboveBackground');
-	public $belowBackground = TRUE;
-	public $aboveBackground = TRUE;
+	public $belowBackground = 1;
+	public $aboveBackground = 1;
 
 	public $layers = array (
 		'base' => '',
@@ -284,9 +284,8 @@ class Profile {
 				$layerText .= '" />';
 				$belowText .= '" />';
 				$aboveText .= '" />';
-
-				if($this->belowBackground == FALSE) { $belowText = ''; }
-				if($this->aboveBackground == FALSE) { $aboveText = ''; }
+				if(!$this->belowBackground) { $belowText = ''; }
+				if(!$this->aboveBackground) { $aboveText = ''; }
 
 				// Final concatenation
 				$layerText = "\n" . $belowText . "\n" . $aboveText . "\n" . $layerText;
@@ -330,8 +329,9 @@ class Profile {
 			$value = trim($optParts[1]);
 			if(isNullOrEmptyString($key) || isNullOrEmptyString($value)) { continue; }
 			if (in_array($key, $this->allowedOptions)) {
+				if(strtolower($value) == 'true') { $value = 1; }
+				if(strtolower($value) == 'false') { $value = 0; }
 				$this->$key = $value;
-				error_log('--------> Setting '.$key.'='.$value);
 			}
 		}
 	}
@@ -505,8 +505,8 @@ class OverhangingVertical extends VerticalAngle {
 	}
 	public function draw(&$p) {
 		parent::draw($p);
-		$p->belowBackground = FALSE;
-		$p->aboveBackground = FALSE;
+		$p->belowBackground = 0;
+		$p->aboveBackground = 0;
 	}
 }
 
@@ -885,8 +885,8 @@ class CarriageReturn extends Item {
 		$p->curX = $p->minX;
 		$p->curY -= $this->crOffset;
 		$p->appendToLayer('base','M '. $p->curX .','. $p->curY);
-		$p->belowBackground = FALSE;
-		$p->aboveBackground = FALSE;
+		$p->belowBackground = 0;
+		$p->aboveBackground = 0;
 	}
 }
 
