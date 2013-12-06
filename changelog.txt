@@ -2,6 +2,7 @@
 ==========
 Added below and above shaded backgrounds
 Added option symbol : "op"
+Added option fontHeight
 
 2013-11-21
 ==========

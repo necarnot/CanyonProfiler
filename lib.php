@@ -82,7 +82,7 @@ function bottom () {
 }
 
 class Profile {
-	public $fontHeight = 12;
+	public $fontHeight = 16;
 	public $pageWidth = 297;
 	public $pageHeight = 210;
 	public $pageWidthPx = 1052.36;
@@ -142,7 +142,7 @@ class Profile {
 		$xText += $xOffset;
 		$yText += $yOffset;
 		$this->appendToLayer('text','
-		<g font-size="16" font-family="sans-serif" fill="black" stroke="none" text-anchor="'. $align .'">
+		<g font-size="'.$this->fontHeight.'" font-family="sans-serif" fill="black" stroke="none" text-anchor="'. $align .'">
 			<text x="' . $xText . '" y="' . $yText . '">' . $text . '</text>
 		</g>');
 	}
