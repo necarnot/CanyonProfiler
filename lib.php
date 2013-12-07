@@ -757,8 +757,9 @@ class Anchor extends Item {
 	}
 
 	public function draw(&$p) {
-		$xAsOffset = 1.3 * $p->xScale;
-		$yAsOffset = 1.3 * $p->yScale;
+		$factor= 10 * pow($p->xScale, -0.9);
+		$xAsOffset = $factor * $p->xScale;
+		$yAsOffset = $factor * $p->yScale;
 		$p->displayText($this->displayedText, ($p->curX + $xAsOffset), ($p->curY - $yAsOffset), 0, -7, 'middle');
 	}
 }
@@ -771,8 +772,9 @@ class SingleAnchor extends Anchor {
 	}
 
 	public function draw(&$p) {
-		$xAsOffset = 1.3 * $p->xScale;
-		$yAsOffset = 0.9 * $p->yScale;
+		$factor= 10 * pow($p->xScale, -0.9);
+		$xAsOffset = $factor * $p->xScale;
+		$yAsOffset = $factor * $p->yScale;
 		$p->appendToLayer('anchors','
 		<circle cx = "'. ($p->curX + $xAsOffset) .'" cy = "'. ($p->curY - $yAsOffset) .'" r = "'. $this->radius .'" fill = "#FFFFFF" fill-opacity = "1" stroke = "#'.getAnchorColor().'" stroke-width = "'. $this->strokeWidth .'px"/>');
 		$p->displayText($this->displayedText, ($p->curX + $xAsOffset), ($p->curY - $yAsOffset), 5, 5, 'left');
@@ -786,8 +788,9 @@ class DoubleAnchor extends SingleAnchor {
 	}
 
 	public function draw(&$p) {
-		$xAsOffset = 1.0 * $p->xScale;
-		$yAsOffset = 1.1 * $p->yScale;
+		$factor= 10 * pow($p->xScale, -0.9);
+		$xAsOffset = $factor * $p->xScale;
+		$yAsOffset = $factor * $p->yScale;
 		$p->appendToLayer('anchors','
 		<circle cx = "'. ($p->curX + $xAsOffset) .'" cy = "'. ($p->curY - $yAsOffset) .'" r = "'. $this->radius .'" fill = "#FFFFFF" fill-opacity = "1" stroke = "#'.getAnchorColor().'" stroke-width = "'. $this->strokeWidth .'px"/>
 		<circle cx = "'. ($p->curX + $xAsOffset + (3.5 * $this->radius)) .'" cy = "'. ($p->curY - $yAsOffset) .'" r = "'. $this->radius .'" fill = "#FFFFFF" fill-opacity = "1" stroke = "#'.getAnchorColor().'" stroke-width = "'. $this->strokeWidth .'px"/>');
@@ -802,8 +805,9 @@ class NaturalAnchor extends Anchor {
 	}
 
 	public function draw(&$p) {
-		$xAsOffset = 3.2 * $p->xScale;
-		$yAsOffset = 2 * $p->yScale;
+		$factor= 12 * pow($p->xScale, -0.9);
+		$xAsOffset = $factor * $p->xScale;
+		$yAsOffset = $factor * $p->yScale;
 		$p->displayText($this->displayedText, ($p->curX + $xAsOffset), ($p->curY - $yAsOffset), -10, 5, 'start');
 	}
 }

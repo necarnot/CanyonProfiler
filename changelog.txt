@@ -2,6 +2,7 @@
 ==========
 Carriage returns with huge offset had negative restart values. Protected!
 Torture page now allows empty lines
+Complex mathematics to correct anchor positions whatever the scale
 
 2013-12-06
 ==========
