@@ -1,3 +1,8 @@
+2013-12-07
+==========
+Carriage returns with huge offset had negative restart values. Protected!
+Torture page now allows empty lines
+
 2013-12-06
 ==========
 Added below and above shaded backgrounds

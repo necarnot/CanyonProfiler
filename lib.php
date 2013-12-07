@@ -264,7 +264,7 @@ class Profile {
 				$layerText = '';
 				$oppositeText = '';
 				foreach($this->baseLayer['direct'] as $index => $text) {
-					if(preg_match('/m\s*\d*\.*\d*,\d*\.*\d*\s*(.*)/',$text,$matches)) {
+					if(preg_match('/m\s*-?\d*\.*\d*,-?\d*\.*\d*\s*(.*)/',$text,$matches)) {
 						if ($index == 0) {
 							$layerText .= $text;
 						} else {

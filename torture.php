@@ -11,11 +11,9 @@ if ($handle) {
 			continue;
 		}
 		$canyonStr = rtrim($buffer,"\n");
-		if(isNullOrEmptyString($canyonStr) == '') {
-			error_log('null, on sort');
-			//continue;
+		if(isNullOrEmptyString($canyonStr)) {
+			continue;
 		}
-		error_log('creating profile with:'.$canyonStr.'|');
 		includeProfile($canyonStr);
 	}
 	if (!feof($handle)) {
