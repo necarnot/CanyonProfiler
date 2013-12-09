@@ -1,3 +1,7 @@
+2013-12-09
+==========
+Added pageWidth and pageHeight options (in mm) (Issue #9)
+
 2013-12-07
 ==========
 Carriage returns with huge offset had negative restart values. Protected!

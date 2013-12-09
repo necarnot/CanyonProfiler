@@ -2,12 +2,12 @@
 
 function includeProfile($canyonStr) {
 	$p = new Profile();
-	$p->pageWidthPx -= $p->xEndOffset;
-	$p->pageHeightPx -= $p->yEndOffset;
 	$outDir = 'profiles';
 	$outFile = 'outfile_' . uniqid() . '.svg';
 	$curFileName = $outDir . '/' . $outFile;
 	$p->fileHandle = fopen($curFileName, 'w+') or die("Can't open file:".$curFileName);
+	$p->parse($canyonStr);
+	$p->setPageDimensions();
 	$p->appendToFile('<?xml version="1.0" standalone="no"?>
 	<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 
@@ -15,7 +15,6 @@ function includeProfile($canyonStr) {
 		xmlns="http://www.w3.org/2000/svg"
 		xmlns:xlink="http://www.w3.org/1999/xlink">
 	');
-	$p->parse($canyonStr);
 	$p->chainItems();
 	$p->scale();
 
@@ -85,8 +84,8 @@ class Profile {
 	public $fontHeight = 16;
 	public $pageWidth = 297;
 	public $pageHeight = 210;
-	public $pageWidthPx = 1052.36;
-	public $pageHeightPx = 744.09;
+	public $pageWidthPx;
+	public $pageHeightPx;
 	public $xEndOffset = 40;
 	public $yEndOffset = 40;
 	public $xOffset = 20;
@@ -113,7 +112,13 @@ class Profile {
 
 	public $canyonName = '';
 
-	public $allowedOptions = array('canyonName', 'fontHeight', 'belowBackground', 'aboveBackground');
+	public $allowedOptions = array(
+		'canyonName',
+		'fontHeight',
+		'belowBackground',
+		'aboveBackground',
+		'pageWidth',
+		'pageHeight',);
 	public $belowBackground = 1;
 	public $aboveBackground = 1;
 
@@ -130,6 +135,14 @@ class Profile {
 		'direct' => array(),
 		'reverse' => array(),
 	);
+
+	public function __construct() {
+	}
+	
+	public function setPageDimensions() {
+		$this->pageWidthPx  = ($this->pageWidth  * 3.54) - $this->xEndOffset;
+		$this->pageHeightPx = ($this->pageHeight * 3.54) - $this->yEndOffset;
+	}
 
 	public function appendToFile($text) {
 		fwrite($this->fileHandle, $text);
@@ -193,7 +206,6 @@ class Profile {
 		$maxY = 0;
 		// On détermine maxHeight et maxWidth
 		foreach($this->items as $item) {
-			//error_log('1 : '.get_class($item).' curX='.$curX.' width='.$item->width.' itemWidthFactor='.$item->widthFactor.' minX='.$minX);
 			if (get_class($item) == 'CarriageReturn') {
 				$curX = $minX;
 			} else {
