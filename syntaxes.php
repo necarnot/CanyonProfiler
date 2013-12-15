@@ -116,4 +116,30 @@ VS			CS			RS
 VB			CB			RB
 */
 
+$allowedOptions = array (
+	'canyonName' => array (
+		'str', 'Nom du canyon',
+		0, 255
+	),
+	'fontHeight' => array (
+		'int', 'Taille de la police',
+		0, 100
+	),
+	'belowBackground' => array (
+		'bool', 'Présence du fond inférieur',
+		0, 1 
+	),
+	'aboveBackground' => array (
+		'bool', 'Présence du fond supérieur',
+		0, 1 
+	),
+	'pageWidth' => array (
+		'int', 'Largeur de la page',
+		0, 9999999
+	),
+	'pageHeight' => array (
+		'int', 'Hauteur de la page',
+		0, 9999999
+	),
+);
 ?>

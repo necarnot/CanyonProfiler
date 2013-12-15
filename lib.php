@@ -63,7 +63,7 @@ function plf ($chaine) {
 	print $chaine . "\n";
 }
 
-function top() {
+function top () {
 	plf('<?xml version="1.0" encoding="iso-8859-15"?>');
 	plf('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">');
 	plf('<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">');
@@ -112,13 +112,6 @@ class Profile {
 
 	public $canyonName = '';
 
-	public $allowedOptions = array(
-		'canyonName',
-		'fontHeight',
-		'belowBackground',
-		'aboveBackground',
-		'pageWidth',
-		'pageHeight',);
 	public $belowBackground = 1;
 	public $aboveBackground = 1;
 
@@ -332,6 +325,7 @@ class Profile {
 	}
 
 	public function setOptions($optionsStr) {
+		global $allowedOptions;
 		$pairs = explode(',', $optionsStr);
 		foreach($pairs as $pair) {
 			$pair = trim($pair);
@@ -340,9 +334,21 @@ class Profile {
 			$key = trim($optParts[0]);
 			$value = trim($optParts[1]);
 			if(isNullOrEmptyString($key) || isNullOrEmptyString($value)) { continue; }
-			if (in_array($key, $this->allowedOptions)) {
-				if(strtolower($value) == 'true') { $value = 1; }
-				if(strtolower($value) == 'false') { $value = 0; }
+			if (array_key_exists($key, $allowedOptions)) {
+				$keyType = $allowedOptions[$key][0];
+				$keyMinValue = $allowedOptions[$key][2];
+				$keyMaxValue = $allowedOptions[$key][3];
+				switch ($keyType) {
+					case 'str':
+						if ((strlen($value) < $keyMinValue) || (strlen($value) > $keyMaxValue)) { continue; };
+						break;
+					case 'int':
+					case 'bool':
+						if (($value < $keyMinValue) || ($value > $keyMaxValue) || !is_int($value)) { continue; };
+						break;
+					default :
+						continue;
+				}
 				$this->$key = $value;
 			}
 		}

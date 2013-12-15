@@ -1,3 +1,7 @@
+2013-12-15
+==========
+Added auto-documented description of allowed options
+
 2013-12-09
 ==========
 Added pageWidth and pageHeight options (in mm) (Issue #9)

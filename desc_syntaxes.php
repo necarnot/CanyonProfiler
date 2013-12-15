@@ -57,6 +57,36 @@ foreach($syntaxes as $syntaxName => $syntax) {
 } 
 ?>
 
-<?
+   <h2>Options description - Description des options</h2>
+   <p>The following table is showing the list of options you can use to enhance your favorite canyon profile.<br/>
+   Le tableau ci-dessous présente la liste des options utilisables pour améliorer votre coupe de canyon.</p>
+
+<?php
+global $allowedOptions;
+echo '
+
+<table cellpadding="1" cellspacing="0" border="1">
+	<tr>
+		<th>Name</th>
+		<th>Type</th>
+		<th>Description</th>
+		<th>Min value</th>
+		<th>Max value</th>
+	</tr>
+';
+
+// Pour chaque option
+foreach($allowedOptions as $optionName => $optionProperties) {
+	echo '
+	<tr>
+		<td>' . $optionName . '</td><td>' . $optionProperties[0] . '</td><td>' . $optionProperties[1] . '</td><td>' . $optionProperties[2] . '</td><td>' . $optionProperties[3] . '</td>';
+	echo '
+	</tr>';
+} 
+echo '
+</table>';
+?>
+
+<?php
 bottom();
 ?>
