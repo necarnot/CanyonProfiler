@@ -80,9 +80,11 @@ function parsed($p, $canyonStr) {
 				if($key == 'Option') {
 					$p->setOptions($value);
 				} else {
-					$tmpItem = new $key($value);
-					$tmpItem->setInStr($inStr);
-					array_push($p->items, $tmpItem);
+					if (class_exists($key)) {
+						$tmpItem = new $key($value);
+						$tmpItem->setInStr($inStr);
+						array_push($p->items, $tmpItem);
+					}
 				}
 				break;
 			}

@@ -37,6 +37,22 @@ function includeProfile($canyonStr) {
 	';
 }
 
+// Cette fonction extrait d'un fichier SVG les defs et le <g>
+// et l'empaquette dans un <g id="symbolName">.
+// Cette fonction utilise la version mise en cache du fichier utilisé.
+// Si la version en cache est absente, le fichier en cache est crée.
+function getPackagedSymbol($symbolName) {
+	$symbolDir = 'symbols';
+	$symbolCacheDir = $symbolDir . '/cache';
+	$symbolFile = $symbolCacheDir . '/' . $symbolName . '.svg';
+	if(!file_exists($symbolFile)) {
+		error_log('Le fichier '.$symbolFile." n'existe pas en cache");
+		// Ici, on doit lancer la construction du fichier en cache.
+		//cacheSvgFile();
+	}
+	return file_get_contents($symbolFile);
+}
+
 // Function for basic field validation (present and neither empty nor only white space)
 function isNullOrEmptyString($question){
 	return (!isset($question) || trim($question)==='');
@@ -118,7 +134,7 @@ class Profile {
 	public $layers = array (
 		'base' => '',
 		'water' => '',
-		'vegetal' => '',
+		'symbols' => '',
 		'anchors' => '',
 		'text' => '',
 		'infos' => '',
@@ -830,16 +846,42 @@ class NaturalAnchor extends Anchor {
 	}
 }
 
-class Vegetal extends Item {
-	function __construct() {
+class Symbol extends Item {
+	function __construct($text) {
 		parent::__construct();
-		$this->name = 'Vegetal';
-		$this->heightFactor = 0;
-		$this->widthFactor = 0;
+		$this->name = get_class($this);
+		error_log('class Symbol, $this->name='.$this->name);
+		$this->displayedText = $text;
+		error_log('class Symbol, $this->displayText='.$this->displayedText);
+	}
+
+	public function draw(&$p) {
+		$p->neededDefs[get_class($this)] = 1;
+		$xAsOffset = 0 * $p->xScale - 60;
+		$yAsOffset = 0 * $p->yScale - 90 - ($this->strokeWidth / 2);
+		$p->appendToLayer('symbols', '
+		<use xlink:href="#'.get_class($this).'" x="'.($p->curX + $xAsOffset).'" y="'.($p->curY + $yAsOffset).'"/>');
+	}
+
+	public static function getDef(&$p) {
+		$symbolName = get_called_class();
+		$p->appendToFile(getPackagedSymbol($symbolName));
+		//$p->appendToFile('
+		//<g id="'.$symbolName.'">
+		//	<rect x="45" y="70" width="10" height="20" fill="peru"/>
+		//	<polygon points="20,70 80,70 60,55 70,55 55,40 65,40 50,20 35,40 45,40 30,55 40,55" fill="forestgreen"/>
+		//</g>
+		//');
 	}
 }
 
-class PineTree extends Vegetal {
+class BeauSapin extends Symbol {
+//	function __construct() {
+//		parent::__construct();
+//	}
+}
+
+class PineTree extends Item {
 	function __construct() {
 		parent::__construct();
 		$this->name = 'Pinetree';
@@ -849,7 +891,7 @@ class PineTree extends Vegetal {
 		$p->neededDefs[get_class($this)] = 1;
 		$xAsOffset = 0 * $p->xScale - 60;
 		$yAsOffset = 0 * $p->yScale - 90 - ($this->strokeWidth / 2);
-		$p->appendToLayer('vegetal', '
+		$p->appendToLayer('symbols', '
 		<use xlink:href="#'.get_class($this).'" x="'.($p->curX + $xAsOffset).'" y="'.($p->curY + $yAsOffset).'"/>');
 	}
 
@@ -887,9 +929,6 @@ class ExitPoint extends Item {
 		</g>
 		');
 	}
-}
-
-class Span extends Item {
 }
 
 class CarriageReturn extends Item {
