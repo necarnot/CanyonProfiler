@@ -4,7 +4,7 @@ include_once 'parser.php';
 include_once 'lib.php';
 
 top();
-$handle = @fopen('torture.dat', 'r');
+$handle = fopen('torture.dat', 'r');
 if ($handle) {
 	while (($buffer = fgets($handle)) !== false) {
 		if($buffer == '\n' || substr($buffer, 0, 1) == '#') {

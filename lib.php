@@ -43,14 +43,38 @@ function includeProfile($canyonStr) {
 // Si la version en cache est absente, le fichier en cache est crée.
 function getPackagedSymbol($symbolName) {
 	$symbolDir = 'symbols';
+	$symbolFile = $symbolDir . '/' . $symbolName . '.svg';
 	$symbolCacheDir = $symbolDir . '/cache';
-	$symbolFile = $symbolCacheDir . '/' . $symbolName . '.svg';
-	if(!file_exists($symbolFile)) {
-		error_log('Le fichier '.$symbolFile." n'existe pas en cache");
-		// Ici, on doit lancer la construction du fichier en cache.
-		//cacheSvgFile();
+	$symbolCacheFile = $symbolCacheDir . '/' . $symbolName . '.svg';
+	if(!file_exists($symbolCacheFile)) {
+		error_log('Le fichier '.$symbolCacheFile." n'existe pas en cache");
+		// Ici, on lance la construction du fichier en cache.
+		$handle = fopen($symbolFile, 'r');
+		$handleCache = fopen($symbolFile, 'w');
+		if ($handle === FALSE || $handleCache === FALSE) {
+			error_log('Unable to open source or cache file');
+			return;
+		} else {
+			while (($buffer = fgets($handle)) !== false) {
+				if($buffer == '\n'
+				|| substr($buffer, 0, 6) == '<?xml '
+				|| substr($buffer, 0, 5) == '<svg '
+				|| substr($buffer, 0, 6) == '</svg '
+				) {
+					continue;
+				}
+				if(fwrite($handleCache, $buffer) === FALSE) {
+					error_log('Error : Unable to create cache version of file '.$symbolFile);
+				}
+			}
+			if (!feof($handle)) {
+				echo "Erreur: stream_get_line() a échoué\n";
+			}
+			fclose($handle);
+			fclose($handleCache);
+		}
 	}
-	return file_get_contents($symbolFile);
+	return file_get_contents($symbolCacheFile);
 }
 
 // Function for basic field validation (present and neither empty nor only white space)
