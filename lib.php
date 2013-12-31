@@ -872,7 +872,7 @@ class NaturalAnchor extends Anchor {
 
 // TODO :
 /*
-- Stocker les hauteur et largeur des sysmboles, les stocker dans l'objet, afin de pouvoir
+- Stocker les hauteur et largeur des symboles, les stocker dans l'objet, afin de pouvoir
   placer correctement les abcisses et ordonnées des symboles
 - Déterminer un facteur d'échelle :
   - Soit s'accorder dès le dessin en vectoriel du symbole d'une référence
