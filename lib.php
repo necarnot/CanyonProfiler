@@ -50,7 +50,7 @@ function getPackagedSymbol($symbolName) {
 		error_log('Le fichier '.$symbolCacheFile." n'existe pas en cache");
 		// Ici, on lance la construction du fichier en cache.
 		$handle = fopen($symbolFile, 'r');
-		$handleCache = fopen($symbolFile, 'w');
+		$handleCache = fopen($symbolCacheFile, 'w');
 		if ($handle === FALSE || $handleCache === FALSE) {
 			error_log('Unable to open source or cache file');
 			return;
@@ -59,7 +59,7 @@ function getPackagedSymbol($symbolName) {
 				if($buffer == '\n'
 				|| substr($buffer, 0, 6) == '<?xml '
 				|| substr($buffer, 0, 5) == '<svg '
-				|| substr($buffer, 0, 6) == '</svg '
+				|| substr($buffer, 0, 6) == '</svg>'
 				) {
 					continue;
 				}
@@ -870,6 +870,15 @@ class NaturalAnchor extends Anchor {
 	}
 }
 
+// TODO :
+/*
+- Stocker les hauteur et largeur des sysmboles, les stocker dans l'objet, afin de pouvoir
+  placer correctement les abcisses et ordonnées des symboles
+- Déterminer un facteur d'échelle :
+  - Soit s'accorder dès le dessin en vectoriel du symbole d'une référence
+  - Soit attribuer à chaque fichier un facteur à stocker je ne sais où (dans un commentaire du fichier ?)
+- Mettre à l'échelle chaque symbole (chaque xlink) en fonction des xScale et yScale
+*/
 class Symbol extends Item {
 	function __construct($text) {
 		parent::__construct();
@@ -881,21 +890,19 @@ class Symbol extends Item {
 
 	public function draw(&$p) {
 		$p->neededDefs[get_class($this)] = 1;
-		$xAsOffset = 0 * $p->xScale - 60;
-		$yAsOffset = 0 * $p->yScale - 90 - ($this->strokeWidth / 2);
+		//$xAsOffset = 0 * $p->xScale - 60;
+		//$yAsOffset = 0 * $p->yScale - 90 - ($this->strokeWidth / 2);
 		$p->appendToLayer('symbols', '
-		<use xlink:href="#'.get_class($this).'" x="'.($p->curX + $xAsOffset).'" y="'.($p->curY + $yAsOffset).'"/>');
+		<use xlink:href="#'.get_class($this).'" x="0" y="0" 
+		transform="scale(0.2)"/>');
+		//$p->appendToLayer('symbols', '
+		//<use xlink:href="#'.get_class($this).'" x="'.($p->curX + $xAsOffset).'" y="'.($p->curY + $yAsOffset).'" 
+		//transform="scale(0.2)"/>');
 	}
 
 	public static function getDef(&$p) {
 		$symbolName = get_called_class();
 		$p->appendToFile(getPackagedSymbol($symbolName));
-		//$p->appendToFile('
-		//<g id="'.$symbolName.'">
-		//	<rect x="45" y="70" width="10" height="20" fill="peru"/>
-		//	<polygon points="20,70 80,70 60,55 70,55 55,40 65,40 50,20 35,40 45,40 30,55 40,55" fill="forestgreen"/>
-		//</g>
-		//');
 	}
 }
 
