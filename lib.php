@@ -58,9 +58,17 @@ function getPackagedSymbol($symbolName) {
 			while (($buffer = fgets($handle)) !== false) {
 				if($buffer == '\n'
 				|| substr($buffer, 0, 6) == '<?xml '
-				|| substr($buffer, 0, 5) == '<svg '
 				|| substr($buffer, 0, 6) == '</svg>'
 				) {
+					continue;
+				}
+				if(substr($buffer, 0, 5) == '<svg ') {
+					error_log('<svg> found ! Looking for dimensions...');
+					if(preg_match('/width="(.*)" height="(.*)"/',$buffer,$matches)) {
+						$symbolWidth = $matches[1];
+						$symbolHeight = $matches[2];
+						error_log('symbolWidth='.$symbolWidth.', symbolHeight='.$symbolHeight);
+					}
 					continue;
 				}
 				if(fwrite($handleCache, $buffer) === FALSE) {
