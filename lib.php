@@ -41,7 +41,9 @@ function includeProfile($canyonStr) {
 // et l'empaquette dans un <g id="symbolName">.
 // Cette fonction utilise la version mise en cache du fichier utilisé.
 // Si la version en cache est absente, le fichier en cache est crée.
-function getPackagedSymbol($symbolName) {
+function setPackagedSymbol(&$item) {
+	$symbolName = get_class($item);
+	error_log('setPackagedSymbol, class='.$symbolName);
 	$symbolDir = 'symbols';
 	$symbolFile = $symbolDir . '/' . $symbolName . '.svg';
 	$symbolCacheDir = $symbolDir . '/cache';
@@ -62,15 +64,6 @@ function getPackagedSymbol($symbolName) {
 				) {
 					continue;
 				}
-				if(substr($buffer, 0, 5) == '<svg ') {
-					error_log('<svg> found ! Looking for dimensions...');
-					if(preg_match('/width="(.*)" height="(.*)"/',$buffer,$matches)) {
-						$symbolWidth = $matches[1];
-						$symbolHeight = $matches[2];
-						error_log('symbolWidth='.$symbolWidth.', symbolHeight='.$symbolHeight);
-					}
-					continue;
-				}
 				if(fwrite($handleCache, $buffer) === FALSE) {
 					error_log('Error : Unable to create cache version of file '.$symbolFile);
 				}
@@ -82,6 +75,15 @@ function getPackagedSymbol($symbolName) {
 			fclose($handleCache);
 		}
 	}
+
+	error_log('symbolFile='.$symbolFile);
+	$file = file_get_contents($symbolFile);
+	preg_match ('/<svg\ .*width="(.*)" height="(.*)".*/', $file, $matches);
+	$symbolWidth = $matches[1];
+	$symbolHeight = $matches[2];
+	error_log('symbolWidth='.$symbolWidth.', symbolHeight='.$symbolHeight);
+	$item->width = $symbolWidth;
+	$item->height = $symbolHeight;
 	return file_get_contents($symbolCacheFile);
 }
 
@@ -152,7 +154,7 @@ class Profile {
 	public $origCanyonStr = '';
 	public $canyonStr = '';
 	public $defaultVersion = 'fr2.1';
-	public $neededDefs = array ();
+	public $writtenDefs = array ();
 
 	public $syntaxVersion = '';
 	public $items = array ();
@@ -888,12 +890,15 @@ class NaturalAnchor extends Anchor {
 - Mettre à l'échelle chaque symbole (chaque xlink) en fonction des xScale et yScale
 */
 class Symbol extends Item {
+	public $def;
+
 	function __construct($text) {
 		parent::__construct();
 		$this->name = get_class($this);
 		error_log('class Symbol, $this->name='.$this->name);
 		$this->displayedText = $text;
 		error_log('class Symbol, $this->displayText='.$this->displayedText);
+		setPackagedSymbol($this);
 	}
 
 	public function draw(&$p) {
@@ -901,23 +906,23 @@ class Symbol extends Item {
 		//$xAsOffset = 0 * $p->xScale - 60;
 		//$yAsOffset = 0 * $p->yScale - 90 - ($this->strokeWidth / 2);
 		$p->appendToLayer('symbols', '
-		<use xlink:href="#'.get_class($this).'" x="0" y="0" 
-		transform="scale(0.2)"/>');
+		<use xlink:href="#'.get_class($this).'" x="0" y="0" transform="scale(0.2)"/>');
 		//$p->appendToLayer('symbols', '
 		//<use xlink:href="#'.get_class($this).'" x="'.($p->curX + $xAsOffset).'" y="'.($p->curY + $yAsOffset).'" 
 		//transform="scale(0.2)"/>');
 	}
 
 	public static function getDef(&$p) {
-		$symbolName = get_called_class();
-		$p->appendToFile(getPackagedSymbol($symbolName));
+		//$p->appendToFile($this->def);
 	}
 }
 
 class BeauSapin extends Symbol {
-//	function __construct() {
-//		parent::__construct();
-//	}
+	function __construct($text) {
+		parent::__construct($text);
+		$this->heightFactor = 0.001369863;
+		$this->widthFactor = 0.002222222;
+	}
 }
 
 class PineTree extends Item {
