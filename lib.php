@@ -43,7 +43,6 @@ function includeProfile($canyonStr) {
 // Si la version en cache est absente, le fichier en cache est crée.
 function setPackagedSymbol(&$item) {
 	$symbolName = get_class($item);
-	error_log('setPackagedSymbol, class='.$symbolName);
 	$symbolDir = 'symbols';
 	$symbolFile = $symbolDir . '/' . $symbolName . '.svg';
 	$symbolCacheDir = $symbolDir . '/cache';
@@ -84,7 +83,7 @@ function setPackagedSymbol(&$item) {
 	error_log('symbolWidth='.$symbolWidth.', symbolHeight='.$symbolHeight);
 	$item->width = $symbolWidth;
 	$item->height = $symbolHeight;
-	return file_get_contents($symbolCacheFile);
+	$item->def = file_get_contents($symbolCacheFile);
 }
 
 // Function for basic field validation (present and neither empty nor only white space)
@@ -361,8 +360,12 @@ class Profile {
 		//}
 		$this->appendToFile('
 	<defs>');
-		foreach($this->neededDefs as $neededDef => $kickme) {
-			$neededDef::getDef($this);
+		foreach($this->items as $item) {
+			$className = get_class($item);
+			if(!array_key_exists($className, $this->writtenDefs)) {
+				$item->getDef($this);
+			}
+			$this->writtenDefs[$className] = 1;
 		}
 		$this->appendToFile('
 		    <filter id="filterBelow">
@@ -422,6 +425,9 @@ class Item {
 	public $symbolLetter = '';
 
 	function __construct() {
+	}
+
+	public function getDef() {
 	}
 
 	public function getNextItemClass() {
@@ -891,9 +897,12 @@ class NaturalAnchor extends Anchor {
 */
 class Symbol extends Item {
 	public $def;
+	public $symbolScale;
 
 	function __construct($text) {
 		parent::__construct();
+		$this->heightFactor = 0;
+		$this->widthFactor = 0;
 		$this->name = get_class($this);
 		error_log('class Symbol, $this->name='.$this->name);
 		$this->displayedText = $text;
@@ -902,26 +911,39 @@ class Symbol extends Item {
 	}
 
 	public function draw(&$p) {
+		// On flag cet indice de tableau pour éviter les répétitions d'insertion de def
 		$p->neededDefs[get_class($this)] = 1;
-		//$xAsOffset = 0 * $p->xScale - 60;
-		//$yAsOffset = 0 * $p->yScale - 90 - ($this->strokeWidth / 2);
-		$p->appendToLayer('symbols', '
-		<use xlink:href="#'.get_class($this).'" x="0" y="0" transform="scale(0.2)"/>');
+		$xAsOffset = ($this->drawedWidth  * 0);# * $p->xScale - 0;
+		$yAsOffset = ($this->drawedHeight * 0);# * $p->yScale - 0;
+		error_log($this->drawedHeight);
 		//$p->appendToLayer('symbols', '
+		//<use xlink:href="#'.get_class($this).'" x="0" y="0" transform="scale(0.2)"/>');
 		//<use xlink:href="#'.get_class($this).'" x="'.($p->curX + $xAsOffset).'" y="'.($p->curY + $yAsOffset).'" 
-		//transform="scale(0.2)"/>');
+		$p->appendToLayer('symbols', '
+		<use xlink:href="#'.get_class($this).'" x="0" y="0" transform="
+		translate('.($p->curX - $xAsOffset).','.($p->curY - $yAsOffset).')
+		scale('.($this->symbolScale * $p->xScale / 30).')
+		"/>');
 	}
 
-	public static function getDef(&$p) {
-		//$p->appendToFile($this->def);
+	public function getDef(&$p) {
+		$p->appendToFile($this->def);
+	}
+
+	public function scale($xScale, $yScale) {
+		error_log('Symbol::scale - width='.$this->width.' height='.$this->height.' xScale='.$xScale.' yScale='.$yScale);
+		//$this->drawedWidth  = $this->width  * $this->widthFactor  * $xScale;
+		//$this->drawedHeight = $this->height * $this->heightFactor * $yScale;
+		$this->drawedWidth  = $this->width  * $this->symbolScale * $xScale / 30;
+		$this->drawedHeight = $this->height * $this->symbolScale * $yScale / 30;
 	}
 }
 
-class BeauSapin extends Symbol {
+class BeauSapin2 extends Symbol {
 	function __construct($text) {
 		parent::__construct($text);
-		$this->heightFactor = 0.001369863;
-		$this->widthFactor = 0.002222222;
+		$this->symbolScale = 0.4;
+		// symbolWidth=450, symbolHeight=730
 	}
 }
 
@@ -939,7 +961,7 @@ class PineTree extends Item {
 		<use xlink:href="#'.get_class($this).'" x="'.($p->curX + $xAsOffset).'" y="'.($p->curY + $yAsOffset).'"/>');
 	}
 
-	public static function getDef(&$p) {
+	public function getDef(&$p) {
 		$p->appendToFile('
 		<g id="'.get_called_class().'">
 			<rect x="45" y="70" width="10" height="20" fill="peru"/>
@@ -965,7 +987,7 @@ class ExitPoint extends Item {
 		$p->displayText($this->displayedText, ($p->curX + $xOffset + 32), ($p->curY + $yOffset), 0, 0, 'left');
 	}
 
-	public static function getDef(&$p) {
+	public function getDef(&$p) {
 		$p->appendToFile('
 		<g id="'.get_called_class().'">
 			<path style="fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;
