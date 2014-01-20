@@ -78,9 +78,10 @@ function setPackagedSymbol(&$item) {
 
 	error_log('symbolFile='.$symbolFile);
 	$file = file_get_contents($symbolFile);
-	preg_match ('/<svg\ .*width="(.*)" height="(.*)".*/', $file, $matches);
+	preg_match ('/<svg\ .*width="(.*)".*/', $file, $matches);
 	$symbolWidth = $matches[1];
-	$symbolHeight = $matches[2];
+	preg_match ('/<svg\ .*height="(.*)".*/', $file, $matches);
+	$symbolHeight = $matches[1];
 	error_log('symbolWidth='.$symbolWidth.', symbolHeight='.$symbolHeight);
 	$item->width = $symbolWidth;
 	$item->height = $symbolHeight;
@@ -197,6 +198,11 @@ class Profile {
 		}
 		$xText += $xOffset;
 		$yText += $yOffset;
+		$this->appendToLayer('text','
+		<g font-size="'.$this->fontHeight.'" font-family="sans-serif" fill="white" stroke="none" text-anchor="'. $align .'" filter="url(#filterTextShadow)">
+			<text x="' . $xText . '" y="' . $yText . '" fill="#ffffff">' . $text . '</text>
+		</g>');
+
 		$this->appendToLayer('text','
 		<g font-size="'.$this->fontHeight.'" font-family="sans-serif" fill="black" stroke="none" text-anchor="'. $align .'">
 			<text x="' . $xText . '" y="' . $yText . '">' . $text . '</text>
@@ -369,6 +375,9 @@ class Profile {
 			$this->writtenDefs[$className] = 1;
 		}
 		$this->appendToFile('
+		    <filter id="filterTextShadow">
+		      <feGaussianBlur stdDeviation="2" />
+		    </filter>
 		    <filter id="filterBelow">
 		      <feGaussianBlur stdDeviation="25" />
 		    </filter>
@@ -424,6 +433,8 @@ class Item {
 	public $strokeWidth = 2;
 	public $inStr = '';
 	public $symbolLetter = '';
+	public $xOffset;
+	public $yOffset;
 
 	function __construct() {
 	}
@@ -911,17 +922,23 @@ class Symbol extends Item {
 		setPackagedSymbol($this);
 	}
 
+	// On définit cette fonction pour permettre à chaque symbole
+	// de pouvoir préciser leur propre méthode d'offset
+	public function setXYOffset() {
+		$this->xOffset = 0 - $this->drawedWidth;
+		$this->yOffset = 0 - $this->drawedHeight;
+	}
+
 	public function draw(&$p) {
 		// On flag cet indice de tableau pour éviter les répétitions d'insertion de def
 		$p->neededDefs[get_class($this)] = 1;
-		$xAsOffset = $this->drawedWidth  * 1;
-		$yAsOffset = $this->drawedHeight * 1;
-		error_log($this->drawedHeight);
+		$this->setXYOffset($p);
 		$p->appendToLayer('symbols', '
 		<use xlink:href="#'.get_class($this).'" x="0" y="0" transform="
-		translate('.($p->curX - $xAsOffset).','.($p->curY - $yAsOffset).')
+		translate('.($p->curX + $this->xOffset).','.($p->curY + $this->yOffset).')
 		scale('.($this->symbolScale * $p->xScale).','.($this->symbolScale * $p->yScale).')
 		"/>');
+		$p->displayText($this->displayedText, $p->curX, ($p->curY + $this->yOffset), 0, 0, 'left');
 	}
 
 	public function getDef(&$p) {
@@ -935,61 +952,43 @@ class Symbol extends Item {
 	}
 }
 
-class BeauSapin2 extends Symbol {
+class Tree extends Symbol {
+	function __construct($text) {
+		parent::__construct($text);
+	}
+
+	public function setXYOffset() {
+		$this->xOffset = 0 - ($this->drawedWidth / 1.7);
+		$this->yOffset = 0 - $this->drawedHeight - ($this->strokeWidth / 2);
+	}
+}
+
+class BeauSapin extends Tree {
+	// symbolWidth=450, symbolHeight=730
 	function __construct($text) {
 		parent::__construct($text);
 		$this->symbolScale = 0.018;
-		// symbolWidth=450, symbolHeight=730
 	}
 }
 
-class PineTree extends Item {
-	function __construct() {
-		parent::__construct();
-		$this->name = 'Pinetree';
-	}
-
-	public function draw(&$p) {
-		$p->neededDefs[get_class($this)] = 1;
-		$xAsOffset = 0 * $p->xScale - 60;
-		$yAsOffset = 0 * $p->yScale - 90 - ($this->strokeWidth / 2);
-		$p->appendToLayer('symbols', '
-		<use xlink:href="#'.get_class($this).'" x="'.($p->curX + $xAsOffset).'" y="'.($p->curY + $yAsOffset).'"/>');
-	}
-
-	public function getDef(&$p) {
-		$p->appendToFile('
-		<g id="'.get_called_class().'">
-			<rect x="45" y="70" width="10" height="20" fill="peru"/>
-			<polygon points="20,70 80,70 60,55 70,55 55,40 65,40 50,20 35,40 45,40 30,55 40,55" fill="forestgreen"/>
-		</g>
-		');
-	}
-}
-
-class ExitPoint extends Item {
+class PineTree extends Tree {
+	// symbolWidth=, symbolHeight=
 	function __construct($text) {
-		parent::__construct();
-		$this->name = 'Exit point';
-		$this->displayedText = $text;
+		parent::__construct($text);
+		$this->symbolScale = 0.18;
+	}
+}
+
+class ExitPoint extends Symbol {
+	// symbolWidth=, symbolHeight=
+	function __construct($text) {
+		parent::__construct($text);
+		$this->symbolScale = 0.08;
 	}
 
-	public function draw(&$p) {
-		$p->neededDefs[get_class($this)] = 1;
-		$xOffset = -20;
-		$yOffset = -45;
-		$p->appendToLayer('infos', '
-		<use xlink:href="#'.get_class($this).'"  x="'.($p->curX + $xOffset).'" y="'.($p->curY + $yOffset).'"/>');
-		$p->displayText($this->displayedText, ($p->curX + $xOffset + 32), ($p->curY + $yOffset), 0, 0, 'left');
-	}
-
-	public function getDef(&$p) {
-		$p->appendToFile('
-		<g id="'.get_called_class().'">
-			<path style="fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;
-			stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" d="M 30.69,1.01 16.55,3.84 20.79,8.08 1,20.81 l 8.48,1.41 1.41,8.48 12.72,-19.79 4.24,4.24 z"/>
-		</g>
-		');
+	public function setXYOffset() {
+		$this->xOffset = 0 - ($this->drawedWidth * 1);
+		$this->yOffset = 0 - ($this->drawedHeight * 1.2);
 	}
 }
 

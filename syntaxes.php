@@ -84,7 +84,7 @@ $syntaxes = array (
 		'DoubleAnchor'			=> array ('ad' => 'Amarrage double', 'am' => 'Amarrage multiple'),
 		'NaturalAnchor'			=> array ('an' => 'Amarrage naturel'),
 		'PineTree'			=> array ('sa' => 'Sapin'),
-		'BeauSapin2'			=> array ('bs' => 'Beau sapin'),
+		'BeauSapin'			=> array ('bs' => 'Beau sapin'),
 		'ExitPoint'			=> array ('ex' => 'Exit', 'ec' => 'Echappatoire'),
 		'CarriageReturn'		=> array ('cr' => 'Carriage return', 'rl' => 'retour à la ligne'),
 	),
