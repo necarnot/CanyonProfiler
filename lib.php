@@ -59,6 +59,7 @@ function setPackagedSymbol(&$item) {
 			while (($buffer = fgets($handle)) !== false) {
 				if($buffer == '\n'
 				|| substr($buffer, 0, 6) == '<?xml '
+				|| substr($buffer, 0, 4) == '<svg'
 				|| substr($buffer, 0, 6) == '</svg>'
 				) {
 					continue;
@@ -913,16 +914,13 @@ class Symbol extends Item {
 	public function draw(&$p) {
 		// On flag cet indice de tableau pour éviter les répétitions d'insertion de def
 		$p->neededDefs[get_class($this)] = 1;
-		$xAsOffset = ($this->drawedWidth  * 0);# * $p->xScale - 0;
-		$yAsOffset = ($this->drawedHeight * 0);# * $p->yScale - 0;
+		$xAsOffset = $this->drawedWidth  * 1;
+		$yAsOffset = $this->drawedHeight * 1;
 		error_log($this->drawedHeight);
-		//$p->appendToLayer('symbols', '
-		//<use xlink:href="#'.get_class($this).'" x="0" y="0" transform="scale(0.2)"/>');
-		//<use xlink:href="#'.get_class($this).'" x="'.($p->curX + $xAsOffset).'" y="'.($p->curY + $yAsOffset).'" 
 		$p->appendToLayer('symbols', '
 		<use xlink:href="#'.get_class($this).'" x="0" y="0" transform="
 		translate('.($p->curX - $xAsOffset).','.($p->curY - $yAsOffset).')
-		scale('.($this->symbolScale * $p->xScale / 30).')
+		scale('.($this->symbolScale * $p->xScale).','.($this->symbolScale * $p->yScale).')
 		"/>');
 	}
 
@@ -932,17 +930,15 @@ class Symbol extends Item {
 
 	public function scale($xScale, $yScale) {
 		error_log('Symbol::scale - width='.$this->width.' height='.$this->height.' xScale='.$xScale.' yScale='.$yScale);
-		//$this->drawedWidth  = $this->width  * $this->widthFactor  * $xScale;
-		//$this->drawedHeight = $this->height * $this->heightFactor * $yScale;
-		$this->drawedWidth  = $this->width  * $this->symbolScale * $xScale / 30;
-		$this->drawedHeight = $this->height * $this->symbolScale * $yScale / 30;
+		$this->drawedWidth  = $this->width  * $this->symbolScale * $xScale;
+		$this->drawedHeight = $this->height * $this->symbolScale * $yScale;
 	}
 }
 
 class BeauSapin2 extends Symbol {
 	function __construct($text) {
 		parent::__construct($text);
-		$this->symbolScale = 0.4;
+		$this->symbolScale = 0.018;
 		// symbolWidth=450, symbolHeight=730
 	}
 }
