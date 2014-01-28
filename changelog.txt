@@ -1,3 +1,9 @@
+2014-01-28
+==========
+Added the structure to embed external svg files ("symbols")
+Added a cache directory for external svg files
+Added symbols : "sa"=sapin, "sr"=sapin rond
+
 2013-12-15
 ==========
 Added auto-documented description of allowed options
