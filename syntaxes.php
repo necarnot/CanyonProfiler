@@ -19,7 +19,7 @@ $syntaxes = array (
 		'Walk'			=> array ('m' => 'Marche'),
 		'Pool'			=> array ('v' => 'Vasque'),
 		'SingleAnchor'		=> array ('a' => 'Amarrage'),
-		'PineTree'		=> array ('s' => 'Sapin'),
+		'PineTree02'		=> array ('s' => 'Sapin'),
 		'CarriageReturn'	=> array ('l' => 'retour à la _L_igne'),
 		'Slide'			=> array ('t' => 'Toboggan')
 	),
@@ -30,7 +30,7 @@ $syntaxes = array (
 		'Walk'			=> array ('s' => 'Sendero'),
 		'Pool'			=> array ('b' => 'Badina'),
 		'SingleAnchor'		=> array ('a' => 'Anclaje'),
-		'PineTree'		=> array ('p' => 'Pino'),
+		'PineTree02'		=> array ('p' => 'Pino'),
 		'CarriageReturn'	=> array ('l' => 'retour à la _l_igne'),
 		'Slide'			=> array ('t' => 'Tobagan')
 	),
@@ -41,7 +41,7 @@ $syntaxes = array (
 		'Walk'			=> array ('m' => 'Marcia'),
 		'Pool'			=> array ('v' => 'Vasque / Pozze'),
 		'SingleAnchor'		=> array ('a' => 'Armo'),
-		'PineTree'		=> array ('s' => 'Sapin / Abete'),
+		'PineTree02'		=> array ('s' => 'Sapin / Abete'),
 		'CarriageReturn'	=> array ('l' => 'retour à la _l_igne'),
 		'Slide'			=> array ('t' => 'Toboga')
 	),
@@ -51,7 +51,7 @@ $syntaxes = array (
 		'Walk'			=> array ('t' => 'Track'),
 		'Pool'			=> array ('p' => 'Pool'),
 		'SingleAnchor'		=> array ('a' => 'Anchor'),
-		'PineTree'		=> array ('v' => 'Vegetal - Pine tree'),
+		'PineTree02'		=> array ('v' => 'Vegetal - Pine tree'),
 		'CarriageReturn'	=> array ('l' => 'retour à la _l_igne'),
 		'Slide'			=> array ('s' => 'Slide')
 	),
@@ -83,8 +83,8 @@ $syntaxes = array (
 		'SingleAnchor'			=> array ('as' => 'Amarrage simple', 'au' => 'Amarrage unique'),
 		'DoubleAnchor'			=> array ('ad' => 'Amarrage double', 'am' => 'Amarrage multiple'),
 		'NaturalAnchor'			=> array ('an' => 'Amarrage naturel'),
-		'PineTree'			=> array ('sa' => 'Sapin'),
-		'BeauSapin'			=> array ('bs' => 'Beau sapin'),
+		'PineTree01'			=> array ('sa' => 'Sapin'),
+		'PineTree02'			=> array ('sr' => 'Sapin rond'),
 		'ExitPoint'			=> array ('ex' => 'Exit', 'ec' => 'Echappatoire'),
 		'CarriageReturn'		=> array ('cr' => 'Carriage return', 'rl' => 'retour à la ligne'),
 	),
@@ -101,7 +101,7 @@ $syntaxes = array (
 		'SingleAnchor'		=> array ('sa' => 'Single anchor'),
 		'DoubleAnchor'		=> array ('da' => 'Double anchor'),
 		'NaturalAnchor'		=> array ('na' => 'Natural anchor'),
-		'PineTree'		=> array ('pt' => 'Pine tree'),
+		'PineTree02'		=> array ('pt' => 'Pine tree'),
 		'CarriageReturn'	=> array ('cr' => 'Carriage return')
 	)
 );

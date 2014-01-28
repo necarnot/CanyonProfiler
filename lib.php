@@ -963,19 +963,19 @@ class Tree extends Symbol {
 	}
 }
 
-class BeauSapin extends Tree {
-	// symbolWidth=450, symbolHeight=730
-	function __construct($text) {
-		parent::__construct($text);
-		$this->symbolScale = 0.018;
-	}
-}
-
-class PineTree extends Tree {
+class PineTree01 extends Tree {
 	// symbolWidth=, symbolHeight=
 	function __construct($text) {
 		parent::__construct($text);
 		$this->symbolScale = 0.18;
+	}
+}
+
+class PineTree02 extends Tree {
+	// symbolWidth=450, symbolHeight=730
+	function __construct($text) {
+		parent::__construct($text);
+		$this->symbolScale = 0.018;
 	}
 }
 

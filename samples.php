@@ -100,5 +100,5 @@ $canyonStr = 'fr2.1:/op pageWidth=297, pageHeight=210, belowBackground=0,aboveBa
 $canyonStr = 'fr2.1:/op canyonName=Maglia,pageWidth=297, pageHeight=210, belowBackground=0,aboveBackground=1/ma5/sa/exRD/Co5/va5/ma5/adC10/cd10/ma10/exDélicate en RG/ADRG : Chaîne/Cv5/mr5/sa/CA5/ma5/ml200/ma5/sa/Ci3/va5/ma5';
 $canyonStr = 'fr2.1:/op belowBackground=0,aboveBackground=0/MA10/sa/Cv10/MA10/bs   Mélèze décalé/Cv10/MA10/sa/CV10/ma10/exBye bye';
 $canyonStr = 'fr2.1:/ma5/sa/op a=b/ASRG/Ca5/va5/ op   uneClef=uneValeur  ,  uneautreclef  =  17, ,   , uneoption,  =, monoption = =, ==,     ======,uneClef=42, uneClefspéciale="salut" /ma5/sa/exRD/Co5/va5/ma5/adC10/cd10/ma10/exDélicate en RG/ADRG : Chaîne/Cv5/mr5/sa/CA5/ma5/ml200/ma5/sa/Ci3/va5/ma5';
-$canyonStr = 'fr2.1:/ma5/bs/ASRG/Ca5/va5/ma5/bs/exRD/Co5/va5/ma5/adC10/cd10/ma10/exDélicate en RG/ADRG : Chaîne/Cv5/mr5/bs/CA10/ma5/ml200/ma5/bs/Ci3/va5/ma5';
+$canyonStr = 'fr2.1:/ma5/ASRG/Ca5/va5/ma5/exRD/Co5/va5/ma5/sr/adC10/cd10/ma10/exDélicate en RG/ADRG : Chaîne/Cv5/mr5/sr/CA10/ma5/ml200/ma5/sr/Ci3/va5/ma5';
 ?>
