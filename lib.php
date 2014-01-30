@@ -1,10 +1,26 @@
 <?php
 
-function includeProfile($canyonStr) {
-	$p = new Profile();
+function getFileName($canyonStr) {
 	$outDir = 'profiles';
-	$outFile = 'outfile_' . uniqid() . '.svg';
+	//$outFile = 'outfile_' . uniqid() . '.svg';
+	$outFile = 'outfile_' . md5($canyonStr) . '.svg';
 	$curFileName = $outDir . '/' . $outFile;
+
+	// Si le fichier existe déjà, et s'il est récent, on ne le re-créer pas
+	// Cache time : 2 days ("86400 * 2")
+	$cache = 0;
+	if (file_exists($curFileName)) {
+		$stat = stat($curFileName);
+		if ($stat
+		 && $stat['size'] > 0
+		 && $stat['mtime'] > (time() - (86400 * 2))
+		 && $cache) {
+			error_log('Submitted string is recent, file already created. Skipping generation.');
+			return $curFileName;
+		}
+	}
+
+	$p = new Profile();
 	$p->fileHandle = fopen($curFileName, 'w+') or die("Can't open file:".$curFileName);
 	$p->parse($canyonStr);
 	$p->setPageDimensions();
@@ -18,23 +34,27 @@ function includeProfile($canyonStr) {
 	$p->chainItems();
 	$p->scale();
 
-	$displayOrigCanyonStr = preg_replace('/&/', '&amp;', $p->origCanyonStr);
 	$p->draw();
 	$p->getDefs();
 	$p->appendToFile('
 	</svg>');
 	fclose($p->fileHandle);
-	if ($p->submittedHeader) {
-		echo '
-		<p style="font-size:8px"><b>Submitted :</b> '.$p->canyonName .' : '. $displayOrigCanyonStr.'<br/>
-		<b>Parsed as :</b> '.$p->canyonName .' : '. $p->canyonStr.'</p>';
-	}
-	echo '
-	<a href="'.$curFileName.'" style="display: block">
-	<object data="'.$curFileName.'" style="pointer-events:none"></object>
-	</a>
+	error_log($curFileName);
+	return $curFileName;
+}
 
-	';
+function includeProfile($canyonStr) {
+	$curFileName = getFileName($canyonStr);
+	//if ($p->submittedHeader) {
+	//	$displayOrigCanyonStr = preg_replace('/&/', '&amp;', $p->origCanyonStr);
+	//	echo '
+	//	<p style="font-size:8px"><b>Submitted :</b> '.$p->canyonName .' : '. $displayOrigCanyonStr.'<br/>
+	//	<b>Parsed as :</b> '.$p->canyonName .' : '. $p->canyonStr.'</p>';
+	//}
+	echo '    <a href="'.$curFileName.'" style="display: block">
+	  <object data="'.$curFileName.'" style="pointer-events:none"></object>
+	</a>
+';
 }
 
 // Cette fonction extrait d'un fichier SVG les defs et le <g>
@@ -76,13 +96,13 @@ function setPackagedSymbol(&$item) {
 		}
 	}
 
-	error_log('symbolFile='.$symbolFile);
+	//error_log('symbolFile='.$symbolFile);
 	$file = file_get_contents($symbolFile);
 	preg_match ('/<svg\ .*width="(.*)".*/', $file, $matches);
 	$symbolWidth = $matches[1];
 	preg_match ('/<svg\ .*height="(.*)".*/', $file, $matches);
 	$symbolHeight = $matches[1];
-	error_log('symbolWidth='.$symbolWidth.', symbolHeight='.$symbolHeight);
+	//error_log('symbolWidth='.$symbolWidth.', symbolHeight='.$symbolHeight);
 	$item->width = $symbolWidth;
 	$item->height = $symbolHeight;
 	$item->def = file_get_contents($symbolCacheFile);
@@ -110,8 +130,8 @@ function getRandomColor() {
 	return $c;
 }
 
-function plf ($chaine) {
-	print $chaine . "\n";
+function plf ($chaine, $cr = 1) {
+	print $chaine . str_repeat("\n", $cr);
 }
 
 function top () {
@@ -128,7 +148,7 @@ function top () {
 
 function bottom () {
 	plf ('  </body>');
-	plf ('</html>');
+	plf ('</html>', 0);
 }
 
 class Profile {
@@ -918,9 +938,9 @@ class Symbol extends Item {
 		$this->heightFactor = 0;
 		$this->widthFactor = 0;
 		$this->name = get_class($this);
-		error_log('class Symbol, $this->name='.$this->name);
+		//error_log('class Symbol, $this->name='.$this->name);
 		$this->displayedText = $text;
-		error_log('class Symbol, $this->displayText='.$this->displayedText);
+		//error_log('class Symbol, $this->displayText='.$this->displayedText);
 		setPackagedSymbol($this);
 	}
 
@@ -948,7 +968,7 @@ class Symbol extends Item {
 	}
 
 	public function scale($xScale, $yScale) {
-		error_log('Symbol::scale - width='.$this->width.' height='.$this->height.' xScale='.$xScale.' yScale='.$yScale);
+		//error_log('Symbol::scale - width='.$this->width.' height='.$this->height.' xScale='.$xScale.' yScale='.$yScale);
 		$this->drawedWidth  = $this->width  * $this->symbolScale * $xScale;
 		$this->drawedHeight = $this->height * $this->symbolScale * $yScale;
 	}
