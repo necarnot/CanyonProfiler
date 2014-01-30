@@ -142,5 +142,9 @@ $allowedOptions = array (
 		'int', 'Hauteur de la page',
 		0, 9999999
 	),
+	'submittedHeader' => array (
+		'bool', 'Affichage de la chaîne soumise',
+		0, 1
+	),
 );
 ?>

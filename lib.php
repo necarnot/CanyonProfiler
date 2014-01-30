@@ -24,7 +24,7 @@ function includeProfile($canyonStr) {
 	$p->appendToFile('
 	</svg>');
 	fclose($p->fileHandle);
-	if (1) {
+	if ($p->submittedHeader) {
 		echo '
 		<p style="font-size:8px"><b>Submitted :</b> '.$p->canyonName .' : '. $displayOrigCanyonStr.'<br/>
 		<b>Parsed as :</b> '.$p->canyonName .' : '. $p->canyonStr.'</p>';
@@ -165,6 +165,8 @@ class Profile {
 
 	public $belowBackground = 1;
 	public $aboveBackground = 1;
+
+	public $submittedHeader = 1;
 
 	public $layers = array (
 		'base' => '',
