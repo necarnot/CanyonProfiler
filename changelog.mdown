@@ -121,8 +121,7 @@
     - 's' : Sapin
     - 't' : Toboggan
 
-  - Spanish : 'es0.1'
-   // Thanks to Antilolo
+  - Spanish : 'es0.1' // Thanks to Antilolo
     - 'c' : Cascada
     - 'r' : Resalte
     - 's' : Sendero
@@ -131,8 +130,7 @@
     - 'p' : Pino
     - 't' : Tobagan
 
-  - Italian : 'it0.1'
-   // Thanks to Marie
+  - Italian : 'it0.1' // Thanks to Marie
     - 'c' : Cascata
     - 'r' : Risalto
     - 'm' : Marcia
