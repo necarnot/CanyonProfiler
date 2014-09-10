@@ -113,13 +113,13 @@
 
 - Added languages for v0 : french, spanish, italian, english :
   - French : 'fr0.1'
-	'c'	// Cascade
-	'r'	// Ressaut
-	'm'	// Marche
-	'v'	// Vasque
-	'a'	// Amarrage
-	's'	// Sapin
-	't'	// Toboggan
+    - 'c'	// Cascade
+    - 'r'	// Ressaut
+    - 'm'	// Marche
+    - 'v'	// Vasque
+    - 'a'	// Amarrage
+    - 's'	// Sapin
+    - 't'	// Toboggan
 
   - Spanish : 'es0.1'
    // Thanks to Antilolo
