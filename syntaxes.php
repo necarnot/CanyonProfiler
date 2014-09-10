@@ -134,6 +134,14 @@ $allowedOptions = array (
 		'bool', 'Présence du fond supérieur',
 		0, 1 
 	),
+	'belowBackgroundColor' => array (
+		'str', 'Couleur du fond inférieur',
+		6, 6
+	),
+	'aboveBackgroundColor' => array (
+		'str', 'Couleur du fond supérieur',
+		6, 6
+	),
 	'pageWidth' => array (
 		'int', 'Largeur de la page',
 		0, 9999999
@@ -142,9 +150,9 @@ $allowedOptions = array (
 		'int', 'Hauteur de la page',
 		0, 9999999
 	),
-	'submittedHeader' => array (
-		'bool', 'Affichage de la chaîne soumise',
-		0, 1
-	),
+	//'submittedHeader' => array (
+	//	'bool', 'Affichage de la chaîne soumise',
+	//	0, 1
+	//),
 );
 ?>

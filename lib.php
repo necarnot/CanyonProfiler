@@ -361,8 +361,8 @@ class Profile {
 						$layerText .= "\n\t\t\t" . $text;
 					}
 				}
-				$belowText = '<path style="fill:#ae6a5a;fill-opacity:1;stroke:none;filter:url(#filterBelow)" d="m20,-20 ' . $layerText . ' l-40,40 ' . $oppositeText . ' z ';
-				$aboveText = '<path style="fill:#b5b5b5;fill-opacity:1;stroke:none;filter:url(#filterAbove)" d="m-3,3 ' . $layerText . ' l80,-80 ' . $oppositeText . ' z ';
+				$belowText = '<path style="fill:#' . $this->belowBackgroundColor . ';fill-opacity:1;stroke:none;filter:url(#filterBelow)" d="m20,-20 ' . $layerText . ' l-40,40 ' . $oppositeText . ' z ';
+				$aboveText = '<path style="fill:#' . $this->aboveBackgroundColor . ';fill-opacity:1;stroke:none;filter:url(#filterAbove)" d="m-3,3 ' . $layerText . ' l80,-80 ' . $oppositeText . ' z ';
 				$layerText = '<path style="fill:none;stroke:#000000;stroke-width:2px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1" d=" ' . $layerText;
 				$layerText .= '" />';
 				$belowText .= '" />';

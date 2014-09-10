@@ -1,6 +1,7 @@
 # CANYONPROFILER CHANGELOG
 
 ## 2014-09-10
+- Added options to specify the above and below backgrounds colors
 - Refuse commas for a dynamic separator : may conflict with options syntax
   (https://github.com/necarnot/CanyonProfiler/issues/47)
 
