@@ -1,3 +1,7 @@
+2014-09-10
+==========
+Refuse commas for a dynamic separator : may conflict with options syntax
+
 2014-01-30
 ==========
 Added the submittedHeader option to toggle the first two lines on top of page

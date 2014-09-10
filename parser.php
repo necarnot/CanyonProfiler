@@ -59,6 +59,10 @@ function parsed($p, $canyonStr) {
 	// Le tout premier caractère est le séparateur dynamique
 	$p->separator = substr($canyonStr, 0, 1);
 	// error_log('210:separator=_'.$p->separator.'_');
+	if ($p->separator == ',') {
+		error_log('210:dynamic separator is a comma, and comma is refused (conflicts with options syntax). STOP.');
+		return '';
+	}
 	# On enlève le tout premier séparateur
 	$canyonStr = substr($canyonStr, 1);
 	// Tableau des éléments fournis par l'utilisateur
