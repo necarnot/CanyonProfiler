@@ -113,42 +113,42 @@
 
 - Added languages for v0 : french, spanish, italian, english :
   - French : 'fr0.1'
-    - 'c'	// Cascade
-    - 'r'	// Ressaut
-    - 'm'	// Marche
-    - 'v'	// Vasque
-    - 'a'	// Amarrage
-    - 's'	// Sapin
-    - 't'	// Toboggan
+    - 'c' : Cascade
+    - 'r' : Ressaut
+    - 'm' : Marche
+    - 'v' : Vasque
+    - 'a' : Amarrage
+    - 's' : Sapin
+    - 't' : Toboggan
 
   - Spanish : 'es0.1'
    // Thanks to Antilolo
-	'c'	// Cascada
-	'r'	// Resalte
-	's'	// Sendero
-	'b'	// Badina
-	'a'	// Anclaje
-	'p'	// Pino
-	't'	// Tobagan
+    - 'c' : Cascada
+    - 'r' : Resalte
+    - 's' : Sendero
+    - 'b' : Badina
+    - 'a' : Anclaje
+    - 'p' : Pino
+    - 't' : Tobagan
 
   - Italian : 'it0.1'
    // Thanks to Marie
-	'c'	// Cascata
-	'r'	// Risalto
-	'm'	// Marcia
-	'v'	// Vasque / Pozze
-	'a'	// Armo
-	's'	// Sapin / Abete
-	't'	// Toboga
+    - 'c' : Cascata
+    - 'r' : Risalto
+    - 'm' : Marcia
+    - 'v' : Vasque / Pozze
+    - 'a' : Armo
+    - 's' : Sapin / Abete
+    - 't' : Toboga
 
   - English : 'en0.1'
-	'w'	// Waterfall
-	//'r'	// Ressaut ???
-	't'	// Track ???
-	'p'	// Pool
-	'a'	// Anchor
-	//'p'	// Pine tree
-	's'	// Slide
+    - 'w' : Waterfall
+    - //'r' : Ressaut ???
+    - 't' : Track ???
+    - 'p' : Pool
+    - 'a' : Anchor
+    - //'p' : Pine tree
+    - 's' : Slide
 
 ## 2013-09-16
 - Ajout du header
