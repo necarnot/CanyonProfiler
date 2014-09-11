@@ -185,6 +185,8 @@ class Profile {
 
 	public $belowBackground = 1;
 	public $aboveBackground = 1;
+	public $belowBackgroundColor = 'ae6a5a';
+	public $aboveBackgroundColor = 'b5b5b5';
 
 	public $submittedHeader = 1;
 
@@ -202,6 +204,7 @@ class Profile {
 		'reverse' => array(),
 	);
 
+	// TODO : Lors de la construction, pré-remplir les variables par les valeurs par défaut qu'on trouve dans les options
 	public function __construct() {
 	}
 	
@@ -361,6 +364,8 @@ class Profile {
 						$layerText .= "\n\t\t\t" . $text;
 					}
 				}
+				//$belowText = '<path style="fill:#ae6a5a;fill-opacity:1;stroke:none;filter:url(#filterBelow)" d="m20,-20 ' . $layerText . ' l-40,40 ' . $oppositeText . ' z ';
+				//$aboveText = '<path style="fill:#b5b5b5;fill-opacity:1;stroke:none;filter:url(#filterAbove)" d="m-3,3 ' . $layerText . ' l80,-80 ' . $oppositeText . ' z ';
 				$belowText = '<path style="fill:#' . $this->belowBackgroundColor . ';fill-opacity:1;stroke:none;filter:url(#filterBelow)" d="m20,-20 ' . $layerText . ' l-40,40 ' . $oppositeText . ' z ';
 				$aboveText = '<path style="fill:#' . $this->aboveBackgroundColor . ';fill-opacity:1;stroke:none;filter:url(#filterAbove)" d="m-3,3 ' . $layerText . ' l80,-80 ' . $oppositeText . ' z ';
 				$layerText = '<path style="fill:none;stroke:#000000;stroke-width:2px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1" d=" ' . $layerText;
@@ -423,6 +428,7 @@ class Profile {
 				$keyType = $allowedOptions[$key][0];
 				$keyMinValue = $allowedOptions[$key][2];
 				$keyMaxValue = $allowedOptions[$key][3];
+				$keyDefault  = array_key_exists(4, $allowedOptions[$key]) ? $allowedOptions[$key][4] : '';
 				switch ($keyType) {
 					case 'str':
 						if ((strlen($value) < $keyMinValue) || (strlen($value) > $keyMaxValue)) { continue; };

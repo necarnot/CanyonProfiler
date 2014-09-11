@@ -1,5 +1,9 @@
 # CANYONPROFILER CHANGELOG
 
+## 2014-09-11
+- Added default values for the options
+- Added default colors for backgrounds
+
 ## 2014-09-10
 - Added options to specify the above and below backgrounds colors
 - Refuse commas for a dynamic separator : may conflict with options syntax

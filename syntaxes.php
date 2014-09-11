@@ -120,39 +120,47 @@ VB			CB			RB
 $allowedOptions = array (
 	'canyonName' => array (
 		'str', 'Nom du canyon',
-		0, 255
+		0, 255,
 	),
 	'fontHeight' => array (
 		'int', 'Taille de la police',
-		0, 100
+		0, 100,
+		16,
 	),
 	'belowBackground' => array (
 		'bool', 'Présence du fond inférieur',
-		0, 1 
+		0, 1,
+		1,
 	),
 	'aboveBackground' => array (
 		'bool', 'Présence du fond supérieur',
-		0, 1 
+		0, 1,
+		1,
 	),
 	'belowBackgroundColor' => array (
 		'str', 'Couleur du fond inférieur',
-		6, 6
+		6, 6,
+		'ae6a5a',
 	),
 	'aboveBackgroundColor' => array (
 		'str', 'Couleur du fond supérieur',
-		6, 6
+		6, 6,
+		'b5b5b5',
 	),
 	'pageWidth' => array (
 		'int', 'Largeur de la page',
-		0, 9999999
+		0, 9999999,
+		297,
 	),
 	'pageHeight' => array (
 		'int', 'Hauteur de la page',
-		0, 9999999
+		0, 9999999,
+		210,
 	),
-	//'submittedHeader' => array (
-	//	'bool', 'Affichage de la chaîne soumise',
-	//	0, 1
-	//),
+	'submittedHeader' => array (
+		'bool', 'Affichage de la chaîne soumise',
+		0, 1,
+		0,
+	),
 );
 ?>
