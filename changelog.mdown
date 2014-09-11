@@ -3,6 +3,7 @@
 ## 2014-09-11
 - Added default values for the options
 - Added default colors for backgrounds
+  (https://github.com/necarnot/CanyonProfiler/issues/54)
 
 ## 2014-09-10
 - Added options to specify the above and below backgrounds colors
