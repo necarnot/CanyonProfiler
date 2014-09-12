@@ -1,1 +1,1 @@
-=> https://canyonprofiler.ecarnot.net/changelog.mdown
+=> http://canyonprofiler.ecarnot.net/changelog.mdown

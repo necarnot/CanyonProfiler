@@ -86,6 +86,7 @@ $syntaxes = array (
 		'PineTree01'			=> array ('sa' => 'Sapin'),
 		'PineTree02'			=> array ('sr' => 'Sapin rond'),
 		'ExitPoint'			=> array ('ex' => 'Exit', 'ec' => 'Echappatoire'),
+		'EntryPoint'			=> array ('en' => 'Entrée'),
 		'CarriageReturn'		=> array ('cr' => 'Carriage return', 'rl' => 'retour à la ligne'),
 	),
 	'en2.1' => array (

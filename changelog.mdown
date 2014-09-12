@@ -1,5 +1,8 @@
 # CANYONPROFILER CHANGELOG
 
+## 2014-09-12
+- Added entrypoint symbol
+
 ## 2014-09-11
 - Added default values for the options
 - Added default colors for backgrounds

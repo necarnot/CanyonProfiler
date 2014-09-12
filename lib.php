@@ -1020,6 +1020,19 @@ class ExitPoint extends Symbol {
 	}
 }
 
+class EntryPoint extends Symbol {
+	// symbolWidth=, symbolHeight=
+	function __construct($text) {
+		parent::__construct($text);
+		$this->symbolScale = 0.08;
+	}
+
+	public function setXYOffset() {
+		$this->xOffset = 0 - ($this->drawedWidth * 1);
+		$this->yOffset = 0 - ($this->drawedHeight * 1.2);
+	}
+}
+
 class CarriageReturn extends Item {
 	function __construct($crOffset) {
 		$crOffset = abs($crOffset);
