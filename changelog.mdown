@@ -2,6 +2,7 @@
 
 ## 2014-09-12
 - Added entrypoint symbol
+  (https://github.com/necarnot/CanyonProfiler/issues/14)
 
 ## 2014-09-11
 - Added default values for the options
