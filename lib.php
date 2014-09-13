@@ -1033,6 +1033,7 @@ class EntryPoint extends Symbol {
 	}
 }
 
+# Si le première lettre est en majuscule, on place le commentaire au dessus
 class Comment extends Anchor {
 	function __construct($text) {
 		parent::__construct($text);
@@ -1043,7 +1044,11 @@ class Comment extends Anchor {
 		$factor= 12 * pow($p->xScale, -0.9);
 		$xAsOffset = $factor * $p->xScale;
 		$yAsOffset = $factor * $p->yScale;
-		$p->displayText($this->displayedText, ($p->curX + $xAsOffset), ($p->curY - $yAsOffset), -10, 5, 'start');
+		if (ctype_upper(substr($this->inStr,0,1))) {
+			$p->displayText($this->displayedText, ($p->curX + $xAsOffset), ($p->curY - $yAsOffset), -10, 5, 'start');
+		} else {
+			$p->displayText($this->displayedText, ($p->curX + $xAsOffset), ($p->curY + $yAsOffset), -10, 5, 'end');
+		}
 	}
 }
 

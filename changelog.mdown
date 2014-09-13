@@ -1,7 +1,7 @@
 # CANYONPROFILER CHANGELOG
 
 ## 2014-09-13
-- Added comment symbol
+- Added comment symbol : "nb". First letter uppercased places the comment above
   (https://github.com/necarnot/CanyonProfiler/issues/15)
 
 ## 2014-09-12
