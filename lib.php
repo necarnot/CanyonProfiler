@@ -1033,6 +1033,20 @@ class EntryPoint extends Symbol {
 	}
 }
 
+class Comment extends Anchor {
+	function __construct($text) {
+		parent::__construct($text);
+		$this->name = 'Comment';
+	}
+
+	public function draw(&$p) {
+		$factor= 12 * pow($p->xScale, -0.9);
+		$xAsOffset = $factor * $p->xScale;
+		$yAsOffset = $factor * $p->yScale;
+		$p->displayText($this->displayedText, ($p->curX + $xAsOffset), ($p->curY - $yAsOffset), -10, 5, 'start');
+	}
+}
+
 class CarriageReturn extends Item {
 	function __construct($crOffset) {
 		$crOffset = abs($crOffset);

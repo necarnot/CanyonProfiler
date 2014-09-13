@@ -1,5 +1,9 @@
 # CANYONPROFILER CHANGELOG
 
+## 2014-09-13
+- Added comment symbol
+  (https://github.com/necarnot/CanyonProfiler/issues/15)
+
 ## 2014-09-12
 - Added entrypoint symbol
   (https://github.com/necarnot/CanyonProfiler/issues/14)
