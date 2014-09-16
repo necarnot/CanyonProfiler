@@ -260,17 +260,28 @@ class Profile {
 		}
 	}
 
+	// Le chaînage ne sert que pour la gestion de l'eau
+	// On peut donc exclure du chaînage les éléments non joints (amarrages, texte, etc...)
 	public function chainItems() {
 		// Linking to the next item
 		$nbItems = count($this->items);
+		$curChainedItem = 0;
 		for ($i = 0; $i < ($nbItems-1); $i++) {
-			//error_log('>chaining:i='.$i.',itemName='.$this->items[$i]->name);
-			$this->items[$i]->nextItem = &$this->items[$i+1];
+			$nextItemClass = get_class($this->items[$i+1]);
+			//error_log('XXX :i='.$i.',itemName='.$this->items[$i]->name.',nextItemClass='.$nextItemClass);
+			if ($this->items[$i+1]->isChainable) {
+				$this->items[$curChainedItem]->nextItem = &$this->items[$i+1];
+				//error_log('02-CHAIN OK:i='.$i.',curChainedItem='.$curChainedItem.',itemName='.$this->items[$i]->name.',nextItemClass='.$nextItemClass);
+				$curChainedItem = $i + 1;
+			}
+			//else {
+			//	error_log('03-chain ko:i='.$i.',curChainedItem='.$curChainedItem.',itemName='.$this->items[$i]->name.',nextItemClass='.$nextItemClass);
+			//}
 		}
-		for ($i = ($nbItems-1); $i > 0 ; $i--) {
-			//error_log('<chaining:i='.$i.',itemName='.$this->items[$i]->name);
-			$this->items[$i]->prevItem = &$this->items[$i-1];
-		}
+		//for ($i = ($nbItems-1); $i > 0 ; $i--) {
+		//	//error_log('<chaining:i='.$i.',itemName='.$this->items[$i]->name);
+		//	$this->items[$i]->prevItem = &$this->items[$i-1];
+		//}
 	}
 
 	// On cherche à déterminer la largeur max et la hauteur max cumulées
@@ -467,6 +478,7 @@ class Item {
 	public $symbolLetter = '';
 	public $xOffset;
 	public $yOffset;
+	public $isChainable = false;
 
 	function __construct() {
 	}
@@ -510,6 +522,7 @@ class VerticalAngle extends Item {
 		$this->name = 'VerticalAngle';
 		$this->heightFactor = 1;
 		$this->widthFactor = 1;
+		$this->isChainable = true;
 
 		$this->height = $height;
 		$this->symbolLetter = 'C';
@@ -750,6 +763,7 @@ class Walk extends Item {
 		$this->widthFactor = 1;
 
 		$this->width = $width;
+		$this->isChainable = true;
 	}
 
 	public function draw(&$p) {
@@ -1034,6 +1048,25 @@ class EntryPoint extends Symbol {
 	public function setXYOffset() {
 		$this->xOffset = 0 - ($this->drawedWidth * 1);
 		$this->yOffset = 0 - ($this->drawedHeight * 1.2);
+	}
+}
+
+# Si le première lettre est en majuscule, on place le commentaire au dessus
+class Comment extends Anchor {
+	function __construct($text) {
+		parent::__construct($text);
+		$this->name = 'Comment';
+	}
+
+	public function draw(&$p) {
+		$factor= 12 * pow($p->xScale, -0.9);
+		$xAsOffset = $factor * $p->xScale;
+		$yAsOffset = $factor * $p->yScale;
+		if (ctype_upper(substr($this->inStr,0,1))) {
+			$p->displayText($this->displayedText, ($p->curX + $xAsOffset), ($p->curY - $yAsOffset), -10, 5, 'start');
+		} else {
+			$p->displayText($this->displayedText, ($p->curX + $xAsOffset), ($p->curY + $yAsOffset), -10, 5, 'end');
+		}
 	}
 }
 

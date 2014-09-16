@@ -1,5 +1,13 @@
 # CANYONPROFILER CHANGELOG
 
+## 2014-09-14
+- Correction of the items chaining, ignoring elements that don't need it
+  (https://github.com/necarnot/CanyonProfiler/issues/35)
+
+## 2014-09-13
+- Added comment symbol : "nb". First letter uppercased places the comment above
+  (https://github.com/necarnot/CanyonProfiler/issues/15)
+
 ## 2014-09-12
 - Added entrypoint symbol
   (https://github.com/necarnot/CanyonProfiler/issues/14)
