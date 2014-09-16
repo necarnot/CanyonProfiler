@@ -9,15 +9,20 @@ function getFileName($canyonStr) {
 	// Si le fichier existe déjà, et s'il est récent, on ne le re-créer pas
 	// Cache time : 2 days ("86400 * 2")
 	$cache = 0;
-	if (file_exists($curFileName)) {
+	$myCwd = getcwd();
+	error_log('curFileName='.$curFileName.', CWD='.$myCwd);
+	if ($cache && file_exists($curFileName)) {
 		$stat = stat($curFileName);
 		if ($stat
 		 && $stat['size'] > 0
-		 && $stat['mtime'] > (time() - (86400 * 2))
-		 && $cache) {
-			error_log('Submitted string is recent, file already created. Skipping generation.');
+		 && $stat['mtime'] > (time() - (86400 * 2)) ) {
+			error_log('File found :-) Submitted string is recent, file already created. Skipping generation.');
 			return $curFileName;
+		} else {
+			error_log(':-( Fstat prevent caching...');
 		}
+	} else {
+		error_log(':-( File '.$curFileName.' does not exist. Generating...');
 	}
 
 	$p = new Profile();
@@ -141,7 +146,6 @@ function top () {
 	plf('  <head>');
 	plf('    <meta http-equiv="Content-Type" content="text/html; charset=utf8" />');
 	plf('    <title>CanyonProfiler</title>');
-	//plf('    <link rel="stylesheet" href="styles.css" />');
 	plf('  </head>');
 	plf('  <body>');
 }
