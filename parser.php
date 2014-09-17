@@ -35,7 +35,7 @@ function parsed($p, $canyonStr) {
 		$strVersion = $p->defaultVersion;
 	}
 	// If this version is not supported, we return an error
-	global $syntaxes;
+	$syntaxes = getDefinedSyntaxes();
 	if (!array_key_exists($strVersion, $syntaxes)) {
 		error_log('Syntax '.$strVersion. ' is not supported');
 		return -1;
@@ -43,7 +43,7 @@ function parsed($p, $canyonStr) {
 	$p->syntaxVersion = $strVersion;
 	// Shift by two-caracters to keep the version number
 	$syntaxVersionNumber = substr($strVersion, 2);
-	global $syntaxesProperties;
+	$syntaxesProperties = getDefinedSyntaxesProperties();
 	$syntaxLength = $syntaxesProperties[$syntaxVersionNumber]['length'];
 	// Once we're sure it's a supported syntax, we store all these aliases into a temp array
 	$syntaxSymbols = $syntaxes[$strVersion];

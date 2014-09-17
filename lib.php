@@ -430,7 +430,7 @@ class Profile {
 	}
 
 	public function setOptions($optionsStr) {
-		global $allowedOptions;
+		$allowedOptions = getDefinedAllowedOptions();
 		$pairs = explode(',', $optionsStr);
 		foreach($pairs as $pair) {
 			$pair = trim($pair);

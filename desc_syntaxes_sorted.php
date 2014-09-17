@@ -19,6 +19,7 @@ top();
 <li>V3 : "Advanced syntax" : Not written yet, stay tuned... - "Syntaxe avancée" : Pas encore codée, ça arrive...</li>
 </ul>
 <?php
+$syntaxes = getDefinedSyntaxes();
 // Pour chaque syntax
 foreach($syntaxes as $syntaxName => $syntax) {
 	echo '
@@ -63,7 +64,7 @@ foreach($syntaxes as $syntaxName => $syntax) {
    Le tableau ci-dessous présente la liste des options utilisables pour améliorer votre coupe de canyon.</p>
 
 <?php
-global $allowedOptions;
+$allowedOptions = getDefinedAllowedOptions();
 echo '
 
 <table cellpadding="1" cellspacing="0" border="1">
