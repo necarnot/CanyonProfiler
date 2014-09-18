@@ -14,7 +14,7 @@ function parsed($p, $canyonStr) {
 	// Tidying the user-provided string
 	// Protection basique contre les tentatives de piratage
 	$canyonStr = htmlspecialchars($canyonStr);
-	error_log($canyonStr);
+	_error_log($canyonStr);
 	// On supprime les espaces de début et fin
 	$canyonStr = trim($canyonStr);
 
@@ -25,7 +25,7 @@ function parsed($p, $canyonStr) {
 	if (strpos($canyonStr, ':') === false) {
 		// Si la chaîne est fournie sans version, on lui fournit la version par défaut
 		$canyonStr = $p->defaultVersion.':'.$canyonStr;
-		error_log ('Missing colon. Adding default version. Now, canyonStr='.$canyonStr);
+		_error_log ('Missing colon. Adding default version. Now, canyonStr='.$canyonStr);
 	}
 	// On limite le découpage à deux éléments (header | tout ce qui reste)
 	$strs = explode(':', $canyonStr, 2);
@@ -37,7 +37,7 @@ function parsed($p, $canyonStr) {
 	// If this version is not supported, we return an error
 	$syntaxes = getDefinedSyntaxes();
 	if (!array_key_exists($strVersion, $syntaxes)) {
-		error_log('Syntax '.$strVersion. ' is not supported');
+		_error_log('Syntax '.$strVersion. ' is not supported');
 		return -1;
 	}
 	$p->syntaxVersion = $strVersion;
@@ -52,15 +52,15 @@ function parsed($p, $canyonStr) {
 	$canyonStr = trim($strs[1]);
 	// If there is no description at all, we return an error
 	if (!$canyonStr) {
-		error_log('200: Error: Empty description');
+		_error_log('200: Error: Empty description');
 		return -1;
 	}
 
 	// Le tout premier caractère est le séparateur dynamique
 	$p->separator = substr($canyonStr, 0, 1);
-	// error_log('210:separator=_'.$p->separator.'_');
+	// _error_log('210:separator=_'.$p->separator.'_');
 	if ($p->separator == ',') {
-		error_log('210:dynamic separator is a comma, and comma is refused (conflicts with options syntax). STOP.');
+		_error_log('210:dynamic separator is a comma, and comma is refused (conflicts with options syntax). STOP.');
 		return '';
 	}
 	# On enlève le tout premier séparateur
@@ -96,7 +96,7 @@ function parsed($p, $canyonStr) {
 	}
 	# On enlève le tout premier séparateur
 	$outStr = substr($outStr, 1);
-	//error_log ($outStr);
+	//_error_log ($outStr);
 	return $outStr;
 }
 ?>

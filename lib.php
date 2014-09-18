@@ -1,5 +1,11 @@
 <?php
 
+function _error_log($msg) {
+	$trace = debug_backtrace();
+	$callerFunctionName = $trace[1]["function"];
+	error_log($callerFunctionName . ':' . $msg);
+}
+
 function getFileName($canyonStr) {
 	$outDir = 'profiles';
 	//$outFile = 'outfile_' . uniqid() . '.svg';
@@ -10,19 +16,19 @@ function getFileName($canyonStr) {
 	// Cache time : 2 days ("86400 * 2")
 	$cache = 0;
 	$myCwd = getcwd();
-	error_log('curFileName='.$curFileName.', CWD='.$myCwd);
+	_error_log('curFileName='.$curFileName.', CWD='.$myCwd);
 	if ($cache && file_exists($curFileName)) {
 		$stat = stat($curFileName);
 		if ($stat
 		 && $stat['size'] > 0
 		 && $stat['mtime'] > (time() - (86400 * 2)) ) {
-			error_log('File found :-) Submitted string is recent, file already created. Skipping generation.');
+			_error_log('File found :-) Submitted string is recent, file already created. Skipping generation.');
 			return $curFileName;
 		} else {
-			error_log(':-( Fstat prevent caching...');
+			_error_log(':-( Fstat prevent caching...');
 		}
 	} else {
-		error_log(':-( File '.$curFileName.' does not exist. Generating...');
+		_error_log(':-( File '.$curFileName.' does not exist. Generating...');
 	}
 
 	$p = new Profile();
@@ -44,7 +50,7 @@ function getFileName($canyonStr) {
 	$p->appendToFile('
 	</svg>');
 	fclose($p->fileHandle);
-	error_log($curFileName);
+	_error_log($curFileName);
 	return $curFileName;
 }
 
@@ -73,12 +79,12 @@ function setPackagedSymbol(&$item) {
 	$symbolCacheDir = $symbolDir . '/cache';
 	$symbolCacheFile = $symbolCacheDir . '/' . $symbolName . '.svg';
 	if(!file_exists($symbolCacheFile)) {
-		error_log('Le fichier '.$symbolCacheFile." n'existe pas en cache");
+		_error_log('Le fichier '.$symbolCacheFile." n'existe pas en cache");
 		// Ici, on lance la construction du fichier en cache.
 		$handle = fopen($symbolFile, 'r');
 		$handleCache = fopen($symbolCacheFile, 'w');
 		if ($handle === FALSE || $handleCache === FALSE) {
-			error_log('Unable to open source or cache file');
+			_error_log('Unable to open source or cache file');
 			return;
 		} else {
 			while (($buffer = fgets($handle)) !== false) {
@@ -90,7 +96,7 @@ function setPackagedSymbol(&$item) {
 					continue;
 				}
 				if(fwrite($handleCache, $buffer) === FALSE) {
-					error_log('Error : Unable to create cache version of file '.$symbolFile);
+					_error_log('Error : Unable to create cache version of file '.$symbolFile);
 				}
 			}
 			if (!feof($handle)) {
@@ -101,13 +107,13 @@ function setPackagedSymbol(&$item) {
 		}
 	}
 
-	//error_log('symbolFile='.$symbolFile);
+	//_error_log('symbolFile='.$symbolFile);
 	$file = file_get_contents($symbolFile);
 	preg_match ('/<svg\ .*width="(.*)".*/', $file, $matches);
 	$symbolWidth = $matches[1];
 	preg_match ('/<svg\ .*height="(.*)".*/', $file, $matches);
 	$symbolHeight = $matches[1];
-	//error_log('symbolWidth='.$symbolWidth.', symbolHeight='.$symbolHeight);
+	//_error_log('symbolWidth='.$symbolWidth.', symbolHeight='.$symbolHeight);
 	$item->width = $symbolWidth;
 	$item->height = $symbolHeight;
 	$item->def = file_get_contents($symbolCacheFile);
@@ -255,7 +261,7 @@ class Profile {
 		$this->origCanyonStr = $str;
 		$this->canyonStr = parsed($this, $str);
 		if (isNullOrEmptyString($this->canyonStr)) {
-			error_log ('Error: Empty string. CanyonStr='.$this->canyonStr);
+			_error_log ('Error: Empty string. CanyonStr='.$this->canyonStr);
 			exit(-1);
 		}
 	}
@@ -268,18 +274,18 @@ class Profile {
 		$curChainedItem = 0;
 		for ($i = 0; $i < ($nbItems-1); $i++) {
 			$nextItemClass = get_class($this->items[$i+1]);
-			//error_log('XXX :i='.$i.',itemName='.$this->items[$i]->name.',nextItemClass='.$nextItemClass);
+			//_error_log('XXX :i='.$i.',itemName='.$this->items[$i]->name.',nextItemClass='.$nextItemClass);
 			if ($this->items[$i+1]->isChainable) {
 				$this->items[$curChainedItem]->nextItem = &$this->items[$i+1];
-				//error_log('02-CHAIN OK:i='.$i.',curChainedItem='.$curChainedItem.',itemName='.$this->items[$i]->name.',nextItemClass='.$nextItemClass);
+				//_error_log('02-CHAIN OK:i='.$i.',curChainedItem='.$curChainedItem.',itemName='.$this->items[$i]->name.',nextItemClass='.$nextItemClass);
 				$curChainedItem = $i + 1;
 			}
 			//else {
-			//	error_log('03-chain ko:i='.$i.',curChainedItem='.$curChainedItem.',itemName='.$this->items[$i]->name.',nextItemClass='.$nextItemClass);
+			//	_error_log('03-chain ko:i='.$i.',curChainedItem='.$curChainedItem.',itemName='.$this->items[$i]->name.',nextItemClass='.$nextItemClass);
 			//}
 		}
 		//for ($i = ($nbItems-1); $i > 0 ; $i--) {
-		//	//error_log('<chaining:i='.$i.',itemName='.$this->items[$i]->name);
+		//	//_error_log('<chaining:i='.$i.',itemName='.$this->items[$i]->name);
 		//	$this->items[$i]->prevItem = &$this->items[$i-1];
 		//}
 	}
@@ -305,7 +311,7 @@ class Profile {
 			$minY = min($minY, $curY);
 			$maxX = max($maxX, $curX);
 			$maxY = max($maxY, $curY);
-			//error_log('2 : curX='.$curX.' minX='.$minX);
+			//_error_log('2 : curX='.$curX.' minX='.$minX);
 			//$this->appendToFile('
 			//<!-- str='.get_class($item).'|'.$item->width.'|'.$item->height.' itemWidthFactor='.$item->widthFactor. ' itemHeightFactor='.$item->heightFactor.' minX='.$minX.' minY='.$minY.' maxX='.$maxX.' maxY='.$maxY.' -->');
 		}
@@ -962,9 +968,9 @@ class Symbol extends Item {
 		$this->heightFactor = 0;
 		$this->widthFactor = 0;
 		$this->name = get_class($this);
-		//error_log('class Symbol, $this->name='.$this->name);
+		//_error_log('class Symbol, $this->name='.$this->name);
 		$this->displayedText = $text;
-		//error_log('class Symbol, $this->displayText='.$this->displayedText);
+		//_error_log('class Symbol, $this->displayText='.$this->displayedText);
 		setPackagedSymbol($this);
 	}
 
@@ -992,7 +998,7 @@ class Symbol extends Item {
 	}
 
 	public function scale($xScale, $yScale) {
-		//error_log('Symbol::scale - width='.$this->width.' height='.$this->height.' xScale='.$xScale.' yScale='.$yScale);
+		//_error_log('Symbol::scale - width='.$this->width.' height='.$this->height.' xScale='.$xScale.' yScale='.$yScale);
 		$this->drawedWidth  = $this->width  * $this->symbolScale * $xScale;
 		$this->drawedHeight = $this->height * $this->symbolScale * $yScale;
 	}
