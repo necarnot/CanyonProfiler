@@ -6,15 +6,29 @@ function _error_log($msg) {
 	error_log($callerFunctionName . ':' . $msg);
 }
 
-function getFileName($canyonStr) {
+function isWiki() {
+	global $conf;
+	return (isset($conf) && defined('DOKU_INC'));
+}
+
+function getOutDir() {
+	global $conf;
 	$outDir = 'profiles';
-	//$outFile = 'outfile_' . uniqid() . '.svg';
+	if (isWiki()) {
+		_error_log(' ---- canyonStr='.$canyonStr.', DOKU_INC='.DOKU_INC.', DOKU_PLUGIN='.DOKU_PLUGIN.' ,$conf[mediadir]='.$conf['mediadir']);
+		$outDir = $conf['mediadir'];
+	}
+	return $outDir;
+}
+
+function getFileName($canyonStr) {
+	$outDir = getOutDir();
 	$outFile = 'outfile_' . md5($canyonStr) . '.svg';
 	$curFileName = $outDir . '/' . $outFile;
 
 	// Si le fichier existe déjà, et s'il est récent, on ne le re-créer pas
 	// Cache time : 2 days ("86400 * 2")
-	$cache = 0;
+	$cache = true;
 	$myCwd = getcwd();
 	_error_log('curFileName='.$curFileName.', CWD='.$myCwd);
 	if ($cache && file_exists($curFileName)) {
@@ -22,13 +36,16 @@ function getFileName($canyonStr) {
 		if ($stat
 		 && $stat['size'] > 0
 		 && $stat['mtime'] > (time() - (86400 * 2)) ) {
-			_error_log('File found :-) Submitted string is recent, file already created. Skipping generation.');
+			if (isWiki()) {
+				$curFileName = '/_media/'.$outFile;
+			}
+			_error_log('File found :-) Submitted string is recent, file already created. Skipping generation. Returning:'.$curFileName);
 			return $curFileName;
 		} else {
-			_error_log(':-( Fstat prevent caching...');
+			_error_log(' :-( Fstat prevents caching...');
 		}
 	} else {
-		_error_log(':-( File '.$curFileName.' does not exist. Generating...');
+		_error_log(' :-( File '.$curFileName.' does not exist. Generating...');
 	}
 
 	$p = new Profile();
@@ -50,7 +67,10 @@ function getFileName($canyonStr) {
 	$p->appendToFile('
 	</svg>');
 	fclose($p->fileHandle);
-	_error_log($curFileName);
+	if (isWiki()) {
+		$curFileName = '/_media/'.$outFile;
+	}
+	_error_log('returning:'.$curFileName);
 	return $curFileName;
 }
 
@@ -74,7 +94,7 @@ function includeProfile($canyonStr) {
 // Si la version en cache est absente, le fichier en cache est crée.
 function setPackagedSymbol(&$item) {
 	$symbolName = get_class($item);
-	$symbolDir = 'symbols';
+	$symbolDir = isWiki() ? 'lib/plugins/canyonprofiler/symbols' : 'symbols';
 	$symbolFile = $symbolDir . '/' . $symbolName . '.svg';
 	$symbolCacheDir = $symbolDir . '/cache';
 	$symbolCacheFile = $symbolCacheDir . '/' . $symbolName . '.svg';
@@ -82,29 +102,32 @@ function setPackagedSymbol(&$item) {
 		_error_log('Le fichier '.$symbolCacheFile." n'existe pas en cache");
 		// Ici, on lance la construction du fichier en cache.
 		$handle = fopen($symbolFile, 'r');
-		$handleCache = fopen($symbolCacheFile, 'w');
-		if ($handle === FALSE || $handleCache === FALSE) {
-			_error_log('Unable to open source or cache file');
+		if ($handle === FALSE) {
+			_error_log('Unable to open source file : '.$symbolFile);
 			return;
-		} else {
-			while (($buffer = fgets($handle)) !== false) {
-				if($buffer == '\n'
-				|| substr($buffer, 0, 6) == '<?xml '
-				|| substr($buffer, 0, 4) == '<svg'
-				|| substr($buffer, 0, 6) == '</svg>'
-				) {
-					continue;
-				}
-				if(fwrite($handleCache, $buffer) === FALSE) {
-					_error_log('Error : Unable to create cache version of file '.$symbolFile);
-				}
-			}
-			if (!feof($handle)) {
-				echo "Erreur: stream_get_line() a échoué\n";
-			}
-			fclose($handle);
-			fclose($handleCache);
 		}
+		$handleCache = fopen($symbolCacheFile, 'w');
+		if ($handleCache === FALSE) {
+			_error_log('Unable to open cache file : '.$symbolCacheFile);
+			return;
+		}
+		while (($buffer = fgets($handle)) !== false) {
+			if($buffer == '\n'
+			|| substr($buffer, 0, 6) == '<?xml '
+			|| substr($buffer, 0, 4) == '<svg'
+			|| substr($buffer, 0, 6) == '</svg>'
+			) {
+				continue;
+			}
+			if(fwrite($handleCache, $buffer) === FALSE) {
+				_error_log('Error : Unable to create cache version of file '.$symbolFile);
+			}
+		}
+		if (!feof($handle)) {
+			echo "Erreur: stream_get_line() a échoué\n";
+		}
+		fclose($handle);
+		fclose($handleCache);
 	}
 
 	//_error_log('symbolFile='.$symbolFile);
@@ -489,7 +512,7 @@ class Item {
 	function __construct() {
 	}
 
-	public function getDef() {
+	public function getDef(&$p) {
 	}
 
 	public function getNextItemClass() {
