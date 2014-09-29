@@ -11,6 +11,15 @@ function isWiki() {
 	return (isset($conf) && defined('DOKU_INC'));
 }
 
+function promiseDirExist($dirName) {
+	if (!is_dir($dirName)) {
+		_error_log('Needed dir "'.$dirName.'" does not exist. Trying to mkdir.');
+		if (!mkdir($dirName, 0755, true)) {
+			die('Error : Could not create needed dir "'.$dirName.'"');
+		}
+	}
+}
+
 function getOutDir() {
 	global $conf;
 	$outDir = 'profiles';
@@ -23,6 +32,7 @@ function getOutDir() {
 
 function getFileName($canyonStr) {
 	$outDir = getOutDir();
+	promiseDirExist($outDir);
 	$outFile = 'outfile_' . md5($canyonStr) . '.svg';
 	$curFileName = $outDir . '/' . $outFile;
 
@@ -97,6 +107,7 @@ function setPackagedSymbol(&$item) {
 	$symbolDir = isWiki() ? 'lib/plugins/canyonprofiler/symbols' : 'symbols';
 	$symbolFile = $symbolDir . '/' . $symbolName . '.svg';
 	$symbolCacheDir = $symbolDir . '/cache';
+	promiseDirExist($symbolCacheDir);
 	$symbolCacheFile = $symbolCacheDir . '/' . $symbolName . '.svg';
 	if(!file_exists($symbolCacheFile)) {
 		_error_log('Le fichier '.$symbolCacheFile." n'existe pas en cache");
@@ -307,6 +318,7 @@ class Profile {
 			//	_error_log('03-chain ko:i='.$i.',curChainedItem='.$curChainedItem.',itemName='.$this->items[$i]->name.',nextItemClass='.$nextItemClass);
 			//}
 		}
+		// Le chaînage arrière n'est pas encore employé, donc on le désactive pour l'instant
 		//for ($i = ($nbItems-1); $i > 0 ; $i--) {
 		//	//_error_log('<chaining:i='.$i.',itemName='.$this->items[$i]->name);
 		//	$this->items[$i]->prevItem = &$this->items[$i-1];
