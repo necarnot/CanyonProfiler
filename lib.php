@@ -202,60 +202,94 @@ function bottom () {
 }
 
 class Profile {
-	public $fontHeight = 16;
-	public $pageWidth = 297;
-	public $pageHeight = 210;
+	public $baseFontHeight;
+	public $pageWidth;
+	public $pageHeight;
 	public $pageWidthPx;
 	public $pageHeightPx;
-	public $xEndOffset = 40;
-	public $yEndOffset = 40;
-	public $xOffset = 20;
-	public $yOffset = 90;
-	public $maxWidth = 0;
-	public $maxHeight = 0;
-	public $xScale = 0;
-	public $yScale = 0;
-	public $curX = 0;
-	public $curY = 0;
-	public $minX = 9999999999;
-	public $minY = 9999999999;
-	public $maxX = 0;
-	public $maxY = 0;
-	public $curColor = '000000';
-	public $origCanyonStr = '';
-	public $canyonStr = '';
-	public $defaultVersion = 'fr2.1';
+	public $xEndOffset;
+	public $yEndOffset;
+	public $xOffset;
+	public $yOffset;
+	public $maxWidth;
+	public $maxHeight;
+	public $xScale;
+	public $yScale;
+	public $curX;
+	public $curY;
+	public $minX;
+	public $minY;
+	public $maxX;
+	public $maxY;
+	public $curColor;
+	public $origCanyonStr;
+	public $canyonStr;
+	public $defaultVersion;
 	public $writtenDefs = array ();
 
-	public $syntaxVersion = '';
+	public $syntaxVersion;
 	public $items = array ();
 	public $fileHandle;
 
-	public $canyonName = '';
+	public $canyonName;
 
-	public $belowBackground = 1;
-	public $aboveBackground = 1;
-	public $belowBackgroundColor = 'ae6a5a';
-	public $aboveBackgroundColor = 'b5b5b5';
+	public $belowBackground;
+	public $aboveBackground;
+	public $belowBackgroundColor;
+	public $aboveBackgroundColor;
 
-	public $submittedHeader = 1;
+	public $submittedHeader;
 
-	public $layers = array (
-		'base' => '',
-		'water' => '',
-		'symbols' => '',
-		'anchors' => '',
-		'text' => '',
-		'infos' => '',
-		'overall' => '',
-	);
-	public $baseLayer = array (
-		'direct' => array(),
-		'reverse' => array(),
-	);
+	public $layers = array ();
+	public $baseLayer = array ();
 
 	// TODO : Lors de la construction, pré-remplir les variables par les valeurs par défaut qu'on trouve dans les options
 	public function __construct() {
+		$this->baseFontHeight = 16 / 10.2;
+		$this->pageWidth = 297;
+		$this->pageHeight = 210;
+		$this->pageWidthPx;
+		$this->pageHeightPx;
+		$this->xEndOffset = 40;
+		$this->yEndOffset = 40;
+		$this->xOffset = 20;
+		$this->yOffset = 90;
+		$this->maxWidth = 0;
+		$this->maxHeight = 0;
+		$this->xScale = 0;
+		$this->yScale = 0;
+		$this->curX = 0;
+		$this->curY = 0;
+		$this->minX = 9999999999;
+		$this->minY = 9999999999;
+		$this->maxX = 0;
+		$this->maxY = 0;
+		$this->curColor = '000000';
+		$this->origCanyonStr = '';
+		$this->canyonStr = '';
+		$this->defaultVersion = 'fr2.1';
+		$this->syntaxVersion = '';
+		$this->fileHandle;
+		$this->canyonName = '';
+		$this->belowBackground = 1;
+		$this->aboveBackground = 1;
+		$this->belowBackgroundColor = 'ae6a5a';
+		$this->aboveBackgroundColor = 'b5b5b5';
+		$this->submittedHeader = 1;
+
+		$this->layers = array (
+			'base' => '',
+			'water' => '',
+			'symbols' => '',
+			'anchors' => '',
+			'text' => '',
+			'infos' => '',
+			'overall' => '',
+		);
+		$this->baseLayer = array (
+			'direct' => array(),
+			'reverse' => array(),
+		);
 	}
 	
 	public function setPageDimensions() {
@@ -393,6 +427,9 @@ class Profile {
 		foreach($this->items as $item) {
 			$item->scale($this->xScale, $this->yScale);
 		}
+
+		// Scaling font height
+		$this->fontHeight = $this->baseFontHeight * $this->xScale;
 	}
 
 	public function draw() {
