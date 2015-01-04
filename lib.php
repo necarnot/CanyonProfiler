@@ -572,14 +572,20 @@ class Item {
 	public $drawedHeight;
 	public $drawedWidth;
 	public $displayedText;
-	public $strokeWidth = 2;
-	public $inStr = '';
-	public $symbolLetter = '';
+	public $strokeWidth;
+	public $inStr;
+	public $symbolLetter;
 	public $xOffset;
 	public $yOffset;
-	public $isChainable = false;
+	public $isChainable;
 
 	function __construct() {
+		// TODO : Il serait génial d'auto-sizer l'épaisseur selon le xScale.
+		// Hélas, on ne le connait qu'_après_ avoir crée tous les items...
+		$this->strokeWidth = 2;
+		$this->inStr = '';
+		$this->symbolLetter = '';
+		$this->isChainable = false;
 	}
 
 	public function getDef(&$p) {
@@ -659,9 +665,10 @@ class WetAngle extends VerticalAngle {
 		if ( preg_match('/.*Walk.*/', $this->getNextItemClass()) OR preg_match('/.*Rounded.*/', $this->getNextItemClass()) ) {
 			$offsetNextItem = $this->strokeWidth;
 		}
+		// Using "max(...)" below because water can only fall verticaly, and can not (abscisse-)run backward (!)
 		$p->appendToLayer('water','
 		<path style="fill:none;stroke:#'. getWaterColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
-		d="m ' . ($origCurX + $this->strokeWidth) . ',' . $origCurY . ' ' . max($this->drawedWidth,0) . ',' . ($this->drawedHeight - $offsetNextItem) . '" />');
+		d="m ' . ($origCurX + $this->strokeWidth) . ',' . $origCurY . ' ' . max($this->drawedWidth-($this->strokeWidth/2),0) . ',' . ($this->drawedHeight - $offsetNextItem) . '" />');
 	}
 }
 
