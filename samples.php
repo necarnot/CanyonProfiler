@@ -101,5 +101,7 @@ $canyonStr = 'fr2.1:/op canyonName=Maglia,pageWidth=297, pageHeight=210, belowBa
 $canyonStr = 'fr2.1:/op belowBackground=0,aboveBackground=0/MA10/sa/Cv10/MA10/bs   Mélèze décalé/Cv10/MA10/sa/CV10/ma10/exBye bye';
 $canyonStr = 'fr2.1:/ma5/sa/op a=b/ASRG/Ca5/va5/ op   uneClef=uneValeur  ,  uneautreclef  =  17, ,   , uneoption,  =, monoption = =, ==,     ======,uneClef=42, uneClefspéciale="salut" /ma5/sa/exRD/Co5/va5/ma5/adC10/cd10/ma10/exDélicate en RG/ADRG : Chaîne/Cv5/mr5/sa/CA5/ma5/ml200/ma5/sa/Ci3/va5/ma5';
 $canyonStr = 'fr2.1:/op belowBackgroundColor=255200,aboveBackgroundColor=d14b27/ma5/ASRG/Ca5/va5/ma5/exRD/Co5/va5/ma5/sr/adC10/cd10/ma10/exDélicate en RG/ADRG : Chaîne/Cv5/mr5/sr/CA10/ma5/ml200/ma5/sr/Ci3/va5/ma5';
+$canyonStr = 'fr2.1:/op belowBackground=0,aboveBackground=0/ma5/Ca4/ma4/sr/ma59';
 $canyonStr = 'fr2.1:/ma5/enDéconseillé : Vire exposée !/ASRG/Ca15/va5/ma5/enRD : sentier sûr/Co5/va5/Nb Longer en RD/ma20/anC10/cd10/ma10/exDélicate en RG/ADRG : Chaîne/Cv5/nb Grotte cachée en RG/mr5/sr/CA10/ma5/ml200/ma5/sr/Ci3/va5/ma9';
+$canyonStr = 'fr2.1:/ma7/sr/enDéconseillé : Vire exposée !/ASRG/Ca15/va5/ma5/enRD : sentier sûr/Co5/va5/Nb Longer en RD/ma20/anC10/cd10/ma10/exDélicate en RG/ADRG : Chaîne/Cv5/nb Grotte cachée en RG/mr5/sr/CA10/ma5/ml200/ma5/sr/Ci3/va5/ma15';
 ?>
