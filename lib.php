@@ -891,6 +891,10 @@ class WetWalk extends Walk {
 }
 
 class LongWalk extends Walk {
+	public $baseLongWalkHeight;
+	public $baseLongWalkAngle;
+	public $baseLongWalkWidth;
+
 	function __construct($width) {
 		parent::__construct($width);
 		$this->name = 'Long walk';
@@ -900,16 +904,18 @@ class LongWalk extends Walk {
 		$this->displayedText = $width;
 		$this->height = 500;
 
-		// Arbitrarily specify the angle
-		$this->width = 10;
+		// Arbitrarily specify the width
+		$this->width = 0;
+
+		$this->baseLongWalkHeight = 170 / 12.7;
+		$this->baseLongWalkAngle  =  20 / 12.7;
+		$this->baseLongWalkWidth  =  10 / 12.7;
 	}
 
 	public function draw(&$p) {
-		$longWalkHeight = 20 * $p->yScale;
-		// Ugly, but needs advanced thinking of a better way...
-		$longWalkHeight = 170;
-		$longWalkAngle = 20;
-		$longWalkWidth = 10;
+		$longWalkHeight = $this->baseLongWalkHeight * $p->yScale;
+		$longWalkAngle  = $this->baseLongWalkAngle  * $p->yScale;
+		$longWalkWidth  = $this->baseLongWalkWidth  * $p->yScale;
 
 		$p->appendToLayer('base',
 		'm '. $p->curX .','. $p->curY .' h'. ($longWalkWidth*4.5),
@@ -1140,7 +1146,7 @@ class ExitPoint extends Symbol {
 class EntryPoint extends ExitPoint {
 }
 
-# Si le première lettre est en majuscule, on place le commentaire au dessus
+# Si la première lettre est en majuscule, on place le commentaire au dessus
 class Comment extends Anchor {
 	function __construct($text) {
 		parent::__construct($text);
