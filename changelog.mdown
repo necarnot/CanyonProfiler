@@ -1,5 +1,9 @@
 # CANYONPROFILER CHANGELOG
 
+## 2015-01-05
+- Font auto-sizing
+- Long walk auto-sizing
+
 ## 2014-09-29
 - Check that the outdir (profiles and symbols cache) are present
 
