@@ -36,12 +36,12 @@ function getFileName($canyonStr) {
 	$outFile = 'outfile_' . md5($canyonStr) . '.svg';
 	$curFileName = $outDir . '/' . $outFile;
 
-	// Si le fichier existe déjà, et s'il est récent, on ne le re-créer pas
+	// Si le fichier existe déjà, et s'il est récent, on ne le re-crée pas
 	// Cache time : 2 days ("86400 * 2")
-	$cache = false;
 	$cache = true;
+	$cache = false;
 	$myCwd = getcwd();
-	_error_log('curFileName='.$curFileName.', CWD='.$myCwd);
+	_error_log('curFileName='.$curFileName.', CWD='.$myCwd.', cache='.$cache);
 	if ($cache && file_exists($curFileName)) {
 		$stat = stat($curFileName);
 		if ($stat
@@ -50,10 +50,10 @@ function getFileName($canyonStr) {
 			if (isWiki()) {
 				$curFileName = '/_media/'.$outFile;
 			}
-			_error_log('File found :-) Submitted string is recent, file already created. Skipping generation. Returning:'.$curFileName);
+			_error_log(' :-) File found, submitted string is recent, file already created. Skipping generation. Returning:'.$curFileName);
 			return $curFileName;
 		} else {
-			_error_log(' :-( Fstat prevents caching...');
+			_error_log(' :-( Fstat prevents caching. Generating...');
 		}
 	} else {
 		_error_log(' :-( File '.$curFileName.' does not exist. Generating...');
@@ -66,10 +66,14 @@ function getFileName($canyonStr) {
 	$p->appendToFile('<?xml version="1.0" standalone="no"?>
 	<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 
-	<svg width="100%" height="100%" viewBox="-30 -80 1150 860" preserveAspectRatio="none" version="1.1"
+	<svg	viewBox="-30 -80 1150 860"
+		width="100%" height="100%"
+		preserveAspectRatio="none"
+		version="1.1"
 		xmlns="http://www.w3.org/2000/svg"
 		xmlns:xlink="http://www.w3.org/1999/xlink">
 	');
+	//<svg width="' . $p->pageWidth . 'mm" height="' . $p->pageHeight . 'mm" version="1.1"
 	$p->chainItems();
 	$p->scale();
 
@@ -352,6 +356,7 @@ class Profile {
 			//$this->appendToFile('
 			//<!-- str='.get_class($item).'|'.$item->width.'|'.$item->height.' itemWidthFactor='.$item->widthFactor. ' itemHeightFactor='.$item->heightFactor.' minX='.$minX.' minY='.$minY.' maxX='.$maxX.' maxY='.$maxY.' -->');
 		}
+		_error_log('3 : minX='.$minX.', maxX='.$maxX.', minY='.$minY.', maxY='.$maxY);
 		$this->maxWidth = $maxX - $minX;
 		$this->maxHeight = $maxY - $minY;
 
@@ -367,7 +372,7 @@ class Profile {
 
 		$ratio = $this->xScale / $this->yScale;
 		$this->appendToFile('
-		<!-- xScale='.$this->xScale.' // yScale='.$this->yScale.' // ratio='.$ratio.' -->');
+		<!-- beforeRatioAdjust xScale='.$this->xScale.' // yScale='.$this->yScale.' // ratio='.$ratio.' -->');
 		$minRatio = 0.5;
 		$maxRatio = 2;
 		// Dans les cas de dépassement de ratio, on force la correction
@@ -383,7 +388,7 @@ class Profile {
 		}
 		$ratio = $this->xScale / $this->yScale;
 		$this->appendToFile('
-		<!-- xScale='.$this->xScale.' // yScale='.$this->yScale.' // ratio='.$ratio.' -->');
+		<!-- afterRatioAdjust  xScale='.$this->xScale.' // yScale='.$this->yScale.' // ratio='.$ratio.' -->');
 
 		foreach($this->items as $item) {
 			$item->scale($this->xScale, $this->yScale);
@@ -422,11 +427,25 @@ class Profile {
 						$layerText .= "\n\t\t\t" . $text;
 					}
 				}
-				//$belowText = '<path style="fill:#ae6a5a;fill-opacity:1;stroke:none;filter:url(#filterBelow)" d="m20,-20 ' . $layerText . ' l-40,40 ' . $oppositeText . ' z ';
-				//$aboveText = '<path style="fill:#b5b5b5;fill-opacity:1;stroke:none;filter:url(#filterAbove)" d="m-3,3 ' . $layerText . ' l80,-80 ' . $oppositeText . ' z ';
-				$belowText = '<path style="fill:#' . $this->belowBackgroundColor . ';fill-opacity:1;stroke:none;filter:url(#filterBelow)" d="m20,-20 ' . $layerText . ' l-40,40 ' . $oppositeText . ' z ';
-				$aboveText = '<path style="fill:#' . $this->aboveBackgroundColor . ';fill-opacity:1;stroke:none;filter:url(#filterAbove)" d="m-3,3 ' . $layerText . ' l80,-80 ' . $oppositeText . ' z ';
-				$layerText = '<path style="fill:none;stroke:#000000;stroke-width:2px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1" d=" ' . $layerText;
+				$belowText = "\t\t"
+					. '<path style="fill:#'
+					. $this->belowBackgroundColor
+					. ';fill-opacity:1;stroke:none;filter:url(#filterBelow)" d="m20,-20 '
+					. $layerText
+					. ' l-40,40 '
+					. $oppositeText
+					. ' z ';
+				$aboveText = "\t\t"
+					. '<path style="fill:#'
+					. $this->aboveBackgroundColor
+					. ';fill-opacity:1;stroke:none;filter:url(#filterAbove)" d="m-3,3 '
+					. $layerText
+					. ' l80,-80 '
+					. $oppositeText
+					. ' z ';
+				$layerText = "\t\t"
+					. '<path style="fill:none;stroke:#000000;stroke-width:2px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1" d=" '
+					. $layerText;
 				$layerText .= '" />';
 				$belowText .= '" />';
 				$aboveText .= '" />';
@@ -1081,17 +1100,7 @@ class ExitPoint extends Symbol {
 	}
 }
 
-class EntryPoint extends Symbol {
-	// symbolWidth=, symbolHeight=
-	function __construct($text) {
-		parent::__construct($text);
-		$this->symbolScale = 0.08;
-	}
-
-	public function setXYOffset() {
-		$this->xOffset = 0 - ($this->drawedWidth * 1);
-		$this->yOffset = 0 - ($this->drawedHeight * 1.2);
-	}
+class EntryPoint extends ExitPoint {
 }
 
 # Si le première lettre est en majuscule, on place le commentaire au dessus
