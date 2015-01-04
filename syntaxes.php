@@ -128,6 +128,7 @@ function getDefinedAllowedOptions() {
 		'canyonName' => array (
 			'str', 'Nom du canyon',
 			0, 255,
+			'',
 		),
 		'fontHeight' => array (
 			'int', 'Taille de la police',
