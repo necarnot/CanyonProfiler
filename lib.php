@@ -221,6 +221,7 @@ class Profile {
 	public $minY;
 	public $maxX;
 	public $maxY;
+	public $baseStrokeWidth;
 	public $curColor;
 	public $origCanyonStr;
 	public $canyonStr;
@@ -264,6 +265,7 @@ class Profile {
 		$this->minY = 9999999999;
 		$this->maxX = 0;
 		$this->maxY = 0;
+		$this->baseStrokeWidth = 2;
 		$this->curColor = '000000';
 		$this->origCanyonStr = '';
 		$this->canyonStr = '';
@@ -481,7 +483,7 @@ class Profile {
 					. $oppositeText
 					. ' z ';
 				$layerText = "\t\t"
-					. '<path style="fill:none;stroke:#000000;stroke-width:2px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1" d=" '
+					. '<path style="fill:none;stroke:#000000;stroke-width:'.$this->baseStrokeWidth.'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1" d=" '
 					. $layerText;
 				$layerText .= '" />';
 				$belowText .= '" />';
@@ -580,7 +582,7 @@ class Item {
 	public $isChainable;
 
 	function __construct() {
-		// TODO : Il serait génial d'auto-sizer l'épaisseur selon le xScale.
+		// TODO : Il serait génial d'auto-sizer le strokeWidth selon le xScale.
 		// Hélas, on ne le connait qu'_après_ avoir crée tous les items...
 		$this->strokeWidth = 2;
 		$this->inStr = '';
@@ -651,6 +653,8 @@ class VerticalAngle extends Item {
 	}
 }
 
+// TODO : Vérifier l'homogénéité du comportement du point de départ d'un WetAngle
+// selon le type de l'item précédent (par exemple : marche vs longwalk)
 class WetAngle extends VerticalAngle {
 	function __construct($height, $angle) {
 		parent::__construct($height, $angle);
@@ -665,10 +669,11 @@ class WetAngle extends VerticalAngle {
 		if ( preg_match('/.*Walk.*/', $this->getNextItemClass()) OR preg_match('/.*Rounded.*/', $this->getNextItemClass()) ) {
 			$offsetNextItem = $this->strokeWidth;
 		}
+		//$offsetNextItem = 0;
 		// Using "max(...)" below because water can only fall verticaly, and can not (abscisse-)run backward (!)
 		$p->appendToLayer('water','
 		<path style="fill:none;stroke:#'. getWaterColor() .';stroke-width:'. $this->strokeWidth .'px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1"
-		d="m ' . ($origCurX + $this->strokeWidth) . ',' . $origCurY . ' ' . max($this->drawedWidth-($this->strokeWidth/2),0) . ',' . ($this->drawedHeight - $offsetNextItem) . '" />');
+		d="m ' . ($origCurX + $this->strokeWidth) . ',' . $origCurY . ' ' . max($this->drawedWidth-($this->strokeWidth/1.5),0) . ',' . ($this->drawedHeight - $offsetNextItem) . '" />');
 	}
 }
 
