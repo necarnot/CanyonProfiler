@@ -1063,8 +1063,6 @@ class NaturalAnchor extends Anchor {
 
 // TODO :
 /*
-- Stocker les hauteur et largeur des symboles, les stocker dans l'objet, afin de pouvoir
-  placer correctement les abcisses et ordonnées des symboles
 - Déterminer un facteur d'échelle :
   - Soit s'accorder dès le dessin en vectoriel du symbole d'une référence
   - Soit attribuer à chaque fichier un facteur à stocker je ne sais où (dans un commentaire du fichier ?)
@@ -1110,8 +1108,10 @@ class Symbol extends Item {
 
 	public function scale($xScale, $yScale) {
 		//_error_log('Symbol::scale - width='.$this->width.' height='.$this->height.' xScale='.$xScale.' yScale='.$yScale);
-		$this->drawedWidth  = $this->width  * $this->symbolScale * $xScale;
-		$this->drawedHeight = $this->height * $this->symbolScale * $yScale;
+		//$this->drawedWidth  = $this->width  * $this->symbolScale * $xScale;
+		//$this->drawedHeight = $this->height * $this->symbolScale * $yScale;
+		$this->drawedWidth  = $this->width  * $this->symbolScale;
+		$this->drawedHeight = $this->height * $this->symbolScale;
 	}
 }
 
