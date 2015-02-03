@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="31.19" width="31.19">
+<desc>symbolScale="0.08"</desc>
 <g id="ExitPoint">
   <path id="path5" stroke-linejoin="miter" d="M30.69,1.01c-4.713,0.9433-9.427,1.8867-14.14,2.83,1.413,1.4133,2.827,2.8267,4.24,4.24-6.597,4.243-13.193,8.487-19.79,12.73,2.8267,0.47,5.6533,0.94,8.48,1.41,0.47,2.8267,0.94,5.6533,1.41,8.48,4.24-6.5967,8.48-13.193,12.72-19.79l4.24,4.24c0.94667-4.7133,1.8933-9.4267,2.84-14.14z" stroke="#000" stroke-linecap="butt" stroke-miterlimit="4" stroke-dasharray="none" stroke-width="1.5" fill="#F00"/>
 </g>
