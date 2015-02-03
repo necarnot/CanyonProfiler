@@ -129,10 +129,12 @@ function setPackagedSymbol(&$item) {
 			return;
 		}
 		while (($buffer = fgets($handle)) !== false) {
+			// Removing useless lines
 			if($buffer == '\n'
 			|| substr($buffer, 0, 6) == '<?xml '
 			|| substr($buffer, 0, 4) == '<svg'
 			|| substr($buffer, 0, 6) == '</svg>'
+			|| substr($buffer, 0, 6) == '<desc>'
 			) {
 				continue;
 			}
@@ -149,13 +151,23 @@ function setPackagedSymbol(&$item) {
 
 	//_error_log('symbolFile='.$symbolFile);
 	$file = file_get_contents($symbolFile);
-	preg_match ('/<svg\ .*width="(.*)".*/', $file, $matches);
-	$symbolWidth = $matches[1];
-	preg_match ('/<svg\ .*height="(.*)".*/', $file, $matches);
-	$symbolHeight = $matches[1];
-	//_error_log('symbolWidth='.$symbolWidth.', symbolHeight='.$symbolHeight);
-	$item->width = $symbolWidth;
-	$item->height = $symbolHeight;
+	if ( $file != false ){ 
+		if (preg_match ('/<svg\ .*width="(.*)".*/', $file, $matches)) {
+			$symbolWidth = $matches[1];
+			//_error_log('symbolWidth='.$symbolWidth);
+			$item->width = $symbolWidth;
+		}
+		if (preg_match ('/<svg\ .*height="(.*)".*/', $file, $matches)) {
+			$symbolHeight = $matches[1];
+			//_error_log('symbolHeight='.$symbolHeight);
+			$item->height = $symbolHeight;
+		}
+		if (preg_match ('/<desc>.*symbolScale="(.*)".*/', $file, $matches)) {
+			$symbolScale = $matches[1];
+			//_error_log('symbolScale='.$symbolScale);
+			$item->symbolScale = $symbolScale;
+		}
+	}
 	$item->def = file_get_contents($symbolCacheFile);
 }
 
@@ -1068,7 +1080,7 @@ class NaturalAnchor extends Anchor {
 - Déterminer un facteur d'échelle :
   - Soit s'accorder dès le dessin en vectoriel du symbole d'une référence
   - Soit attribuer à chaque fichier un facteur à stocker je ne sais où (dans un commentaire du fichier ?)
-- Mettre à l'échelle chaque symbole (chaque xlink) en fonction des xScale et yScale
+- Mettre à l'échelle chaque symbole (chaque xlink) en fonction des xScale et yScale, en contrôlant le ratio
 */
 class Symbol extends Item {
 	public $def;
@@ -1130,7 +1142,6 @@ class PineTree01 extends Tree {
 	// symbolWidth=, symbolHeight=
 	function __construct($text) {
 		parent::__construct($text);
-		$this->symbolScale = 0.18;
 	}
 }
 
@@ -1138,7 +1149,6 @@ class PineTree02 extends Tree {
 	// symbolWidth=450, symbolHeight=730
 	function __construct($text) {
 		parent::__construct($text);
-		$this->symbolScale = 0.018;
 	}
 }
 
@@ -1146,7 +1156,6 @@ class ExitPoint extends Symbol {
 	// symbolWidth=, symbolHeight=
 	function __construct($text) {
 		parent::__construct($text);
-		$this->symbolScale = 0.08;
 	}
 
 	public function setXYOffset() {
