@@ -152,17 +152,17 @@ function setPackagedSymbol(&$item) {
 	//_error_log('symbolFile='.$symbolFile);
 	$file = file_get_contents($symbolFile);
 	if ( $file != false ){ 
-		if (preg_match ('/<svg\ .*width="(.*)".*/', $file, $matches)) {
+		if (preg_match ('/<svg\ .*width="(.*?)".*/', $file, $matches)) {
 			$symbolWidth = $matches[1];
 			//_error_log('symbolWidth='.$symbolWidth);
 			$item->width = $symbolWidth;
 		}
-		if (preg_match ('/<svg\ .*height="(.*)".*/', $file, $matches)) {
+		if (preg_match ('/<svg\ .*height="(.*?)".*/', $file, $matches)) {
 			$symbolHeight = $matches[1];
 			//_error_log('symbolHeight='.$symbolHeight);
 			$item->height = $symbolHeight;
 		}
-		if (preg_match ('/<desc>.*symbolScale="(.*)".*/', $file, $matches)) {
+		if (preg_match ('/<desc>.*symbolScale="(.*?)".*/', $file, $matches)) {
 			$symbolScale = $matches[1];
 			//_error_log('symbolScale='.$symbolScale);
 			$item->symbolScale = $symbolScale;
@@ -1092,7 +1092,15 @@ class Symbol extends Item {
 		//_error_log('class Symbol, $this->name='.$this->name);
 		$this->displayedText = $text;
 		//_error_log('class Symbol, $this->displayText='.$this->displayedText);
+
+		// Packaging, and setting width, height, symbolScale and def of item
 		setPackagedSymbol($this);
+	}
+
+	public function scale($xScale, $yScale) {
+		_error_log('Item::Symbol:scale - width='.$this->width.', height='.$this->height.', xScale='.$xScale.', yScale='.$yScale);
+		$this->drawedWidth  = $this->width  * $this->symbolScale * $xScale;
+		$this->drawedHeight = $this->height * $this->symbolScale * $yScale;
 	}
 
 	// On définit cette fonction pour permettre à chaque symbole
@@ -1117,15 +1125,29 @@ class Symbol extends Item {
 	public function getDef(&$p) {
 		$p->appendToFile($this->def);
 	}
-
-	public function scale($xScale, $yScale) {
-		//_error_log('Symbol::scale - width='.$this->width.' height='.$this->height.' xScale='.$xScale.' yScale='.$yScale);
-		//$this->drawedWidth  = $this->width  * $this->symbolScale * $xScale;
-		//$this->drawedHeight = $this->height * $this->symbolScale * $yScale;
-		$this->drawedWidth  = $this->width  * $this->symbolScale;
-		$this->drawedHeight = $this->height * $this->symbolScale;
-	}
 }
+
+/*
+		$ratio = $this->xScale / $this->yScale;
+		$this->appendToFile('
+		<!-- beforeRatioAdjust xScale='.$this->xScale.' // yScale='.$this->yScale.' // ratio='.$ratio.' -->');
+		$minRatio = 0.5;
+		$maxRatio = 2;
+		// Dans les cas de dépassement de ratio, on force la correction
+		if ($ratio < $minRatio) {
+			$this->appendToFile('
+			<!-- !!!!!!!!!! RATIO WARNING : < '. $minRatio .' !!!!!!!!!!! --> ');
+			$this->yScale = $this->xScale * 1.5;
+		}
+		if ($ratio > $maxRatio) {
+			$this->appendToFile('
+			<!-- !!!!!!!!!! RATIO WARNING : > '. $maxRatio .' !!!!!!!!!!! --> ');
+			$this->xScale = $this->yScale * 2;
+		}
+		$ratio = $this->xScale / $this->yScale;
+		$this->appendToFile('
+		<!-- afterRatioAdjust  xScale='.$this->xScale.' // yScale='.$this->yScale.' // ratio='.$ratio.' -->');
+*/
 
 class Tree extends Symbol {
 	function __construct($text) {
